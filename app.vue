@@ -1,15 +1,24 @@
 <script setup>
 import '@fontsource/inter/variable.css';
-import { useHead } from 'nuxt/app';
-
-useHead({
-    title: 'Tra quanto passa in...',
-    meta: [{ name: 'theme-color', content: 'rgb(23, 23, 23)' }],
-});
 </script>
 
 <template>
     <div>
+        <Head>
+            <Title>Tra quanto passa in...</Title>
+            <Meta name="theme-color" content="rgb(23, 23, 23)" />
+            <Script
+                children="if (window.location.host !== 'traquantopassa.in') window.goatcounter = { no_onload: true };"
+                body="true"
+            />
+            <Script
+                data-goatcounter="https://traquantopassa.goatcounter.com/count"
+                src="https://gc.zgo.at/count.js"
+                defer
+                body="true"
+            />
+        </Head>
+
         <NuxtPage />
     </div>
 </template>
