@@ -1,4 +1,4 @@
-import { defineEventHandler } from 'h3';
+import { createError, defineEventHandler } from 'h3';
 import { useRuntimeConfig } from '#imports';
 
 const config = useRuntimeConfig();
@@ -81,7 +81,17 @@ function parseTrips(data: any): Trip[] {
 
 export default defineEventHandler(async (event) => {
     const stopSlug = event.context.params.stop;
+    console.log('GET ' + event.req.url);
+
     const stopsGrouping = stopsMapping[stopSlug];
+
+    if (!stopsGrouping) {
+        throw createError({
+            statusCode: 404,
+            name: 'Not Found',
+            statusMessage: 'Could not find stop',
+        });
+    }
 
     let directions: { name: string; trips: Trip[] }[] = [];
 
