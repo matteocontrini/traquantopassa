@@ -40,13 +40,12 @@ setInterval(() => {
             }}
         </div>
 
-        <div class="mt-10">
-            <div v-for="direction in data.directions">
-                <div class="w-fit mx-auto text-lg uppercase font-medium mb-4 text-center">
-                    {{ direction.name }}
-                </div>
-                <Trip v-for="trip in direction.trips" :trip="trip" :key="trip.tripId" />
+        <div v-for="direction in data.directions" class="mt-10">
+            <div class="w-fit mx-auto text-lg uppercase font-medium mb-4 text-center">
+                {{ direction.name }}
             </div>
+            <Trip v-for="trip in direction.trips" :trip="trip" :key="trip.tripId" />
+        </div>
         </div>
     </div>
 </template>
