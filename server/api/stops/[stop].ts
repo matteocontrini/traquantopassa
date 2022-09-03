@@ -126,8 +126,6 @@ function parseTrips(data: any): Trip[] {
 
 export default defineEventHandler(async (event) => {
     const stopSlug = event.context.params.stop;
-    console.log('GET ' + event.req.url);
-
     const stopsGrouping = stopsMapping[stopSlug];
 
     if (!stopsGrouping) {
