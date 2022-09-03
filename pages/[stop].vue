@@ -17,14 +17,31 @@ const resp = await useLazyFetch<StopResponse>(`/api/stops/${stop}`);
 const data: Ref<StopResponse> = resp.data;
 
 watchEffect(() => {
-    data.value && useHead({
-        title: 'Tra quanto passa - ' + data.value.stopName,
-    });
+    data.value &&
+        useHead({
+            title: 'Tra quanto passa - ' + data.value.stopName,
+        });
 });
 
-setInterval(async () => {
+async function refresh() {
+    console.log('Refreshing...');
     await resp.refresh();
-}, 30 * 1000);
+}
+
+function startTimer(milliseconds = 30 * 1000) {
+    return setInterval(refresh, milliseconds);
+}
+
+let timer = startTimer();
+
+document.addEventListener('visibilitychange', async () => {
+    if (document.visibilityState == 'hidden') {
+        clearInterval(timer);
+    } else {
+        timer = startTimer();
+        await refresh();
+    }
+});
 </script>
 
 <template>
