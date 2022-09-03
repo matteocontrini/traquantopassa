@@ -17,4 +17,5 @@ export default defineNuxtConfig({
         apiUsername: '',
         apiPassword: '',
     },
+    ssr: false,
 });
