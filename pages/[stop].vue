@@ -37,15 +37,12 @@ if (data.value) {
         </div>
 
         <div class="mt-10">
-            <div class="w-fit mx-auto text-lg uppercase font-medium mb-4 text-center">
-                {{ data.directions[0].name }}
+            <div v-for="direction in data.directions">
+                <div class="w-fit mx-auto text-lg uppercase font-medium mb-4 text-center">
+                    {{ direction.name }}
+                </div>
+                <Trip v-for="trip in direction.trips" :trip="trip" :key="trip.tripId" />
             </div>
-            <Trip v-for="trip in data.directions[0].trips" :trip="trip" :key="trip.tripId" />
-
-            <div class="w-fit mx-auto text-lg uppercase font-medium mt-8 mb-4 text-center">
-                {{ data.directions[1].name }}
-            </div>
-            <Trip v-for="trip in data.directions[1].trips" :trip="trip" :key="trip.tripId" />
         </div>
     </div>
 </template>

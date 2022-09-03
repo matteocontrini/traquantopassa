@@ -13,6 +13,7 @@ interface Trip {
 }
 
 interface StopsGrouping {
+    name: string;
     lastUpdatedAt: Date | null;
     stops: Stop[];
 }
@@ -25,6 +26,7 @@ interface Stop {
 
 const stopsMapping: { [key: string]: StopsGrouping } = {
     valoni: {
+        name: 'Povo (via Valoni)',
         lastUpdatedAt: null,
         stops: [
             {
@@ -35,6 +37,49 @@ const stopsMapping: { [key: string]: StopsGrouping } = {
             {
                 stopId: 149,
                 name: '» Povo',
+                trips: [],
+            },
+        ],
+    },
+    mesiano: {
+        name: 'Mesiano',
+        lastUpdatedAt: null,
+        stops: [
+            {
+                stopId: 146,
+                name: '» Trento',
+                trips: [],
+            },
+            {
+                stopId: 145,
+                name: '» Povo',
+                trips: [],
+            },
+        ],
+    },
+    mesianofs: {
+        name: 'Mesiano FS',
+        lastUpdatedAt: null,
+        stops: [
+            {
+                stopId: 148,
+                name: '» Trento',
+                trips: [],
+            },
+            {
+                stopId: 147,
+                name: '» Povo',
+                trips: [],
+            },
+        ],
+    },
+    sommarive: {
+        name: 'Povo (Polo Scientifico)',
+        lastUpdatedAt: null,
+        stops: [
+            {
+                stopId: 2833,
+                name: '» Trento',
                 trips: [],
             },
         ],
@@ -120,7 +165,7 @@ export default defineEventHandler(async (event) => {
     }
 
     return {
-        stopName: 'Povo via Valoni',
+        stopName: stopsGrouping.name,
         lastUpdatedAt: stopsGrouping.lastUpdatedAt,
         directions,
     };
