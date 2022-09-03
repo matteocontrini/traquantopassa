@@ -73,7 +73,7 @@ const stopsMapping: { [key: string]: StopsGrouping } = {
             },
         ],
     },
-    sommarive: {
+    povo1: {
         name: 'Povo (Polo Scientifico)',
         lastUpdatedAt: null,
         stops: [
