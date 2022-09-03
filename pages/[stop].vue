@@ -21,6 +21,10 @@ if (data.value) {
         title: 'Tra quanto passa in ' + data.value.stopName,
     });
 }
+
+setInterval(() => {
+    resp.refresh();
+}, 30 * 1000);
 </script>
 
 <template>
