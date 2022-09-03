@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useFetch, useHead, useRoute } from '#imports';
+import { useFetch, useHead, useLazyFetch, useRoute, watch, watchEffect } from '#imports';
 import Trip from '@/components/Trip.vue';
 import { Ref } from '@vue/reactivity';
 
@@ -12,18 +12,18 @@ interface StopResponse {
     directions: { name: string; trips: Trip[] }[];
 }
 
-const resp = await useFetch<StopResponse>(`/api/stops/${stop}`);
+const resp = await useLazyFetch<StopResponse>(`/api/stops/${stop}`);
 
 const data: Ref<StopResponse> = resp.data;
 
-if (data.value) {
-    useHead({
-        title: 'Tra quanto passa in ' + data.value.stopName,
+watchEffect(() => {
+    data.value && useHead({
+        title: 'Tra quanto passa - ' + data.value.stopName,
     });
-}
+});
 
-setInterval(() => {
-    resp.refresh();
+setInterval(async () => {
+    await resp.refresh();
 }, 30 * 1000);
 </script>
 
