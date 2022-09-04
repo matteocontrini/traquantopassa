@@ -56,7 +56,7 @@ document.addEventListener('visibilitychange', async () => {
             <div class="w-fit mx-auto text-lg uppercase font-medium mb-4 text-center">
                 {{ direction.name }}
             </div>
-            <Trip v-for="trip in direction.trips" :trip="trip" :key="trip.tripId" />
+            <Trip v-for="trip in direction.trips" :trip="trip" />
         </div>
 
         <div class="my-10 text-neutral-500 text-sm text-center">

@@ -6,7 +6,7 @@ const stopsMapping: { [key: string]: StopsGroup } = {
     stazione: new StopsGroup(
         'Stazione FS (piazza Dante)',
         [
-            new Stop(247, '', 10)
+            new Stop(247, '', 12)
         ]
     ),
     valoni: new StopsGroup(
