@@ -1,21 +1,29 @@
 <script setup lang="ts">
-import { onUnmounted, useHead, useLazyFetch, useRoute, watchEffect } from '#imports';
+import { onMounted, onUnmounted, ref, useHead, useLazyFetch, useRoute, watchEffect } from '#imports';
 import Trip from '@/components/Trip.vue';
 import { Ref } from '@vue/reactivity';
 
 const route = useRoute();
 const stop = route.params.stop;
 
-let { data, refresh, pending }: { data: Ref<StopResponse | null>; refresh: Function; pending: Ref<boolean> } =
+const isLoading = ref(true);
+
+onMounted(() => {
+    isLoading.value = true;
+});
+
+let { data, refresh, error }: { data: Ref<StopResponse | null>; refresh: Function; error: Ref<true | Error | null> } =
     useLazyFetch<StopResponse>(() => `/api/stops/${stop}`, {
         initialCache: false,
     });
 
 watchEffect(() => {
-    data.value &&
+    if (data.value) {
+        isLoading.value = false;
         useHead({
             title: 'Tra quanto passa - ' + data.value.stopName,
         });
+    }
 });
 
 async function requestRefresh() {
@@ -48,9 +56,9 @@ onUnmounted(() => {
 
 <template>
     <main class="max-w-[600px] mx-auto mt-10 px-5">
-        <div v-if="pending" class="text-center">Caricamento...</div>
-        <div v-else-if="!data" class="text-center">Errore</div>
-        <div v-else>
+        <div v-if="error" class="text-center">Errore</div>
+        <div v-else-if="isLoading" class="text-center">Caricamento...</div>
+        <div v-else-if="data">
             <h1 class="font-semibold text-center text-4xl">{{ data.stopName }}</h1>
             <div class="text-sm flex justify-center items-center">
                 aggiornato alle
