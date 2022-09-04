@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { useHead, useLazyFetch, useRoute, watchEffect } from '#imports';
+import { onUnmounted, useHead, useLazyFetch, useRoute, watchEffect } from '#imports';
 import Trip from '@/components/Trip.vue';
 import { Ref } from '@vue/reactivity';
 
 const route = useRoute();
 const stop = route.params.stop;
 
-const resp = await useLazyFetch<StopResponse>(`/api/stops/${stop}`);
-
-const data: Ref<StopResponse> = resp.data;
+let { data, refresh, pending }: { data: Ref<StopResponse>; refresh: Function; pending: Ref<boolean> } =
+    useLazyFetch<StopResponse>(() => `/api/stops/${stop}`, {
+        initialCache: false,
+    });
 
 watchEffect(() => {
     data.value &&
@@ -17,46 +18,59 @@ watchEffect(() => {
         });
 });
 
-async function refresh() {
+async function requestRefresh() {
     console.log('Refreshing...');
-    await resp.refresh();
+    await refresh();
 }
 
 function startTimer(milliseconds = 30 * 1000) {
-    return setInterval(refresh, milliseconds);
+    return setInterval(requestRefresh, milliseconds);
 }
 
 let timer = startTimer();
 
-document.addEventListener('visibilitychange', async () => {
+document.addEventListener('visibilitychange', onVisibilityChange);
+
+async function onVisibilityChange() {
     if (document.visibilityState == 'hidden') {
-        clearInterval(timer);
-    } else {
-        timer = startTimer();
-        await refresh();
+        if (document.visibilityState == 'hidden') {
+            clearInterval(timer);
+        } else {
+            timer = startTimer();
+            await requestRefresh();
+        }
     }
+}
+
+onUnmounted(() => {
+    clearInterval(timer);
+    document.removeEventListener('visibilitychange', onVisibilityChange);
 });
 </script>
 
 <template>
-    <div class="max-w-[600px] mx-auto mt-10 px-5" v-if="data">
-        <h1 class="font-semibold text-center text-4xl">{{ data.stopName }}</h1>
-        <div class="text-sm flex justify-center items-center">
-            aggiornato alle
-            {{
-                new Date(data.lastUpdatedAt).toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                })
-            }}
-            <span class="rounded-full w-2 h-2 animate-pulse bg-green-500 ml-2 mt-0.5"></span>
-        </div>
-
-        <div v-for="direction in data.directions" class="mt-10">
-            <div class="w-fit mx-auto text-lg uppercase font-medium mb-4 text-center">
-                {{ direction.name }}
+    <main class="max-w-[600px] mx-auto mt-10 px-5">
+        <div v-if="pending" class="text-center">Caricamento...</div>
+        <div v-else-if="!data" class="text-center">Errore</div>
+        <div v-else>
+            <h1 class="font-semibold text-center text-4xl">{{ data.stopName }}</h1>
+            <div class="text-sm flex justify-center items-center">
+                aggiornato alle
+                {{
+                    new Date(data.lastUpdatedAt).toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                    })
+                }}
+                <span class="rounded-full w-2 h-2 animate-pulse bg-green-500 ml-2 mt-0.5"></span>
             </div>
-            <Trip v-for="trip in direction.trips" :trip="trip" />
+
+            <div v-for="direction in data.directions" class="mt-10">
+                <div class="w-fit mx-auto text-lg uppercase font-medium mb-4 text-center">
+                    {{ direction.name }}
+                </div>
+                <Trip v-for="trip in direction.trips" :trip="trip" />
+            </div>
         </div>
 
         <div class="my-10 text-neutral-500 text-sm text-center">
@@ -66,5 +80,5 @@ document.addEventListener('visibilitychange', async () => {
             <br />
             <a href="mailto:ciao@traquantopassa.in" class="block mt-2 underline">ciao@traquantopassa.in</a>
         </div>
-    </div>
+    </main>
 </template>

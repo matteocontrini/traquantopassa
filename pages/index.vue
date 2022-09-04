@@ -10,7 +10,7 @@ const { data: stops } = await useLazyFetch<StopResponse>('/api/stops');
 
         <ul class="mt-10 text-center text-lg">
             <li v-for="stop in stops" class="mt-4">
-                <a :href="`/${stop}`">/{{ stop }}</a>
+                <NuxtLink :to="`/${stop}`">/{{ stop }}</NuxtLink>
             </li>
         </ul>
     </div>
