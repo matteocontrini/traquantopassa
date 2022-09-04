@@ -1,91 +1,48 @@
-const stopsMapping: { [key: string]: StopsGrouping } = {
-    stazione: {
-        name: 'Stazione FS (piazza Dante)',
-        lastUpdatedAt: null,
-        stops: [
-            {
-                stopId: 247,
-                name: '',
-                limit: 10,
-                trips: [],
-            },
-        ],
-    },
-    valoni: {
-        name: 'Povo (via Valoni)',
-        lastUpdatedAt: null,
-        stops: [
-            {
-                stopId: 150,
-                name: '» Trento',
-                trips: [],
-            },
-            {
-                stopId: 149,
-                name: '» Povo',
-                trips: [],
-            },
-        ],
-    },
-    mesiano: {
-        name: 'Mesiano',
-        lastUpdatedAt: null,
-        stops: [
-            {
-                stopId: 146,
-                name: '» Trento',
-                trips: [],
-            },
-            {
-                stopId: 145,
-                name: '» Povo',
-                trips: [],
-            },
-        ],
-    },
-    mesianofs: {
-        name: 'Mesiano FS',
-        lastUpdatedAt: null,
-        stops: [
-            {
-                stopId: 148,
-                name: '» Trento',
-                trips: [],
-            },
-            {
-                stopId: 147,
-                name: '» Povo',
-                trips: [],
-            },
-        ],
-    },
-    povo1: {
-        name: 'Povo (Polo Scientifico)',
-        lastUpdatedAt: null,
-        stops: [
-            {
-                stopId: 2833,
-                name: '» Trento',
-                trips: [],
-            },
-        ],
-    },
-    formigheta: {
-        name: 'Martignano (via alla Formigheta)',
-        lastUpdatedAt: null,
-        stops: [
-            {
-                stopId: 101,
-                name: '» Cognola',
-                trips: [],
-            },
-            {
-                stopId: 102,
-                name: '» Trento',
-                trips: [],
-            },
-        ],
-    },
+import StopsGroup from '~/server/StopsGroup';
+import Stop from '~/server/Stop';
+
+// prettier-ignore
+const stopsMapping: { [key: string]: StopsGroup } = {
+    stazione: new StopsGroup(
+        'Stazione FS (piazza Dante)',
+        [
+            new Stop(247, '', 10)
+        ]
+    ),
+    valoni: new StopsGroup(
+        'Povo (via Valoni)',
+        [
+            new Stop(150, '» Trento'),
+            new Stop(149, '» Povo')
+        ]
+    ),
+    mesiano: new StopsGroup(
+        'Mesiano',
+        [
+            new Stop(146, '» Trento'),
+            new Stop(145, '» Povo')
+        ]
+    ),
+    mesianofs: new StopsGroup(
+        'Mesiano FS',
+        [
+            new Stop(148, '» Trento'),
+            new Stop(147, '» Povo')
+        ]
+    ),
+    povo1: new StopsGroup(
+        'Povo 1 (Polo Scientifico)',
+        [
+            new Stop(2833, '» Trento')
+        ]
+    ),
+    formigheta: new StopsGroup(
+        'Martignano (via alla Formigheta)',
+        [
+            new Stop(101, '» Cognola'),
+            new Stop(102, '» Trento')
+        ]
+    )
 };
 
 export default stopsMapping;

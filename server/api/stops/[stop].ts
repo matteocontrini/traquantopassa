@@ -2,6 +2,8 @@ import { createError, defineEventHandler } from 'h3';
 import { useRuntimeConfig } from '#imports';
 import stopsMapping from '~/server/stopsMapping';
 import { getRoute, loadRoutes } from '~/server/routes';
+import StopsGroup from '~/server/StopsGroup';
+import Stop from '~/server/Stop';
 
 const config = useRuntimeConfig();
 
@@ -49,9 +51,9 @@ function parseTrips(data: any): Trip[] {
 
 export default defineEventHandler(async (event) => {
     const stopSlug = event.context.params.stop;
-    const stopsGrouping = stopsMapping[stopSlug];
+    const stopsGroup: StopsGroup = stopsMapping[stopSlug];
 
-    if (!stopsGrouping) {
+    if (!stopsGroup) {
         throw createError({
             statusCode: 404,
             name: 'Not Found',
@@ -61,33 +63,33 @@ export default defineEventHandler(async (event) => {
 
     let directions: { name: string; trips: Trip[] }[] = [];
 
-    if (stopsGrouping.lastUpdatedAt == null || Date.now() - stopsGrouping.lastUpdatedAt.getTime() > 1000 * 30) {
-        const promises = stopsGrouping.stops.map((stop) => getData(stop.stopId, stop.limit));
+    if (!stopsGroup.lastUpdatedAt || Date.now() - stopsGroup.lastUpdatedAt.getTime() > 1000 * 30) {
+        const promises = stopsGroup.stops.map((stop) => getData(stop.stopId, stop.limit));
         const results = await Promise.all(promises);
         for (let i = 0; i < results.length; i++) {
-            const stop = stopsGrouping.stops[i];
+            const stop: Stop = stopsGroup.stops[i];
             let trips = parseTrips(results[i]);
             trips.sort((a, b) => a.minutes - b.minutes);
             directions.push({
                 name: stop.name,
                 trips,
             });
-            stop.trips = trips;
+            stop.tripsCache = trips;
         }
-        stopsGrouping.lastUpdatedAt = new Date();
+        stopsGroup.lastUpdatedAt = new Date();
     } else {
-        for (let i = 0; i < stopsGrouping.stops.length; i++) {
-            const stop = stopsGrouping.stops[i];
+        for (let i = 0; i < stopsGroup.stops.length; i++) {
+            const stop = stopsGroup.stops[i];
             directions.push({
                 name: stop.name,
-                trips: stop.trips,
+                trips: stop.tripsCache,
             });
         }
     }
 
     return {
-        stopName: stopsGrouping.name,
-        lastUpdatedAt: stopsGrouping.lastUpdatedAt,
+        stopName: stopsGroup.name,
+        lastUpdatedAt: stopsGroup.lastUpdatedAt,
         directions,
     };
 });
