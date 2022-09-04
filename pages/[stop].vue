@@ -6,12 +6,6 @@ import { Ref } from '@vue/reactivity';
 const route = useRoute();
 const stop = route.params.stop;
 
-interface StopResponse {
-    stopName: string;
-    lastUpdatedAt: string;
-    directions: { name: string; trips: Trip[] }[];
-}
-
 const resp = await useLazyFetch<StopResponse>(`/api/stops/${stop}`);
 
 const data: Ref<StopResponse> = resp.data;

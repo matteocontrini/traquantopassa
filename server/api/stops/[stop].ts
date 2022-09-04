@@ -1,90 +1,8 @@
 import { createError, defineEventHandler } from 'h3';
 import { useRuntimeConfig } from '#imports';
+import stopsMapping from '~/server/stopsMapping';
 
 const config = useRuntimeConfig();
-
-interface Trip {
-    route: string;
-    tripId: string;
-    destination: string;
-    direction: number;
-    minutes: number;
-    delay: number;
-}
-
-interface StopsGrouping {
-    name: string;
-    lastUpdatedAt: Date | null;
-    stops: Stop[];
-}
-
-interface Stop {
-    stopId: number;
-    name: string;
-    trips: Trip[];
-}
-
-const stopsMapping: { [key: string]: StopsGrouping } = {
-    valoni: {
-        name: 'Povo (via Valoni)',
-        lastUpdatedAt: null,
-        stops: [
-            {
-                stopId: 150,
-                name: '» Trento',
-                trips: [],
-            },
-            {
-                stopId: 149,
-                name: '» Povo',
-                trips: [],
-            },
-        ],
-    },
-    mesiano: {
-        name: 'Mesiano',
-        lastUpdatedAt: null,
-        stops: [
-            {
-                stopId: 146,
-                name: '» Trento',
-                trips: [],
-            },
-            {
-                stopId: 145,
-                name: '» Povo',
-                trips: [],
-            },
-        ],
-    },
-    mesianofs: {
-        name: 'Mesiano FS',
-        lastUpdatedAt: null,
-        stops: [
-            {
-                stopId: 148,
-                name: '» Trento',
-                trips: [],
-            },
-            {
-                stopId: 147,
-                name: '» Povo',
-                trips: [],
-            },
-        ],
-    },
-    povo1: {
-        name: 'Povo (Polo Scientifico)',
-        lastUpdatedAt: null,
-        stops: [
-            {
-                stopId: 2833,
-                name: '» Trento',
-                trips: [],
-            },
-        ],
-    },
-};
 
 async function getData(stopId: number) {
     const url = `${config.apiBaseUrl}/gtlservice/trips_new?limit=10&stopId=${stopId}&type=U`;
@@ -104,15 +22,14 @@ function parseTrips(data: any): Trip[] {
         if (minutes < 0) {
             minutes = 0;
         }
+
+        // Check if the trip is at the last stop and don't use the delay in that case
+        // (the delay is always 0 in that case)
+        // Note: use stopNext because sometimes the last stop is never reached
         const endOfRouteStopId = trip['stopTimes'].at(-1)['stopId'];
         const nextStopId = trip['stopNext'];
-        let delay;
-        if (endOfRouteStopId == nextStopId) {
-            // ^ use stopNext because sometimes the last stop is never reached
-            delay = null;
-        } else {
-            delay = trip['delay'];
-        }
+        const delay = endOfRouteStopId != nextStopId ? trip['delay'] : null;
+
         return {
             route: trip['routeId'],
             tripId: trip['tripId'],
