@@ -76,6 +76,7 @@ onUnmounted(() => {
                     {{ direction.name }}
                 </div>
                 <Trip v-for="trip in direction.trips" :trip="trip" />
+                <div v-if="direction.trips.length === 0" class="text-center">Nessun autobus in arrivo</div>
             </div>
         </div>
 
