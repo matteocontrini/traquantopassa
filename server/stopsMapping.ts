@@ -1,4 +1,16 @@
 const stopsMapping: { [key: string]: StopsGrouping } = {
+    stazione: {
+        name: 'Piazza Dante (Stazione FS)',
+        lastUpdatedAt: null,
+        stops: [
+            {
+                stopId: 247,
+                name: '',
+                limit: 12,
+                trips: [],
+            },
+        ],
+    },
     valoni: {
         name: 'Povo (via Valoni)',
         lastUpdatedAt: null,
@@ -59,6 +71,5 @@ const stopsMapping: { [key: string]: StopsGrouping } = {
         ],
     },
 };
-
 
 export default stopsMapping;

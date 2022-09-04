@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import routes from '~/routes';
-
 defineProps<{ trip: Trip }>();
 </script>
 
@@ -8,9 +6,9 @@ defineProps<{ trip: Trip }>();
     <div class="flex items-center gap-x-4 mb-2">
         <div
             class="w-10 h-10 flex justify-center items-center font-bold text-xl rounded-md"
-            :style="{ backgroundColor: routes[trip.route].color }"
+            :style="{ backgroundColor: trip.routeColor }"
         >
-            {{ routes[trip.route].name }}
+            {{ trip.routeName }}
         </div>
         <div class="text-lg font-medium flex-grow text-ellipsis overflow-hidden whitespace-nowrap">
             {{ trip.destination }}

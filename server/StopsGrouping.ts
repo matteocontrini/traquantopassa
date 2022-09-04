@@ -7,5 +7,6 @@ interface StopsGrouping {
 interface Stop {
     stopId: number;
     name: string;
+    limit?: number;
     trips: Trip[];
 }

@@ -1,5 +1,6 @@
 declare interface Trip {
-    route: string;
+    routeName: string;
+    routeColor: string;
     tripId: string;
     destination: string;
     direction: number;

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useFetch, useHead, useLazyFetch, useRoute, watch, watchEffect } from '#imports';
+import { useHead, useLazyFetch, useRoute, watchEffect } from '#imports';
 import Trip from '@/components/Trip.vue';
 import { Ref } from '@vue/reactivity';
 

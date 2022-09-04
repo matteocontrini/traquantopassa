@@ -6,7 +6,7 @@ It also takes into consideration delays based on real-time data.
 
 It's currently hosted on `traquantopassa.in`, e.g. https://traquantopassa.in/mesiano.
 
-The application was built with the Nuxt 3 framework, which I don't really know how to use so it's likely a mess. 
+The application was built with the Nuxt 3 (release candidate) framework. 
 
 ## Development
 

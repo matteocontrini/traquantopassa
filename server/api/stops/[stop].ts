@@ -1,11 +1,14 @@
 import { createError, defineEventHandler } from 'h3';
 import { useRuntimeConfig } from '#imports';
 import stopsMapping from '~/server/stopsMapping';
+import { getRoute, loadRoutes } from '~/server/routes';
 
 const config = useRuntimeConfig();
 
-async function getData(stopId: number) {
-    const url = `${config.apiBaseUrl}/gtlservice/trips_new?limit=10&stopId=${stopId}&type=U`;
+loadRoutes();
+
+async function getData(stopId: number, limit: number = 5) {
+    const url = `${config.apiBaseUrl}/gtlservice/trips_new?limit=${limit}&stopId=${stopId}&type=U`;
     console.log(`Requesting ${url}`);
     const resp = await fetch(url, {
         headers: {
@@ -30,8 +33,11 @@ function parseTrips(data: any): Trip[] {
         const nextStopId = trip['stopNext'];
         const delay = endOfRouteStopId != nextStopId ? trip['delay'] : null;
 
+        let route = getRoute(trip['routeId']);
+
         return {
-            route: trip['routeId'],
+            routeName: route.name,
+            routeColor: route.color,
             tripId: trip['tripId'],
             destination: trip['tripHeadsign'],
             direction: trip['directionId'],
@@ -56,17 +62,17 @@ export default defineEventHandler(async (event) => {
     let directions: { name: string; trips: Trip[] }[] = [];
 
     if (stopsGrouping.lastUpdatedAt == null || Date.now() - stopsGrouping.lastUpdatedAt.getTime() > 1000 * 30) {
-        const promises = stopsGrouping.stops.map((stop) => getData(stop.stopId));
+        const promises = stopsGrouping.stops.map((stop) => getData(stop.stopId, stop.limit));
         const results = await Promise.all(promises);
         for (let i = 0; i < results.length; i++) {
+            const stop = stopsGrouping.stops[i];
             let trips = parseTrips(results[i]);
             trips.sort((a, b) => a.minutes - b.minutes);
-            trips = trips.slice(0, 5);
             directions.push({
-                name: stopsGrouping.stops[i].name,
+                name: stop.name,
                 trips,
             });
-            stopsGrouping.stops[i].trips = trips;
+            stop.trips = trips;
         }
         stopsGrouping.lastUpdatedAt = new Date();
     } else {
