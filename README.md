@@ -4,7 +4,7 @@
 
 It also takes into consideration delays based on real-time data.
 
-It's currently hosted on `traquantopassa.in`, e.g. https://traquantopassa.in/stazione.
+It's currently hosted on [traquantopassa.in](https://traquantopassa.in).
 
 The application was built with the Nuxt 3 (release candidate) framework. 
 
