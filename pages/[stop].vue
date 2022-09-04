@@ -6,7 +6,7 @@ import { Ref } from '@vue/reactivity';
 const route = useRoute();
 const stop = route.params.stop;
 
-let { data, refresh, pending }: { data: Ref<StopResponse>; refresh: Function; pending: Ref<boolean> } =
+let { data, refresh, pending }: { data: Ref<StopResponse | null>; refresh: Function; pending: Ref<boolean> } =
     useLazyFetch<StopResponse>(() => `/api/stops/${stop}`, {
         initialCache: false,
     });
@@ -33,12 +33,10 @@ document.addEventListener('visibilitychange', onVisibilityChange);
 
 async function onVisibilityChange() {
     if (document.visibilityState == 'hidden') {
-        if (document.visibilityState == 'hidden') {
-            clearInterval(timer);
-        } else {
-            timer = startTimer();
-            await requestRefresh();
-        }
+        clearInterval(timer);
+    } else {
+        timer = startTimer();
+        await requestRefresh();
     }
 }
 
