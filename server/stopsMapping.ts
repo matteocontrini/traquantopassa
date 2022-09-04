@@ -1,12 +1,12 @@
 const stopsMapping: { [key: string]: StopsGrouping } = {
     stazione: {
-        name: 'Piazza Dante (Stazione FS)',
+        name: 'Stazione FS (piazza Dante)',
         lastUpdatedAt: null,
         stops: [
             {
                 stopId: 247,
                 name: '',
-                limit: 12,
+                limit: 10,
                 trips: [],
             },
         ],
@@ -65,6 +65,22 @@ const stopsMapping: { [key: string]: StopsGrouping } = {
         stops: [
             {
                 stopId: 2833,
+                name: '» Trento',
+                trips: [],
+            },
+        ],
+    },
+    formigheta: {
+        name: 'Martignano (via alla Formigheta)',
+        lastUpdatedAt: null,
+        stops: [
+            {
+                stopId: 101,
+                name: '» Cognola',
+                trips: [],
+            },
+            {
+                stopId: 102,
                 name: '» Trento',
                 trips: [],
             },
