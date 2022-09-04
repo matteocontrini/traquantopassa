@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useLazyFetch } from '#imports';
+import { useFetch } from '#imports';
 
-const { data: stops } = await useLazyFetch<StopResponse>('/api/stops');
+const { data: stops } = await useFetch<StopResponse>('/api/stops');
 </script>
 
 <template>
