@@ -16,6 +16,13 @@ const stopsMapping: { [key: string]: StopsGroup } = {
             new Stop(149, '» Povo')
         ]
     ),
+    manci: new StopsGroup(
+        'Povo (piazza Manci)',
+        [
+            new Stop(187, '» Trento'),
+            new Stop(186, '» Oltrecastello')
+        ]
+    ),
     mesiano: new StopsGroup(
         'Mesiano',
         [
@@ -31,7 +38,7 @@ const stopsMapping: { [key: string]: StopsGroup } = {
         ]
     ),
     povo1: new StopsGroup(
-        'Povo 1 (Polo Scientifico)',
+        'Povo (Polo Scientifico)',
         [
             new Stop(2833, '» Trento')
         ]
