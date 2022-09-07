@@ -23,7 +23,7 @@ async function getData(stopId: number, limit: number = 5) {
 function parseTrips(data: any): Trip[] {
     return data.map((trip: any): Trip => {
         const expectedTime = new Date(trip['oraArrivoEffettivaAFermataSelezionata']);
-        let minutes = Math.round((expectedTime.getTime() - Date.now()) / 1000 / 60);
+        let minutes = Math.ceil((expectedTime.getTime() - Date.now()) / 1000 / 60);
         if (minutes < 0) {
             minutes = 0;
         }
