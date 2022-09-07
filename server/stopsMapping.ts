@@ -69,10 +69,25 @@ const stopsMapping: { [key: string]: StopsGroup } = {
             new Stop(165, '', 7)
         ]
     ),
+    portanuova: new StopsGroup(
+        'Via S. Francesco - Porta Nuova',
+        [
+            new Stop(166, '» Nord'),
+            new Stop(410, '» Sud')
+
+        ]
+    ),
     portaquila: new StopsGroup(
         'Piazza Venezia - Port\'Aquila',
         [
             new Stop(2927, '» Povo')
+        ]
+    ),
+    corallo: new StopsGroup(
+        'Via Venezia - Corallo',
+        [
+            new Stop(452, '» Povo'),
+            new Stop(453, '» Trento')
         ]
     )
 };
