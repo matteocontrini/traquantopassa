@@ -8,13 +8,16 @@ const { data: stops } = await useFetch<StopResponse>('/api/stops');
     <div class="max-w-[600px] mx-auto mt-10 px-5">
         <h1 class="font-semibold text-center text-4xl">Tra quanto passa l'autobus in...</h1>
 
-        <div class="mt-2 text-center text-neutral-500">
-            Trento edition
-        </div>
+        <div class="mt-2 text-center text-neutral-500 text-lg">Trento edition</div>
 
         <ul class="mt-10 text-center text-lg">
             <li v-for="stop in stops" class="mt-4">
-                <NuxtLink :to="`/${stop}`">/{{ stop }}</NuxtLink>
+                <NuxtLink :to="`/${stop.slug}`" class="block no-underline">
+                    {{ stop.name }}
+                </NuxtLink>
+                <NuxtLink :to="`/${stop.slug}`" class="block text-sm no-underline text-neutral-500">
+                    /{{ stop.slug }}
+                </NuxtLink>
             </li>
         </ul>
 
