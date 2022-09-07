@@ -49,6 +49,31 @@ const stopsMapping: { [key: string]: StopsGroup } = {
             new Stop(101, '» Cognola'),
             new Stop(102, '» Trento')
         ]
+    ),
+    smm: new StopsGroup(
+        'Santa Maria Maggiore',
+        [
+            new Stop(407, '» Sud'),
+            new Stop(406, '» Nord')
+        ]
+    ),
+    travai: new StopsGroup(
+        'Via Travai',
+        [
+            new Stop(444, '', 7)
+        ]
+    ),
+    fiera: new StopsGroup(
+        'Piazza Fiera',
+        [
+            new Stop(165, '', 7)
+        ]
+    ),
+    portaquila: new StopsGroup(
+        'Piazza Venezia - Port\'Aquila',
+        [
+            new Stop(2927, '» Povo')
+        ]
     )
 };
 
