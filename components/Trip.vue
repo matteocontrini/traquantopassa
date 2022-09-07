@@ -10,8 +10,18 @@ defineProps<{ trip: Trip }>();
         >
             {{ trip.routeName }}
         </div>
-        <div class="text-lg font-medium flex-grow text-ellipsis overflow-hidden whitespace-nowrap">
-            {{ trip.destination }}
+        <div class="flex-grow">
+            <span class="block leading-tight text-lg font-medium text-ellipsis overflow-hidden whitespace-nowrap">
+                {{ trip.destination }}<br />
+            </span>
+            <span
+                v-if="trip.distanceInStops != null && trip.distanceInStops <= 5"
+                class="block leading-none text-xs text-neutral-500"
+            >
+                <template v-if="trip.distanceInStops === 0">in arrivo alla tua fermata</template>
+                <template v-else-if="trip.distanceInStops === 1">a {{ trip.distanceInStops }} fermata da te</template>
+                <template v-else>a {{ trip.distanceInStops }} fermate da te</template>
+            </span>
         </div>
         <div
             class="text-right text-xl font-semibold"

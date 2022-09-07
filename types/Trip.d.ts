@@ -6,4 +6,7 @@ declare interface Trip {
     direction: number;
     minutes: number;
     delay: number;
+    expectedTime: Date;
+    scheduledTime: Date;
+    distanceInStops: number | null;
 }

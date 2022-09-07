@@ -20,7 +20,7 @@ async function getData(stopId: number, limit: number = 5) {
     return resp.json();
 }
 
-function parseTrips(data: any): Trip[] {
+function parseTrips(stopId: number, data: any): Trip[] {
     return data.map((trip: any): Trip => {
         const expectedTime = new Date(trip['oraArrivoEffettivaAFermataSelezionata']);
         let minutes = Math.ceil((expectedTime.getTime() - Date.now()) / 1000 / 60);
@@ -35,6 +35,20 @@ function parseTrips(data: any): Trip[] {
         const nextStopId = trip['stopNext'];
         const delay = endOfRouteStopId != nextStopId ? trip['delay'] : null;
 
+        // *** Compute how many stops away the bus is
+        // First, find the current stop where the bus is
+        let distanceInStops = null;
+        const currentStopSequenceNumber = trip['lastSequenceDetection'];
+        const currentBusStop = trip['stopTimes'].find((stop: any) => stop['stopSequence'] == currentStopSequenceNumber);
+        if (currentBusStop != null) {
+            // Find the current stop where the user is but only if it's after the current bus stop
+            const currentUserStop = trip['stopTimes'].find(
+                (stop: any) => stop['stopId'] == stopId && stop['stopSequence'] >= currentStopSequenceNumber
+            );
+            // Compute how many stops away the bus is
+            distanceInStops = currentUserStop['stopSequence'] - currentBusStop['stopSequence'];
+        }
+
         let route = getRoute(trip['routeId']);
 
         return {
@@ -45,6 +59,9 @@ function parseTrips(data: any): Trip[] {
             direction: trip['directionId'],
             minutes,
             delay,
+            expectedTime,
+            scheduledTime: new Date(trip['oraArrivoProgrammataAFermataSelezionata']),
+            distanceInStops,
         };
     });
 }
@@ -68,7 +85,7 @@ export default defineEventHandler(async (event) => {
         const results = await Promise.all(promises);
         for (let i = 0; i < results.length; i++) {
             const stop: Stop = stopsGroup.stops[i];
-            let trips = parseTrips(results[i]);
+            let trips = parseTrips(stop.stopId, results[i]);
             trips.sort((a, b) => a.minutes - b.minutes);
             directions.push({
                 name: stop.name,

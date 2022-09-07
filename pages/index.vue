@@ -18,7 +18,7 @@ const { data: stops } = await useFetch<StopResponse>('/api/stops');
             </li>
         </ul>
 
-        <div class="my-10 text-neutral-500 text-sm text-center">
+        <div class="mb-10 mt-14 text-neutral-500 text-sm text-center">
             <NuxtLink to="/info">Informazioni</NuxtLink>
         </div>
     </div>
