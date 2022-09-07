@@ -6,7 +6,11 @@ const { data: stops } = await useFetch<StopResponse>('/api/stops');
 
 <template>
     <div class="max-w-[600px] mx-auto mt-10 px-5">
-        <h1 class="font-semibold text-center text-4xl">Tra quanto passa in...</h1>
+        <h1 class="font-semibold text-center text-4xl">Tra quanto passa l'autobus in...</h1>
+
+        <div class="mt-2 text-center text-neutral-500">
+            Trento edition
+        </div>
 
         <ul class="mt-10 text-center text-lg">
             <li v-for="stop in stops" class="mt-4">

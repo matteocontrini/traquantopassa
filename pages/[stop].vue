@@ -60,7 +60,7 @@ onUnmounted(() => {
         <div v-else-if="isLoading" class="text-center">Caricamento...</div>
         <div v-else-if="data">
             <h1 class="font-semibold text-center text-4xl">{{ data.stopName }}</h1>
-            <div class="text-sm flex justify-center items-center">
+            <div class="mt-1 text-sm flex justify-center items-center">
                 aggiornato alle
                 {{
                     new Date(data.lastUpdatedAt).toLocaleTimeString([], {
