@@ -26,10 +26,17 @@ async function loadRoutes() {
     routes = {};
     for (const route of data) {
         routes[route['routeId']] = {
-            color: '#' + route['routeColor'],
+            color: route['routeColor'] ? '#' + route['routeColor'] : fixRouteColor(route['routeShortName']),
             name: route['routeShortName'],
         };
     }
+}
+
+function fixRouteColor(routeShortName: string) {
+    if (routeShortName === '5/') {
+        return '#F5C500';
+    }
+    return '#000000';
 }
 
 function getRoute(routeId: string): Route {
