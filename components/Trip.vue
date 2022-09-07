@@ -5,7 +5,7 @@ defineProps<{ trip: Trip }>();
 <template>
     <div class="flex items-center gap-x-4 mb-2">
         <div
-            class="w-10 h-10 flex-shrink-0 flex justify-center items-center font-bold text-xl rounded-md"
+            class="w-10 h-10 flex-shrink-0 flex justify-center items-center font-bold text-xl rounded-md select-none"
             :style="{ backgroundColor: trip.routeColor }"
         >
             {{ trip.routeName }}
@@ -23,8 +23,8 @@ defineProps<{ trip: Trip }>();
                 <template v-else>a {{ trip.distanceInStops }} fermate da te</template>
                 <template v-if="trip.delay != null">
                     <template v-if="trip.delay === 0"> • in orario</template>
-                    <template v-else-if="trip.delay > 0"> • in ritardo di {{ trip.delay }} min.</template>
-                    <template v-else> • in anticipo di {{ -trip.delay }} min.</template>
+                    <template v-else-if="trip.delay > 0"> • in ritardo di {{ trip.delay }} min</template>
+                    <template v-else> • in anticipo di {{ -trip.delay }} min</template>
                 </template>
             </span>
         </div>
