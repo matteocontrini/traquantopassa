@@ -36,17 +36,22 @@ function parseTrips(stopId: number, data: any): Trip[] {
         const delay = endOfRouteStopId != nextStopId ? trip['delay'] : null;
 
         // *** Compute how many stops away the bus is
-        // First, find the current stop where the bus is
         let distanceInStops = null;
         const currentStopSequenceNumber = trip['lastSequenceDetection'];
-        const currentBusStop = trip['stopTimes'].find((stop: any) => stop['stopSequence'] == currentStopSequenceNumber);
-        if (currentBusStop != null) {
-            // Find the current stop where the user is but only if it's after the current bus stop
-            const currentUserStop = trip['stopTimes'].find(
-                (stop: any) => stop['stopId'] == stopId && stop['stopSequence'] >= currentStopSequenceNumber
+        if (currentStopSequenceNumber != 1) {
+            // First, find the current stop where the bus is
+            // (Skip if the bus is at the first stop because it might be there waiting)
+            const currentBusStop = trip['stopTimes'].find(
+                (stop: any) => stop['stopSequence'] == currentStopSequenceNumber
             );
-            // Compute how many stops away the bus is
-            distanceInStops = currentUserStop['stopSequence'] - currentBusStop['stopSequence'];
+            if (currentBusStop != null) {
+                // Find the current stop where the user is but only if it's after the current bus stop
+                const currentUserStop = trip['stopTimes'].find(
+                    (stop: any) => stop['stopId'] == stopId && stop['stopSequence'] >= currentStopSequenceNumber
+                );
+                // Compute how many stops away the bus is
+                distanceInStops = currentUserStop['stopSequence'] - currentBusStop['stopSequence'];
+            }
         }
 
         let route = getRoute(trip['routeId']);
