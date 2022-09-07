@@ -81,11 +81,18 @@ onUnmounted(() => {
         </div>
 
         <div class="my-10 text-neutral-500 text-sm text-center">
-            <span class="inline-block rounded-full w-2 h-2 motion-safe:animate-ping bg-green-500 mr-2 mt-0.5"></span>
-            Dati in tempo reale
+            <div>
+                <span
+                    class="inline-block rounded-full w-2 h-2 motion-safe:animate-ping bg-green-500 mr-2 mt-0.5"
+                ></span>
+                Dati in tempo reale
+            </div>
 
-            <br />
-            <a href="mailto:ciao@traquantopassa.in" class="block mt-2 underline">ciao@traquantopassa.in</a>
+            <div class="mt-3">
+                <NuxtLink to="/">Altre fermate</NuxtLink>
+                -
+                <NuxtLink to="/info">Informazioni</NuxtLink>
+            </div>
         </div>
     </main>
 </template>

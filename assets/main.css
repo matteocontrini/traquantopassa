@@ -6,4 +6,12 @@
     body {
         @apply bg-neutral-900 text-white;
     }
+
+    a {
+        @apply underline;
+    }
+
+    p {
+        @apply mt-4;
+    }
 }

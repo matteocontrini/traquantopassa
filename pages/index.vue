@@ -13,5 +13,9 @@ const { data: stops } = await useFetch<StopResponse>('/api/stops');
                 <NuxtLink :to="`/${stop}`">/{{ stop }}</NuxtLink>
             </li>
         </ul>
+
+        <div class="my-10 text-neutral-500 text-sm text-center">
+            <NuxtLink to="/info">Informazioni</NuxtLink>
+        </div>
     </div>
 </template>
