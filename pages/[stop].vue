@@ -68,7 +68,6 @@ onUnmounted(() => {
                         minute: '2-digit',
                     })
                 }}
-                <span class="rounded-full w-2 h-2 animate-pulse bg-green-500 ml-2 mt-0.5"></span>
             </div>
 
             <div v-for="direction in data.directions" class="mt-10">
@@ -80,13 +79,16 @@ onUnmounted(() => {
             </div>
         </div>
 
-        <div class="my-10 text-neutral-500 text-sm text-center">
+        <div class="my-10 text-neutral-500 text-sm">
             <div>
+                Il pallino
                 <span
-                    class="inline-block rounded-full w-2 h-2 motion-safe:animate-ping bg-green-500 mr-2 mt-0.5"
+                    class="inline-block rounded-full w-2 h-2 motion-safe:animate-ping bg-green-500 mr-1 mx-0.5"
                 ></span>
-                Dati in tempo reale
+                indica che i dati sono in tempo reale.
             </div>
+
+            <div class="mt-2">I dati si aggiornano in automatico ogni 30 secondi.</div>
 
             <div class="mt-3">
                 <NuxtLink to="/">Altre fermate</NuxtLink>
