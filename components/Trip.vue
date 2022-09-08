@@ -10,9 +10,9 @@ defineProps<{ trip: Trip }>();
         >
             {{ trip.routeName }}
         </div>
-        <div class="flex-grow">
+        <div class="flex-grow whitespace-nowrap overflow-hidden">
             <span class="block leading-tight text-lg font-medium text-ellipsis overflow-hidden whitespace-nowrap">
-                {{ trip.destination }}<br />
+                {{ trip.destination }}
             </span>
             <span
                 v-if="trip.distanceInStops != null && trip.distanceInStops <= 5"
