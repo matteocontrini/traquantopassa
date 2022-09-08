@@ -88,7 +88,7 @@ onUnmounted(() => {
                 indica che i dati sono in tempo reale.
             </div>
 
-            <div class="mt-2">I dati si aggiornano in automatico ogni 30 secondi.</div>
+            <div class="mt-2">La pagina si aggiorna in automatico ogni 30 secondi.</div>
 
             <div class="mt-3">
                 <NuxtLink to="/">Altre fermate</NuxtLink>

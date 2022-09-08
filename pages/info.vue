@@ -12,7 +12,7 @@
 
         <p>
             Per contattare l'autore del sito:
-            <a href="mailto:ciao@traquantopassa.in" class="block mt-2 underline">ciao@traquantopassa.in</a>
+            <a href="mailto:ciao@traquantopassa.in">ciao@traquantopassa.in</a>
         </p>
 
         <p class="mt-8">
