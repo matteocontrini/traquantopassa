@@ -1,12 +1,14 @@
-import Stop from '~/server/Stop';
+import StopDefinition from '~/server/StopDefinition';
 
 export default class StopsGroup {
     name: string;
     lastUpdatedAt?: Date;
-    stops: Stop[];
+    stops: StopDefinition[];
+    coordinates: number[];
 
-    constructor(name: string, stops: Stop[]) {
+    constructor(name: string, stops: StopDefinition[], coordinates: number[]) {
         this.name = name;
         this.stops = stops;
+        this.coordinates = coordinates;
     }
 }

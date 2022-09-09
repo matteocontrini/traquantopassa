@@ -3,7 +3,7 @@ import { useRuntimeConfig } from '#imports';
 import stopsMapping from '~/server/stopsMapping';
 import { getRoute, loadRoutes } from '~/server/routes';
 import StopsGroup from '~/server/StopsGroup';
-import Stop from '~/server/Stop';
+import StopDefinition from '~/server/StopDefinition';
 
 const config = useRuntimeConfig();
 
@@ -92,7 +92,7 @@ export default defineEventHandler(async (event) => {
         const promises = stopsGroup.stops.map((stop) => getData(stop.stopId, stop.limit));
         const results = await Promise.all(promises);
         for (let i = 0; i < results.length; i++) {
-            const stop: Stop = stopsGroup.stops[i];
+            const stop: StopDefinition = stopsGroup.stops[i];
             let trips = parseTrips(stop.stopId, results[i]);
             trips.sort((a, b) => a.minutes - b.minutes);
             directions.push({

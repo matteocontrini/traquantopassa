@@ -1,94 +1,106 @@
 import StopsGroup from '~/server/StopsGroup';
-import Stop from '~/server/Stop';
+import StopDefinition from '~/server/StopDefinition';
 
 // prettier-ignore
 const stopsMapping: { [key: string]: StopsGroup } = {
     stazione: new StopsGroup(
         'Stazione FS (piazza Dante)',
         [
-            new Stop(247, '', 12)
-        ]
+            new StopDefinition(247, '', 12)
+        ],
+        [46.071938002445414, 11.119560915153672]
     ),
     valoni: new StopsGroup(
         'Povo (via Valoni)',
         [
-            new Stop(150, '» Trento'),
-            new Stop(149, '» Povo')
-        ]
+            new StopDefinition(150, '» Trento'),
+            new StopDefinition(149, '» Povo')
+        ],
+        [46.06574548186276, 11.146326675127716]
     ),
     manci: new StopsGroup(
         'Povo (piazza Manci)',
         [
-            new Stop(187, '» Trento'),
-            new Stop(186, '» Oltrecastello')
-        ]
+            new StopDefinition(187, '» Trento'),
+            new StopDefinition(186, '» Oltrecastello')
+        ],
+        [46.06595385343375, 11.154597879587431]
     ),
     mesiano: new StopsGroup(
         'Mesiano',
         [
-            new Stop(146, '» Trento'),
-            new Stop(145, '» Povo')
-        ]
+            new StopDefinition(146, '» Trento'),
+            new StopDefinition(145, '» Povo')
+        ],
+        [46.06719561754572, 11.13948725846796]
     ),
     mesianofs: new StopsGroup(
         'Mesiano FS',
         [
-            new Stop(148, '» Trento'),
-            new Stop(147, '» Povo')
-        ]
+            new StopDefinition(148, '» Trento'),
+            new StopDefinition(147, '» Povo')
+        ],
+        [46.06506891439082, 11.14173376796036]
     ),
     povo1: new StopsGroup(
         'Povo (Polo Scientifico)',
         [
-            new Stop(2833, '» Trento')
-        ]
+            new StopDefinition(2833, '» Trento')
+        ],
+        [46.06734081167142, 11.150381339337152]
     ),
     formigheta: new StopsGroup(
         'Martignano (via alla Formigheta)',
         [
-            new Stop(101, '» Cognola'),
-            new Stop(102, '» Trento')
-        ]
+            new StopDefinition(101, '» Cognola'),
+            new StopDefinition(102, '» Trento')
+        ],
+        [46.089125294659915, 11.133128827075872]
     ),
     smm: new StopsGroup(
         'Santa Maria Maggiore',
         [
-            new Stop(407, '» Sud'),
-            new Stop(406, '» Nord')
-        ]
+            new StopDefinition(407, '» Sud'),
+            new StopDefinition(406, '» Nord')
+        ],
+        [46.0681011850427, 11.118724710105349]
     ),
     travai: new StopsGroup(
         'Via Travai',
         [
-            new Stop(444, '', 7)
-        ]
+            new StopDefinition(444, '', 7)
+        ],
+        [46.06458968825606, 11.120921511011897]
     ),
     fiera: new StopsGroup(
         'Piazza Fiera',
         [
-            new Stop(165, '', 7)
-        ]
+            new StopDefinition(165, '', 7)
+        ],
+        [46.06521475669664, 11.123203816817682]
     ),
     portanuova: new StopsGroup(
         'Via S. Francesco - Porta Nuova',
         [
-            new Stop(166, '» Nord'),
-            new Stop(410, '» Sud')
-
-        ]
+            new StopDefinition(166, '» Nord'),
+            new StopDefinition(410, '» Sud')
+        ],
+        [46.06685966076164, 11.126347507304343]
     ),
     portaquila: new StopsGroup(
         'Piazza Venezia - Port\'Aquila',
         [
-            new Stop(2927, '» Povo')
-        ]
+            new StopDefinition(2927, '» Povo')
+        ],
+        [46.06953418561028, 11.12782013439054]
     ),
     corallo: new StopsGroup(
         'Via Venezia - Corallo',
         [
-            new Stop(452, '» Povo'),
-            new Stop(453, '» Trento')
-        ]
+            new StopDefinition(452, '» Povo'),
+            new StopDefinition(453, '» Trento')
+        ],
+        [46.06855693542798, 11.136371283967751]
     )
 };
 

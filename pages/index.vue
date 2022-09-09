@@ -1,7 +1,48 @@
 <script setup lang="ts">
-import { useFetch } from '#imports';
+import { computed, ref, useFetch } from '#imports';
 
-const { data: stops } = await useFetch<StopResponse>('/api/stops');
+const stops = ref<StopWithDistance[]>([]);
+const showSortButton = ref(false);
+const sortedStops = computed(() => stops.value.sort((a, b) => a.distance - b.distance));
+
+async function loadStops() {
+    const res = await useFetch<StopWithDistance[]>('/api/stops');
+    if (res.data.value) {
+        stops.value = res.data.value;
+    }
+}
+
+async function checkGeo() {
+    let permission = await navigator.permissions.query({ name: 'geolocation' });
+    if (permission.state === 'granted') {
+        sortByPosition();
+    } else if (permission.state === 'prompt') {
+        showSortButton.value = true;
+    }
+}
+
+function sortByPosition() {
+    navigator.geolocation.getCurrentPosition(
+        (pos) => {
+            showSortButton.value = false;
+            let coords = pos.coords;
+            for (let stop of stops.value) {
+                stop.distance = Math.sqrt(
+                    Math.pow(stop.coordinates[0] - coords.latitude, 2) +
+                        Math.pow(stop.coordinates[1] - coords.longitude, 2)
+                );
+            }
+        },
+        (err) => {
+            if (err.code != err.PERMISSION_DENIED) {
+                alert("Si è verificato un errore durante l'ottenimento della posizione");
+            }
+        }
+    );
+}
+
+await loadStops();
+await checkGeo();
 </script>
 
 <template>
@@ -12,8 +53,12 @@ const { data: stops } = await useFetch<StopResponse>('/api/stops');
         </header>
 
         <main>
+            <a v-if="showSortButton" @click.prevent="sortByPosition" class="block cursor-pointer text-center mt-8">
+                Ordina per vicinanza
+            </a>
+
             <ul class="mt-10 text-center text-lg">
-                <li v-for="stop in stops" class="mt-4">
+                <li v-for="stop in sortedStops" class="mt-4">
                     <NuxtLink :to="`/${stop.slug}`" class="block no-underline">
                         {{ stop.name }}
                     </NuxtLink>

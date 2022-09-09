@@ -11,6 +11,11 @@
         </p>
 
         <p>
+            La posizione geografica opzionalmente raccolta sulla homepage non viene mai inviata al server. È quindi
+            utilizzata esclusivamente sul tuo dispositivo per calcolare la distanza dalle fermate.
+        </p>
+
+        <p>
             Per contattare l'autore del sito:
             <a href="mailto:ciao@traquantopassa.in">ciao@traquantopassa.in</a>
         </p>

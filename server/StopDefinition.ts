@@ -1,4 +1,4 @@
-export default class Stop {
+export default class StopDefinition {
     stopId: number;
     name: string;
     limit: number;
