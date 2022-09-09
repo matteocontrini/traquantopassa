@@ -1,5 +1,5 @@
 <template>
-    <div class="max-w-[600px] mx-auto mt-10 px-5">
+    <main>
         <p>
             I dati mostrati sul sito sono forniti da Trentino Trasporti. Se perdi l'autobus non è colpa mia. Se mancano
             i dati in tempo reale non è colpa mia.
@@ -18,5 +18,5 @@
         <p class="mt-8">
             <NuxtLink to="/">Vai alla lista delle fermate</NuxtLink>
         </p>
-    </div>
+    </main>
 </template>

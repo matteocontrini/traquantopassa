@@ -3,7 +3,7 @@ import '@fontsource/inter/variable.css';
 </script>
 
 <template>
-    <div>
+    <div class="max-w-[600px] mx-auto mt-10 px-5">
         <Head>
             <Title>Tra quanto passa in...</Title>
             <Meta name="theme-color" content="rgb(23, 23, 23)" />

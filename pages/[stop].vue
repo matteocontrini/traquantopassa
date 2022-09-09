@@ -55,31 +55,33 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <main class="max-w-[600px] mx-auto mt-10 px-5">
+    <div>
         <div v-if="error" class="text-center">Errore</div>
         <div v-else-if="isLoading" class="text-center">Caricamento...</div>
-        <div v-else-if="data">
-            <h1 class="font-semibold text-center text-4xl">{{ data.stopName }}</h1>
-            <div class="mt-1 text-sm flex justify-center items-center">
-                aggiornato alle
-                {{
-                    new Date(data.lastUpdatedAt).toLocaleTimeString([], {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                    })
-                }}
-            </div>
+        <template v-else-if="data">
+            <header>
+                <h1 class="font-semibold text-center text-4xl">{{ data.stopName }}</h1>
+                <div class="mt-1 text-sm flex justify-center items-center">
+                    aggiornato alle
+                    {{
+                        new Date(data.lastUpdatedAt).toLocaleTimeString([], {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                        })
+                    }}
+                </div>
+            </header>
 
-            <div v-for="direction in data.directions" class="mt-10">
+            <main v-for="direction in data.directions" class="mt-10">
                 <div class="w-fit mx-auto text-lg uppercase font-medium mb-4 text-center">
                     {{ direction.name }}
                 </div>
                 <Trip v-for="trip in direction.trips" :trip="trip" />
                 <div v-if="direction.trips.length === 0" class="text-center">Nessun autobus in arrivo</div>
-            </div>
-        </div>
+            </main>
+        </template>
 
-        <div class="my-10 text-neutral-500 text-sm">
+        <footer class="my-10 text-neutral-500 text-sm">
             <div>
                 Il pallino
                 <span
@@ -95,6 +97,6 @@ onUnmounted(() => {
                 -
                 <NuxtLink to="/info">Informazioni</NuxtLink>
             </div>
-        </div>
-    </main>
+        </footer>
+    </div>
 </template>
