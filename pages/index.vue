@@ -53,9 +53,14 @@ await checkGeo();
         </header>
 
         <main>
-            <a v-if="showSortButton" @click.prevent="sortByPosition" class="block cursor-pointer text-center mt-8">
-                Ordina per vicinanza
-            </a>
+            <div class="text-center mt-8" v-if="showSortButton">
+                <button
+                    @click="sortByPosition"
+                    class="cursor-pointer bg-neutral-800 hover:bg-neutral-700 px-3 py-1 rounded-md"
+                >
+                    Ordina per vicinanza
+                </button>
+            </div>
 
             <ul class="mt-10 text-center text-lg">
                 <li v-for="stop in sortedStops" class="mt-4">
