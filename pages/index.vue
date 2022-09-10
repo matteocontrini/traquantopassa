@@ -40,7 +40,9 @@ function sortByPosition() {
             }
         },
         (err) => {
-            if (err.code != err.PERMISSION_DENIED) {
+            if (err.code == err.PERMISSION_DENIED) {
+                alert('La richiesta di accesso alla posizione è stata negata');
+            } else {
                 alert("Si è verificato un errore durante l'ottenimento della posizione");
             }
         }
