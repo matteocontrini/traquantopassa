@@ -13,6 +13,12 @@ async function loadStops() {
 }
 
 async function checkGeo() {
+    // Safari doesn't support permissions API, so we can't check if the permission was granted
+    if (!navigator.permissions) {
+        showSortButton.value = true;
+        return;
+    }
+
     let permission = await navigator.permissions.query({ name: 'geolocation' });
     if (permission.state === 'granted') {
         sortByPosition();
