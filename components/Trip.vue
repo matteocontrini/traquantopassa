@@ -14,17 +14,19 @@ defineProps<{ trip: Trip }>();
             <span class="block leading-tight text-lg font-medium text-ellipsis overflow-hidden whitespace-nowrap">
                 {{ trip.destination }}
             </span>
-            <span
-                v-if="trip.distanceInStops != null && trip.distanceInStops <= 5"
-                class="block leading-none text-xs text-neutral-500"
-            >
-                <template v-if="trip.distanceInStops === 0">alla tua fermata</template>
-                <template v-else-if="trip.distanceInStops === 1">a {{ trip.distanceInStops }} fermata da te</template>
-                <template v-else>a {{ trip.distanceInStops }} fermate da te</template>
+            <span class="block leading-none text-xs text-neutral-500">
+                <template v-if="trip.distanceInStops != null && trip.distanceInStops <= 5">
+                    <template v-if="trip.distanceInStops === 0"> alla tua fermata</template>
+                    <template v-else-if="trip.distanceInStops === 1">
+                        a {{ trip.distanceInStops }} fermata da te
+                    </template>
+                    <template v-else> a {{ trip.distanceInStops }} fermate da te </template>
+                    <template v-if="trip.delay != null"> • </template>
+                </template>
                 <template v-if="trip.delay != null">
-                    <template v-if="trip.delay === 0"> • in orario</template>
-                    <template v-else-if="trip.delay > 0"> • in ritardo di {{ trip.delay }} min</template>
-                    <template v-else> • in anticipo di {{ -trip.delay }} min</template>
+                    <template v-if="trip.delay === 0">in orario</template>
+                    <template v-else-if="trip.delay > 0">in ritardo di {{ trip.delay }} min</template>
+                    <template v-else>in anticipo di {{ -trip.delay }} min</template>
                 </template>
             </span>
         </div>
