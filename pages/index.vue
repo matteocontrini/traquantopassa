@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, useFetch } from '#imports';
+import { computed, ref, useFetch, useHead } from '#imports';
 
 const stops = ref<StopWithDistance[]>([]);
 const showSortButton = ref(false);
@@ -49,6 +49,13 @@ function sortByPosition() {
     );
 }
 
+function updateHead() {
+    useHead({
+        title: 'Tra quanto passa',
+    });
+}
+
+updateHead();
 await loadStops();
 await checkGeo();
 </script>

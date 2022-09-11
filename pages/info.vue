@@ -1,3 +1,11 @@
+<script setup lang="ts">
+import { useHead } from '#imports';
+
+useHead({
+    title: 'Tra quanto passa',
+});
+</script>
+
 <template>
     <main>
         <p>
