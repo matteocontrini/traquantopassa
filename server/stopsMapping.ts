@@ -18,6 +18,20 @@ const stopsMapping: { [key: string]: StopsGroup } = {
         ],
         [46.06574548186276, 11.146326675127716]
     ),
+    scienze: new StopsGroup(
+        'Povo (Fac. Scienze)',
+        [
+            new StopDefinition(189, '» Trento')
+        ],
+        [46.06330983749043, 11.150180452357045]
+    ),
+    povo1: new StopsGroup(
+        'Povo (Polo Scientifico)',
+        [
+            new StopDefinition(2833, '» Trento')
+        ],
+        [46.06734081167142, 11.150381339337152]
+    ),
     manci: new StopsGroup(
         'Povo (piazza Manci)',
         [
@@ -25,6 +39,13 @@ const stopsMapping: { [key: string]: StopsGroup } = {
             new StopDefinition(186, '» Oltrecastello')
         ],
         [46.06595385343375, 11.154597879587431]
+    ),
+    pante: new StopsGroup(
+        'Povo (Pantè)',
+        [
+            new StopDefinition(2820, '» Trento')
+        ],
+        [46.063935518450585, 11.150593092316743]
     ),
     mesiano: new StopsGroup(
         'Mesiano',
@@ -41,21 +62,6 @@ const stopsMapping: { [key: string]: StopsGroup } = {
             new StopDefinition(147, '» Povo')
         ],
         [46.06506891439082, 11.14173376796036]
-    ),
-    povo1: new StopsGroup(
-        'Povo (Polo Scientifico)',
-        [
-            new StopDefinition(2833, '» Trento')
-        ],
-        [46.06734081167142, 11.150381339337152]
-    ),
-    formigheta: new StopsGroup(
-        'Martignano (via alla Formigheta)',
-        [
-            new StopDefinition(101, '» Cognola'),
-            new StopDefinition(102, '» Trento')
-        ],
-        [46.089125294659915, 11.133128827075872]
     ),
     smm: new StopsGroup(
         'Santa Maria Maggiore',
@@ -101,6 +107,14 @@ const stopsMapping: { [key: string]: StopsGroup } = {
             new StopDefinition(453, '» Trento')
         ],
         [46.06855693542798, 11.136371283967751]
+    ),
+    formigheta: new StopsGroup(
+        'Martignano (via alla Formigheta)',
+        [
+            new StopDefinition(101, '» Cognola'),
+            new StopDefinition(102, '» Trento')
+        ],
+        [46.089125294659915, 11.133128827075872]
     )
 };
 
