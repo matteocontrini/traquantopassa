@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { computed, ref, useFetch, useHead } from '#imports';
 
+/* State */
 const stops = ref<StopWithDistance[]>([]);
 const showSortButton = ref(false);
 const sortedStops = computed(() => stops.value.sort((a, b) => a.distance - b.distance));
 
+/* Methods */
 async function loadStops() {
     const res = await useFetch<StopWithDistance[]>('/api/stops');
     if (res.data.value) {
@@ -41,7 +43,9 @@ function sortByPosition() {
         },
         (err) => {
             if (err.code == err.PERMISSION_DENIED) {
-                alert('La richiesta di accesso alla posizione è stata negata');
+                alert(
+                    'La richiesta di accesso alla posizione è stata negata. Verifica le autorizzazioni al sito nelle impostazioni del tuo browser.'
+                );
             } else {
                 alert("Si è verificato un errore durante l'ottenimento della posizione");
             }
@@ -55,6 +59,7 @@ function updateHead() {
     });
 }
 
+/* On created */
 updateHead();
 await loadStops();
 await checkGeo();

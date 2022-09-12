@@ -19,7 +19,7 @@ useHead({
         </p>
 
         <p>
-            La posizione geografica opzionalmente raccolta sulla homepage non viene mai inviata al server. È quindi
+            La posizione geografica opzionalmente raccolta sulla homepage non viene mai inviata al server. Viene
             utilizzata esclusivamente sul tuo dispositivo per calcolare la distanza dalle fermate.
         </p>
 
