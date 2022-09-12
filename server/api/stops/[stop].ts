@@ -38,9 +38,9 @@ function parseTrips(stopId: number, data: any): Trip[] {
         // *** Compute how many stops away the bus is
         let distanceInStops = null;
         const currentStopSequenceNumber = trip['lastSequenceDetection'];
-        // Skip calculation if the sequence number is 0 (no data) or...
-        // if the bus is at/nearby the first stop (it might be there waiting to depart, like in Stazione FS)
-        if (currentStopSequenceNumber > 1) {
+
+        // If the bus is detected to be already at the first stop
+        if (currentStopSequenceNumber > 0) {
             // Find the stop where the bus is
             const currentBusStop = trip['stopTimes'].find(
                 (stop: any) => stop['stopSequence'] == currentStopSequenceNumber
@@ -51,10 +51,16 @@ function parseTrips(stopId: number, data: any): Trip[] {
             );
             // Note: the currentBusStop check shouldn't be required, but you never know
             // The currentUserStop check is required because the bus might be already beyond the user stop
+            // TODO: tell the user that the bus is already gone or something like that
             if (currentBusStop != null && currentUserStop != null) {
                 // Compute how many stops away the bus is
                 distanceInStops = currentUserStop['stopSequence'] - currentBusStop['stopSequence'];
             }
+        }
+        // If the bus hasn't still reached the first stop, but it's sending data,
+        // it means it's about to depart
+        else if (currentStopSequenceNumber == 0 && delay != null) {
+            distanceInStops = -1;
         }
 
         let route = getRoute(trip['routeId']);
