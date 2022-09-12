@@ -56,7 +56,7 @@ onUnmounted(() => {
 
 <template>
     <div>
-        <div v-if="error" class="text-center">Errore</div>
+        <div v-if="error" class="text-center">Si è verificato un errore.</div>
         <div v-else-if="isLoading" class="text-center">Caricamento...</div>
         <template v-else-if="data">
             <header>

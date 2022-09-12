@@ -63,12 +63,12 @@ await checkGeo();
 <template>
     <div>
         <header>
-            <h1 class="font-semibold text-center text-4xl">Tra quanto passa l'autobus in...</h1>
-            <div class="mt-2 text-center text-neutral-500 text-lg">Trento edition</div>
+            <h1 class="font-semibold text-4xl">Tra quanto passa l'autobus in...</h1>
+            <div class="mt-2 text-neutral-500 text-lg">Trento edition</div>
         </header>
 
         <main>
-            <div class="text-center mt-8" v-if="showSortButton">
+            <div class="mt-8" v-if="showSortButton">
                 <button
                     @click="sortByPosition"
                     class="cursor-pointer bg-neutral-800 hover:bg-neutral-700 px-3 py-1 rounded-md"
@@ -77,7 +77,7 @@ await checkGeo();
                 </button>
             </div>
 
-            <ul class="mt-10 text-center text-lg">
+            <ul class="mt-10 text-lg">
                 <li v-for="stop in sortedStops" class="mt-4">
                     <NuxtLink :to="`/${stop.slug}`" class="block no-underline">
                         {{ stop.name }}
