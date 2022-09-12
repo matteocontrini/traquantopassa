@@ -1,13 +1,11 @@
 import { createError, defineEventHandler } from 'h3';
 import { useRuntimeConfig } from '#imports';
 import stopsMapping from '~/server/stopsMapping';
-import { getRoute, loadRoutes } from '~/server/routes';
+import { getRoute } from '~/server/routes';
 import StopsGroup from '~/server/StopsGroup';
 import StopDefinition from '~/server/StopDefinition';
 
 const config = useRuntimeConfig();
-
-loadRoutes();
 
 async function getData(stopId: number, limit: number = 5) {
     const url = `${config.apiBaseUrl}/gtlservice/trips_new?limit=${limit}&stopId=${stopId}&type=U`;
