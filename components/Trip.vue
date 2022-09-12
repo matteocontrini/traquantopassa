@@ -15,7 +15,7 @@ defineProps<{ trip: Trip }>();
                 {{ trip.destination }}
             </span>
             <span class="block leading-none text-xs text-neutral-500">
-                <template v-if="trip.distanceInStops != null && trip.distanceInStops <= 5">
+                <template v-if="trip.distanceInStops != null">
                     <template v-if="trip.distanceInStops === 0"> alla tua fermata</template>
                     <template v-else-if="trip.distanceInStops === 1">
                         a {{ trip.distanceInStops }} fermata da te
