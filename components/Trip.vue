@@ -16,6 +16,7 @@ defineProps<{ trip: Trip }>();
             </span>
             <span class="block leading-none text-xs text-neutral-500">
                 <template v-if="trip.distanceInStops != null">
+                    <template v-if="trip.distanceInStops === -2"> oltre la tua fermata</template>
                     <template v-if="trip.distanceInStops === -1"> non ancora partito</template>
                     <template v-else-if="trip.distanceInStops === 0"> alla tua fermata</template>
                     <template v-else-if="trip.distanceInStops === 1">

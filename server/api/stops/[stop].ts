@@ -49,13 +49,12 @@ function parseTrips(stopId: number, data: any): Trip[] {
             const currentUserStop = trip['stopTimes'].find(
                 (stop: any) => stop['stopId'] == stopId && stop['stopSequence'] >= currentStopSequenceNumber
             );
-            // Note: the currentBusStop check shouldn't be required, but you never know
-            // The currentUserStop check is required because the bus might be already beyond the user stop
-            // TODO: tell the user that the bus is already gone or something like that
-            if (currentBusStop != null && currentUserStop != null) {
-                // Compute how many stops away the bus is
-                distanceInStops = currentUserStop['stopSequence'] - currentBusStop['stopSequence'];
+            // If it's null, it means the bus is already beyond the user stop
+            if (currentUserStop == null) {
+                distanceInStops = -2;
             }
+            // Compute how many stops away the bus is
+            distanceInStops = currentUserStop['stopSequence'] - currentBusStop['stopSequence'];
         }
         // If the bus hasn't still reached the first stop, but it's sending data,
         // it means it's about to depart
