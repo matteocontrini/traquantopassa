@@ -48,7 +48,7 @@ const stopsMapping: { [key: string]: StopsGroup } = {
         [46.063935518450585, 11.150593092316743]
     ),
     mesiano: new StopsGroup(
-        'Mesiano',
+        'Mesiano (Fac. Ingegneria)',
         [
             new StopDefinition(146, '» Trento'),
             new StopDefinition(145, '» Povo')
