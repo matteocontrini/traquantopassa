@@ -1,5 +1,19 @@
 <script setup lang="ts">
 defineProps<{ trip: Trip }>();
+
+function formatMinutes(minutes: number) {
+    if (minutes < 60) {
+        return `${minutes}'`;
+    } else {
+        let hours = Math.floor(minutes / 60);
+        let minutesLeft = minutes % 60;
+        if (minutesLeft === 0) {
+            return `${hours}h`;
+        } else {
+            return `${hours}h ${minutesLeft}m`;
+        }
+    }
+}
 </script>
 
 <template>
@@ -36,7 +50,7 @@ defineProps<{ trip: Trip }>();
             class="text-right text-xl font-semibold"
             :class="{ 'motion-safe:animate-pulse': trip.minutes === 0, 'text-red-600': trip.minutes === 0 }"
         >
-            {{ trip.minutes }}'
+            {{ formatMinutes(trip.minutes) }}
         </div>
         <span
             class="rounded-full w-2 h-2 motion-safe:animate-ping"
