@@ -21,7 +21,8 @@ const stopsMapping: { [key: string]: StopsGroup } = {
     scienze: new StopsGroup(
         'Povo (Fac. Scienze)',
         [
-            new StopDefinition(189, '» Trento')
+            new StopDefinition(189, '» Trento'),
+            new StopDefinition(188, '» Villazzano')
         ],
         [46.06330983749043, 11.150180452357045]
     ),
