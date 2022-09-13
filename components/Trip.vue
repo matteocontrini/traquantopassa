@@ -48,13 +48,10 @@ function formatMinutes(minutes: number) {
         </div>
         <div
             class="text-right text-xl font-semibold"
-            :class="{ 'motion-safe:animate-pulse': trip.minutes === 0, 'text-red-600': trip.minutes === 0 }"
+            :class="{ 'animate-pulse': trip.minutes === 0, 'text-red-600': trip.minutes === 0 }"
         >
             {{ formatMinutes(trip.minutes) }}
         </div>
-        <span
-            class="rounded-full w-2 h-2 motion-safe:animate-ping"
-            :class="{ 'bg-green-500': trip.delay != null }"
-        ></span>
+        <span class="rounded-full w-2 h-2 animate-ping" :class="{ 'bg-green-500': trip.delay != null }"></span>
     </div>
 </template>
