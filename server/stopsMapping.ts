@@ -44,7 +44,8 @@ const stopsMapping: { [key: string]: StopsGroup } = {
     pante: new StopsGroup(
         'Povo (Pantè)',
         [
-            new StopDefinition(2820, '» Trento')
+            new StopDefinition(2820, '» Trento'),
+            new StopDefinition(2490, '» Oltrecastello')
         ],
         [46.063935518450585, 11.150593092316743]
     ),
