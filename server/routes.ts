@@ -21,7 +21,7 @@ async function getData() {
 }
 
 async function loadRoutes() {
-    if (routes) return;
+    console.log('Loading routes...');
     const data = await getData();
     routes = {};
     for (const route of data) {
