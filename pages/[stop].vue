@@ -7,7 +7,7 @@ let stopSlug: string;
 const isLoading = ref(true);
 const isNotFound = ref(false);
 let data = ref<StopResponse | null>(null);
-let error = ref<boolean | null>(null);
+let error = ref<boolean>(false);
 let refreshData: Function;
 let timer: NodeJS.Timer;
 
