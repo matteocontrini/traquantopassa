@@ -1,63 +1,110 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, useHead, useLazyFetch, useRoute, watchEffect } from '#imports';
+import { onMounted, onUnmounted, ref, useHead, useLazyFetch, useRoute, watch } from '#imports';
 import Trip from '@/components/Trip.vue';
-import { Ref } from '@vue/reactivity';
 
-const route = useRoute();
-const stop = route.params.stop;
-
+/* State */
+let stopSlug: string;
 const isLoading = ref(true);
+const isNotFound = ref(false);
+let data = ref<StopResponse | null>(null);
+let error = ref<boolean | null>(null);
+let refreshData: Function;
+let timer: NodeJS.Timer;
 
-onMounted(() => {
-    isLoading.value = true;
-});
+/* Methods */
+function readStopSlug() {
+    const route = useRoute();
+    stopSlug = route.params.stop as string;
+}
 
-let { data, refresh, error }: { data: Ref<StopResponse | null>; refresh: Function; error: Ref<true | Error | null> } =
-    useLazyFetch<StopResponse>(() => `/api/stops/${stop}`, {
+async function loadStop() {
+    let response = useLazyFetch<StopResponse>(() => `/api/stops/${stopSlug}`, {
         initialCache: false,
     });
 
-watchEffect(() => {
-    if (data.value) {
-        isLoading.value = false;
-        useHead({
-            title: data.value.stopName,
-        });
-    }
-});
+    refreshData = response.refresh;
+
+    watch(response.error, () => {
+        if (response.error.value) {
+            isLoading.value = false;
+            error.value = true;
+            isNotFound.value = false;
+
+            if (response.error.value instanceof Error) {
+                let err: any = response.error.value;
+                if (err.response && err.response.status === 404) {
+                    isNotFound.value = true;
+                }
+            }
+        } else {
+            isLoading.value = false;
+            error.value = false;
+            isNotFound.value = false;
+        }
+    });
+
+    watch(response.data, () => {
+        data.value = response.data.value;
+
+        if (data.value) {
+            useHead({
+                title: data.value.stopName,
+            });
+
+            // Initial loading finished
+            if (isLoading.value) {
+                isLoading.value = false;
+                // Start refresh timer
+                timer = startRefreshTimer();
+            }
+        }
+    });
+}
 
 async function requestRefresh() {
     console.log('Refreshing...');
-    await refresh();
+    await refreshData();
 }
 
-function startTimer(milliseconds = 30 * 1000) {
+function startRefreshTimer(milliseconds = 30 * 1000) {
     return setInterval(requestRefresh, milliseconds);
 }
-
-let timer = startTimer();
-
-document.addEventListener('visibilitychange', onVisibilityChange);
 
 async function onVisibilityChange() {
     if (document.visibilityState == 'hidden') {
         clearInterval(timer);
-    } else {
-        timer = startTimer();
+    } else if (!isNotFound.value) {
+        timer = startRefreshTimer();
         await requestRefresh();
     }
 }
+
+/* Lifecycle */
+onMounted(() => {
+    document.addEventListener('visibilitychange', onVisibilityChange);
+});
 
 onUnmounted(() => {
     clearInterval(timer);
     document.removeEventListener('visibilitychange', onVisibilityChange);
 });
+
+readStopSlug();
+await loadStop();
 </script>
 
 <template>
     <div>
-        <div v-if="error" class="text-center">Si è verificato un errore.</div>
-        <div v-else-if="isLoading" class="text-center">Caricamento...</div>
+        <div v-if="isLoading" class="text-center">Caricamento...</div>
+        <div v-else-if="error" class="text-center">
+            <template v-if="isNotFound">
+                <p>Fermata non trovata</p>
+                <p>
+                    <NuxtLink to="/">Vai alla lista delle fermate</NuxtLink>
+                </p>
+            </template>
+            <template v-else> Si è verificato un errore.</template>
+        </div>
         <template v-else-if="data">
             <header>
                 <h1 class="font-semibold text-center text-4xl">{{ data.stopName }}</h1>
@@ -79,24 +126,24 @@ onUnmounted(() => {
                 <Trip v-for="trip in direction.trips" :trip="trip" />
                 <div v-if="direction.trips.length === 0" class="text-center">Nessun autobus previsto per oggi</div>
             </main>
+
+            <footer class="my-10 text-neutral-500 text-sm">
+                <div>
+                    Il pallino
+                    <span
+                        class="inline-block rounded-full w-2 h-2 motion-safe:animate-ping bg-green-500 mr-1 mx-0.5"
+                    ></span>
+                    indica che i dati sono in tempo reale.
+                </div>
+
+                <div class="mt-2">La pagina si aggiorna in automatico ogni 30 secondi.</div>
+
+                <div class="mt-3">
+                    <NuxtLink to="/">Altre fermate</NuxtLink>
+                    -
+                    <NuxtLink to="/info">Informazioni</NuxtLink>
+                </div>
+            </footer>
         </template>
-
-        <footer class="my-10 text-neutral-500 text-sm">
-            <div>
-                Il pallino
-                <span
-                    class="inline-block rounded-full w-2 h-2 motion-safe:animate-ping bg-green-500 mr-1 mx-0.5"
-                ></span>
-                indica che i dati sono in tempo reale.
-            </div>
-
-            <div class="mt-2">La pagina si aggiorna in automatico ogni 30 secondi.</div>
-
-            <div class="mt-3">
-                <NuxtLink to="/">Altre fermate</NuxtLink>
-                -
-                <NuxtLink to="/info">Informazioni</NuxtLink>
-            </div>
-        </footer>
     </div>
 </template>
