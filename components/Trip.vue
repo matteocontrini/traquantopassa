@@ -47,7 +47,7 @@ function formatMinutes(minutes: number) {
             </span>
         </div>
         <div
-            class="text-right text-xl font-semibold"
+            class="text-right text-xl font-semibold whitespace-nowrap"
             :class="{ 'animate-pulse': trip.minutes === 0, 'text-red-600': trip.minutes === 0 }"
         >
             {{ formatMinutes(trip.minutes) }}
