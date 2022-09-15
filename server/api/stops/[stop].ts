@@ -5,7 +5,6 @@ import StopsGroup from '~/server/StopsGroup';
 import StopDefinition from '~/server/StopDefinition';
 import axios, { AxiosResponse } from 'axios';
 import { apiAuthHeader, apiBaseUrl } from '~/server/config';
-import axiosRetry from 'axios-retry';
 
 const client = axios.create({
     baseURL: apiBaseUrl,
@@ -13,10 +12,6 @@ const client = axios.create({
     headers: {
         Authorization: apiAuthHeader,
     },
-});
-
-axiosRetry(client, {
-    retries: 1,
 });
 
 async function getData(stopId: number, limit: number = 5) {
