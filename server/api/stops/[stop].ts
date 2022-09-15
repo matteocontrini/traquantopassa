@@ -15,6 +15,16 @@ async function getData(stopId: number, limit: number = 5) {
             Authorization: 'Basic ' + Buffer.from(`${config.apiUsername}:${config.apiPassword}`).toString('base64'),
         },
     });
+
+    if (resp.status != 200) {
+        console.log(`Error while fetching ${url}: ${resp.status} ${resp.statusText}`);
+        throw createError({
+            statusCode: 503,
+            name: 'Service Unavailable',
+            message: 'The service is temporarily unavailable',
+        });
+    }
+
     return resp.json();
 }
 
