@@ -2,12 +2,17 @@
 import { onMounted, onUnmounted, ref, useHead, useLazyFetch, useRoute, watch } from '#imports';
 import Trip from '@/components/Trip.vue';
 
+enum ResponseError {
+    NotFound,
+    NotMyFault,
+    Unknown,
+}
+
 /* State */
 let stopSlug: string;
 const isLoading = ref(true);
-const isNotFound = ref(false);
 let data = ref<StopResponse | null>(null);
-let error = ref<boolean>(false);
+let error = ref<ResponseError | null>(null);
 let refreshData: Function;
 let timer: NodeJS.Timer;
 
@@ -27,19 +32,21 @@ async function loadStop() {
     watch(response.error, () => {
         if (response.error.value) {
             isLoading.value = false;
-            error.value = true;
-            isNotFound.value = false;
+            error.value = ResponseError.Unknown;
 
             if (response.error.value instanceof Error) {
                 let err: any = response.error.value;
-                if (err.response && err.response.status === 404) {
-                    isNotFound.value = true;
+                if (err.response) {
+                    if (err.response.status === 404) {
+                        error.value = ResponseError.NotFound;
+                    } else if (err.response.status === 503) {
+                        error.value = ResponseError.NotMyFault;
+                    }
                 }
             }
         } else {
             isLoading.value = false;
-            error.value = false;
-            isNotFound.value = false;
+            error.value = null;
         }
     });
 
@@ -73,7 +80,7 @@ function startRefreshTimer(milliseconds = 30 * 1000) {
 async function onVisibilityChange() {
     if (document.visibilityState == 'hidden') {
         clearInterval(timer);
-    } else if (!isNotFound.value) {
+    } else if (error.value != ResponseError.NotFound) {
         timer = startRefreshTimer();
         await requestRefresh();
     }
@@ -97,13 +104,23 @@ await loadStop();
     <div>
         <div v-if="isLoading" class="text-center">Caricamento...</div>
         <div v-else-if="error" class="text-center">
-            <template v-if="isNotFound">
+            <template v-if="error === ResponseError.NotFound">
                 <p>Fermata non trovata</p>
-                <p>
-                    <NuxtLink to="/">Vai alla lista delle fermate</NuxtLink>
-                </p>
             </template>
-            <template v-else> Si è verificato un errore.</template>
+            <template v-if="error === ResponseError.NotMyFault">
+                <p>I dati di Trentino Trasporti non sono al momento disponibili 😕</p>
+                <p>Prova a ricaricare la pagina.</p>
+            </template>
+            <template v-else>
+                <p>Si è verificato un errore 😕</p>
+                <p>Prova a ricaricare la pagina.</p>
+            </template>
+
+            <div class="my-10 text-neutral-500 text-sm text-center">
+                <NuxtLink to="/">Altre fermate</NuxtLink>
+                -
+                <NuxtLink to="/info">Informazioni</NuxtLink>
+            </div>
         </div>
         <template v-else-if="data">
             <header>
