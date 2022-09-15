@@ -1,6 +1,6 @@
-import { useRuntimeConfig } from '#imports';
-
-const config = useRuntimeConfig();
+import axios from 'axios';
+import { apiAuthHeader, apiBaseUrl } from '~/server/config';
+import axiosRetry from 'axios-retry';
 
 interface Route {
     color: string;
@@ -9,15 +9,26 @@ interface Route {
 
 let routes: { [key: string]: Route };
 
+const client = axios.create({
+    baseURL: apiBaseUrl,
+    timeout: 10000,
+    headers: {
+        Authorization: apiAuthHeader,
+    },
+});
+
+axiosRetry(client, {
+    retries: 5,
+    retryDelay: axiosRetry.exponentialDelay,
+});
+
 async function getData() {
-    const url = `${config.apiBaseUrl}/gtlservice/routes?areas=23`;
-    console.log(`Requesting ${url}`);
-    const resp = await fetch(url, {
-        headers: {
-            Authorization: 'Basic ' + Buffer.from(`${config.apiUsername}:${config.apiPassword}`).toString('base64'),
-        },
-    });
-    return resp.json();
+    const path = '/gtlservice/routes?areas=23';
+    console.log(`Requesting ${path}`);
+    let start = Date.now();
+    const resp = await client.get(path);
+    console.log(`Loaded routes in ${Date.now() - start} ms`);
+    return resp.data;
 }
 
 async function loadRoutes() {

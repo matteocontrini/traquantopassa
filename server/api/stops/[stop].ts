@@ -1,31 +1,53 @@
 import { createError, defineEventHandler } from 'h3';
-import { useRuntimeConfig } from '#imports';
 import stopsMapping from '~/server/stopsMapping';
 import { getRoute } from '~/server/routes';
 import StopsGroup from '~/server/StopsGroup';
 import StopDefinition from '~/server/StopDefinition';
+import axios, { AxiosResponse } from 'axios';
+import { apiAuthHeader, apiBaseUrl } from '~/server/config';
+import axiosRetry from 'axios-retry';
 
-const config = useRuntimeConfig();
+const client = axios.create({
+    baseURL: apiBaseUrl,
+    timeout: 5000,
+    headers: {
+        Authorization: apiAuthHeader,
+    },
+});
+
+axiosRetry(client, {
+    retries: 1,
+});
 
 async function getData(stopId: number, limit: number = 5) {
-    const url = `${config.apiBaseUrl}/gtlservice/trips_new?limit=${limit}&stopId=${stopId}&type=U`;
-    console.log(`Requesting ${url}`);
-    const resp = await fetch(url, {
-        headers: {
-            Authorization: 'Basic ' + Buffer.from(`${config.apiUsername}:${config.apiPassword}`).toString('base64'),
-        },
-    });
+    const path = `/gtlservice/trips_new?limit=${limit}&stopId=${stopId}&type=U`;
+    let start = Date.now();
 
-    if (resp.status != 200) {
-        console.log(`Error while fetching ${url}: ${resp.status} ${resp.statusText}`);
-        throw createError({
-            statusCode: 503,
-            name: 'Service Unavailable',
-            message: 'The service is temporarily unavailable',
-        });
+    try {
+        const resp = await client.get(path);
+        console.log(`Loaded ${path} in ${Date.now() - start} ms`);
+        return resp.data;
+    } catch (err) {
+        const elapsed = Date.now() - start;
+        if (axios.isAxiosError(err)) {
+            if (err.response) {
+                const resp = err.response as AxiosResponse;
+                console.error(`Error while fetching ${path} after ${elapsed} ms: ${resp.status} ${resp.statusText}`);
+            } else {
+                console.error(`Error while fetching ${path} after ${elapsed} ms: ${err.message}`);
+            }
+
+            throw createError({
+                statusCode: 503,
+                name: 'Service Unavailable',
+                message: 'The service is temporarily unavailable',
+            });
+        }
+
+        console.error(`Error while fetching ${path} after ${elapsed} ms`);
+
+        throw err;
     }
-
-    return resp.json();
 }
 
 function parseTrips(stopId: number, data: any): Trip[] {
