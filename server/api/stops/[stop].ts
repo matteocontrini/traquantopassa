@@ -32,7 +32,7 @@ async function getData(stopId: number, limit: number = 5) {
                 const resp = err.response as AxiosResponse;
                 console.error(`Error while fetching ${path} after ${elapsed} ms: ${resp.status} ${resp.statusText}`);
             } else if (err.code == 'ETIMEDOUT') {
-                console.error(`Timeout while fetching ${path} after ${elapsed} ms`);
+                console.error(`Error (timeout) while fetching ${path} after ${elapsed} ms`);
             } else {
                 console.error(`Error while fetching ${path} after ${elapsed} ms: ${err.message}`);
             }
