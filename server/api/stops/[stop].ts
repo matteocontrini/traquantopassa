@@ -6,6 +6,8 @@ import StopDefinition from '~/server/StopDefinition';
 import axios, { AxiosResponse } from 'axios';
 import { apiAuthHeader, apiBaseUrl } from '~/server/config';
 
+const OUTDATED_DATA_THRESHOLD = 1000 * 60 * 5;
+
 const client = axios.create({
     baseURL: apiBaseUrl,
     timeout: 5000,
@@ -52,6 +54,7 @@ async function getData(stopId: number, limit: number = 5) {
 
 function parseTrips(stopId: number, data: any): Trip[] {
     return data.map((trip: any): Trip => {
+        // Compute wait time in minutes
         const expectedTime = new Date(trip['oraArrivoEffettivaAFermataSelezionata']);
         let minutes = Math.ceil((expectedTime.getTime() - Date.now()) / 1000 / 60);
         if (minutes < 0) {
@@ -93,6 +96,13 @@ function parseTrips(stopId: number, data: any): Trip[] {
             distanceInStops = -1;
         }
 
+        // Check if the last update of real-time data isn't recent enough
+        let isOutdated = false;
+        if (delay != null) {
+            const lastEventDate = new Date(trip['lastEventRecivedAt']);
+            isOutdated = Date.now() - lastEventDate.getTime() > OUTDATED_DATA_THRESHOLD;
+        }
+
         let route = getRoute(trip['routeId']);
 
         return {
@@ -106,6 +116,7 @@ function parseTrips(stopId: number, data: any): Trip[] {
             expectedTime,
             scheduledTime: new Date(trip['oraArrivoProgrammataAFermataSelezionata']),
             distanceInStops,
+            isOutdated,
         };
     });
 }

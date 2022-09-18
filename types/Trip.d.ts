@@ -9,4 +9,5 @@ declare interface Trip {
     expectedTime: Date;
     scheduledTime: Date;
     distanceInStops: number | null;
+    isOutdated: boolean;
 }

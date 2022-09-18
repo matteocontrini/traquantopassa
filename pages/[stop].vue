@@ -147,13 +147,17 @@ await loadStop();
             <footer class="my-10 text-neutral-500 text-sm">
                 <div>
                     Il pallino
-                    <span
-                        class="inline-block rounded-full w-2 h-2 animate-ping bg-green-500 mr-1 mx-0.5"
-                    ></span>
+                    <span class="inline-block rounded-full w-2 h-2 animate-ping bg-green-500 mr-1 mx-0.5"></span>
                     indica che i dati sono in tempo reale.
                 </div>
 
-                <div class="mt-2">La pagina si aggiorna in automatico ogni 30 secondi.</div>
+                <div class="mt-2">
+                    Il pallino è giallo
+                    <span class="inline-block rounded-full w-2 h-2 animate-ping bg-yellow-500 mr-1 mx-0.5"></span>
+                    se l'autobus non ha trasmesso aggiornamenti negli ultimi 5 minuti.
+                </div>
+
+                <div class="mt-2">La pagina si aggiorna automaticamente ogni 30 secondi.</div>
 
                 <div class="mt-3">
                     <NuxtLink to="/">Altre fermate</NuxtLink>

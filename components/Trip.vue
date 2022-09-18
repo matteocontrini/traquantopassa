@@ -52,6 +52,12 @@ function formatMinutes(minutes: number) {
         >
             {{ formatMinutes(trip.minutes) }}
         </div>
-        <span class="rounded-full w-2 h-2 animate-ping" :class="{ 'bg-green-500': trip.delay != null }"></span>
+        <span
+            class="rounded-full w-2 h-2 animate-ping"
+            :class="{
+                'bg-green-500': trip.delay != null && !trip.isOutdated,
+                'bg-yellow-500': trip.delay != null && trip.isOutdated,
+            }"
+        ></span>
     </div>
 </template>
