@@ -7,6 +7,7 @@ import axios, { AxiosResponse } from 'axios';
 import { apiAuthHeader, apiBaseUrl } from '~/server/config';
 
 const OUTDATED_DATA_THRESHOLD = 1000 * 60 * 5;
+const CACHE_DURATION = 1000 * 30;
 
 const client = axios.create({
     baseURL: apiBaseUrl,
@@ -100,7 +101,7 @@ function parseTrips(stopId: number, data: any): Trip[] {
         let isOutdated = false;
         if (delay != null) {
             const lastEventDate = new Date(trip['lastEventRecivedAt']);
-            isOutdated = Date.now() - lastEventDate.getTime() > OUTDATED_DATA_THRESHOLD;
+            isOutdated = (Date.now() - lastEventDate.getTime()) > OUTDATED_DATA_THRESHOLD;
         }
 
         let route = getRoute(trip['routeId']);
@@ -135,7 +136,7 @@ export default defineEventHandler(async (event) => {
 
     let directions: { name: string; trips: Trip[] }[] = [];
 
-    if (!stopsGroup.lastUpdatedAt || Date.now() - stopsGroup.lastUpdatedAt.getTime() > 1000 * 30) {
+    if (!stopsGroup.lastUpdatedAt || Date.now() - stopsGroup.lastUpdatedAt.getTime() > CACHE_DURATION) {
         const promises = stopsGroup.stops.map((stop) => getData(stop.stopId, stop.limit));
         const results = await Promise.all(promises);
         for (let i = 0; i < results.length; i++) {
