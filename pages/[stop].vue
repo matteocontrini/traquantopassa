@@ -148,7 +148,7 @@ await loadStop();
                 <div>
                     Il pallino
                     <span
-                        class="inline-block rounded-full w-2 h-2 motion-safe:animate-ping bg-green-500 mr-1 mx-0.5"
+                        class="inline-block rounded-full w-2 h-2 animate-ping bg-green-500 mr-1 mx-0.5"
                     ></span>
                     indica che i dati sono in tempo reale.
                 </div>
