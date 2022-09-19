@@ -146,7 +146,7 @@ await loadStop();
 
             <footer class="my-10 text-neutral-500 text-sm">
                 <div>
-                    Il pallino
+                    Il pallino verde
                     <span class="inline-block rounded-full w-2 h-2 animate-ping bg-green-500 mr-1 mx-0.5"></span>
                     indica che i dati sono in tempo reale.
                 </div>
