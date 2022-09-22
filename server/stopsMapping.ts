@@ -68,22 +68,22 @@ const stopsMapping: { [key: string]: StopsGroup } = {
     smm: new StopsGroup(
         'Santa Maria Maggiore',
         [
-            new StopDefinition(407, '» Sud'),
-            new StopDefinition(406, '» Nord')
+            new StopDefinition(407, '» Sud', 8),
+            new StopDefinition(406, '» Nord', 8)
         ],
         [46.0681011850427, 11.118724710105349]
     ),
     travai: new StopsGroup(
         'Via Travai',
         [
-            new StopDefinition(444, '', 7)
+            new StopDefinition(444, '', 10)
         ],
         [46.06458968825606, 11.120921511011897]
     ),
     fiera: new StopsGroup(
         'Piazza Fiera',
         [
-            new StopDefinition(165, '', 7)
+            new StopDefinition(165, '', 10)
         ],
         [46.06521475669664, 11.123203816817682]
     ),

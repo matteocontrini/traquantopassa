@@ -144,7 +144,7 @@ await loadStop();
                 <div v-if="direction.trips.length === 0" class="text-center">Nessun autobus previsto per oggi</div>
             </main>
 
-            <footer class="my-10 text-neutral-500 text-sm">
+            <footer class="my-12 text-neutral-500 text-sm">
                 <div>
                     Il pallino verde
                     <span class="inline-block rounded-full w-2 h-2 animate-ping bg-green-500 mr-1 mx-0.5"></span>
