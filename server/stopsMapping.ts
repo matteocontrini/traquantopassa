@@ -103,7 +103,7 @@ const stopsMapping: { [key: string]: StopsGroup } = {
         [46.06953418561028, 11.12782013439054]
     ),
     corallo: new StopsGroup(
-        'Via Venezia - Corallo',
+        'Via Venezia - Via Corallo',
         [
             new StopDefinition(452, '» Povo'),
             new StopDefinition(453, '» Trento')
@@ -117,6 +117,34 @@ const stopsMapping: { [key: string]: StopsGroup } = {
             new StopDefinition(102, '» Trento')
         ],
         [46.089125294659915, 11.133128827075872]
+    ),
+    cavalleggeri: new StopsGroup(
+        'Corso 3 Novembre - Ponte Cavalleggeri',
+        [
+            new StopDefinition(466, '» Nord'),
+            new StopDefinition(524, '» Sud')
+        ],
+        [46.059292, 11.126667]
+    ),
+    gerola: new StopsGroup(
+        'Via Gerola - Ospedale S. Chiara',
+        [
+            new StopDefinition(344, '', 7)
+        ],
+        [46.058390, 11.133083]
+    ),
+    fogazzaro: new StopsGroup(
+        'Viale Verona - Via Fogazzaro',
+        [
+            new StopDefinition(457, '» Nord'),
+            new StopDefinition(458, '» Sud')
+        ],
+        [46.056511, 11.128369]
+    ),
+    bolghera: new StopsGroup(
+        'Via Bolghera - Via S. Antonio',
+        [new StopDefinition(284, '', 7)],
+        [46.058155, 11.131195]
     )
 };
 
