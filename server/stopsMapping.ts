@@ -49,6 +49,14 @@ const stopsMapping: { [key: string]: StopsGroup } = {
         ],
         [46.063935518450585, 11.150593092316743]
     ),
+    povocentrocivico: new StopsGroup(
+        'Povo (Centro Civico)',
+        [
+            new StopDefinition(184, '» Trento'),
+            new StopDefinition(183, '» Oltrecastello')
+        ],
+        [46.0640125, 11.1519555]
+    ),
     mesiano: new StopsGroup(
         'Mesiano (Fac. Ingegneria)',
         [
@@ -102,6 +110,13 @@ const stopsMapping: { [key: string]: StopsGroup } = {
         ],
         [46.06953418561028, 11.12782013439054]
     ),
+    romagnosi: new StopsGroup(
+        'Via Romagnosi - Via Vannetti',
+        [
+            new StopDefinition(403, '', 10)
+        ],
+        [46.072994, 11.122647]
+    ),
     corallo: new StopsGroup(
         'Via Venezia - Via Corallo',
         [
@@ -140,6 +155,14 @@ const stopsMapping: { [key: string]: StopsGroup } = {
             new StopDefinition(458, '» Sud')
         ],
         [46.056511, 11.128369]
+    ),
+    questura: new StopsGroup(
+        'Viale Verona - Questura',
+        [
+            new StopDefinition(461, '» Sud'),
+            new StopDefinition(464, '» Nord')
+        ],
+        [46.0479325, 11.131114]
     ),
     bolghera: new StopsGroup(
         'Via Bolghera - Via S. Antonio',
