@@ -106,6 +106,10 @@ await loadStop();
         <div v-else-if="error" class="text-center">
             <template v-if="error === ResponseError.NotFound">
                 <p>Fermata non trovata</p>
+                <p>
+                    Puoi chiedere che venga aggiunta
+                    <a :href="`mailto:info@traquantopassa.in?subject=Richiesta fermata /${stopSlug}`">via email</a>.
+                </p>
             </template>
             <template v-else-if="error === ResponseError.NotMyFault">
                 <p>I dati di Trentino Trasporti non sono al momento disponibili 😕</p>
