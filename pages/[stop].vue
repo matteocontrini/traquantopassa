@@ -3,9 +3,9 @@ import { onMounted, onUnmounted, ref, useHead, useLazyFetch, useRoute, watch } f
 import Trip from '@/components/Trip.vue';
 
 enum ResponseError {
-    NotFound,
-    NotMyFault,
-    Unknown,
+    NotFound = 1,
+    NotMyFault = 2,
+    Unknown = 3,
 }
 
 /* State */
@@ -107,7 +107,7 @@ await loadStop();
             <template v-if="error === ResponseError.NotFound">
                 <p>Fermata non trovata</p>
             </template>
-            <template v-if="error === ResponseError.NotMyFault">
+            <template v-else-if="error === ResponseError.NotMyFault">
                 <p>I dati di Trentino Trasporti non sono al momento disponibili 😕</p>
                 <p>Prova a ricaricare la pagina.</p>
             </template>
