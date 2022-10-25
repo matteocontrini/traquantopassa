@@ -73,6 +73,14 @@ const stopsMapping: { [key: string]: StopsGroup } = {
         ],
         [46.06506891439082, 11.14173376796036]
     ),
+    lodovico: new StopsGroup(
+        'Ponte Lodovico',
+        [
+            new StopDefinition(174, '» Povo'),
+            new StopDefinition(175, '» Trento')
+        ],
+        [46.069438500000004, 11.1395755]
+    ),
     smm: new StopsGroup(
         'Santa Maria Maggiore',
         [
