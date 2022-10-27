@@ -7,6 +7,16 @@ module.exports = {
             fontFamily: {
                 sans: ['InterVariable', ...defaultTheme.fontFamily.sans],
             },
+            animation: {
+                'blink': '1s blink infinite step-end',
+            },
+            keyframes: {
+                blink: {
+                    '0%': { 'margin-left': '0' },
+                    '50%': { 'margin-left': '5px' },
+                    '100%': { 'margin-left': '0' },
+                }
+            }
         },
     },
 };

@@ -9,13 +9,13 @@ import '@fontsource/inter/variable.css';
             <Meta name="theme-color" content="#171717" />
             <Script
                 children="if (window.location.host !== 'traquantopassa.in') window.goatcounter = { no_onload: true };"
-                body="true"
+                :body="true"
             />
             <Script
                 data-goatcounter="https://traquantopassa.goatcounter.com/count"
                 src="https://gc.zgo.at/count.js"
                 defer
-                body="true"
+                :body="true"
             />
             <Link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
             <Link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
