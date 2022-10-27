@@ -147,7 +147,7 @@ await loadStation();
 
                 <div class="mt-2">
                     <span class="inline-block w-5">
-                        <span class="blink block rounded-full w-2 h-2 bg-white"></span>
+                        <span class="animate-blink block rounded-full w-2 h-2 bg-white"></span>
                     </span>
                     indica che il treno è in partenza.
                 </div>
