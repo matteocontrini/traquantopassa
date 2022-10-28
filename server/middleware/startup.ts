@@ -1,6 +1,6 @@
 import { defineEventHandler } from 'h3';
-import { loadRoutes } from '~/server/routes';
+import * as routes from '~/server/routes';
 
-loadRoutes();
+routes.load();
 
 export default defineEventHandler((event) => {});

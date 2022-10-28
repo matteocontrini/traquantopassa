@@ -2,12 +2,8 @@ import axios from 'axios';
 import { apiAuthHeader, apiBaseUrl } from '~/server/config';
 import axiosRetry from 'axios-retry';
 
-interface Route {
-    color: string;
-    name: string;
-}
-
-let routes: { [key: string]: Route };
+let routes: { [routeId: string]: Route };
+let stopRoutes: { [stopId: number]: Route[] };
 
 const client = axios.create({
     baseURL: apiBaseUrl,
@@ -22,7 +18,7 @@ axiosRetry(client, {
     retryDelay: axiosRetry.exponentialDelay,
 });
 
-async function getData() {
+async function getRoutesData() {
     const path = '/gtlservice/routes?areas=23';
     console.log(`Requesting ${path}`);
     let start = Date.now();
@@ -31,15 +27,32 @@ async function getData() {
     return resp.data;
 }
 
-async function loadRoutes() {
+async function getStopsData() {
+    const path = '/gtlservice/stops?type=U';
+    console.log(`Requesting ${path}`);
+    let start = Date.now();
+    const resp = await client.get(path);
+    console.log(`Loaded stops in ${Date.now() - start} ms`);
+    return resp.data;
+}
+
+async function load() {
     console.log('Loading routes...');
-    const data = await getData();
+    const data = await getRoutesData();
     routes = {};
     for (const route of data) {
         routes[route['routeId']] = {
             color: route['routeColor'] ? '#' + route['routeColor'] : fixRouteColor(route['routeShortName']),
             name: route['routeShortName'],
         };
+    }
+
+    console.log('Loading stops...');
+    const stopsData = await getStopsData();
+    stopRoutes = {};
+    for (const stop of stopsData) {
+        const stopId: number = stop['stopId'];
+        stopRoutes[stopId] = stop['routes'].map((route: any) => routes[route['routeId']]);
     }
 }
 
@@ -54,4 +67,8 @@ function getRoute(routeId: string): Route {
     return routes[routeId];
 }
 
-export { getRoute, loadRoutes };
+function getRoutesForStop(stopId: number): Route[] {
+    return stopRoutes[stopId];
+}
+
+export { load, getRoute, getRoutesForStop };
