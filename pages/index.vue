@@ -87,13 +87,13 @@ await checkGeo();
             </div>
 
             <div class="mt-10 text-lg grid sm:grid-cols-2 gap-4">
-                <div v-for="stop in sortedStops" class="bg-neutral-800 rounded-lg px-4 pt-2 pb-4">
-                    <NuxtLink :to="`/${stop.slug}`" class="block no-underline">
-                        {{ stop.name }}
-                    </NuxtLink>
-                    <NuxtLink :to="`/${stop.slug}`" class="block text-sm no-underline text-neutral-500">
-                        /{{ stop.slug }}
-                    </NuxtLink>
+                <NuxtLink
+                    :to="`/${stop.slug}`"
+                    v-for="stop in sortedStops"
+                    class="bg-neutral-800 rounded-lg px-4 pt-2 pb-4 no-underline"
+                >
+                    {{ stop.name }}
+                    <span class="block text-sm no-underline text-neutral-500"> /{{ stop.slug }} </span>
                     <div class="mt-4 flex gap-2 flex-wrap">
                         <div
                             v-for="route in stop.routes"
@@ -103,7 +103,7 @@ await checkGeo();
                             {{ route.name }}
                         </div>
                     </div>
-                </div>
+                </NuxtLink>
             </div>
         </main>
 
