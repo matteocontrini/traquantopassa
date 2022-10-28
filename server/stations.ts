@@ -121,7 +121,7 @@ const stations: { [key: string]: StationDefinition } = {
         911,
         [45.86016708056311, 11.66111335438478]
     ),
-    basssano: new StationDefinition(
+    bassano: new StationDefinition(
         'Bassano del Grappa',
         602,
         [45.7666368664187, 11.741322752385827]
