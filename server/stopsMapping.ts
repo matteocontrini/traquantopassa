@@ -4,7 +4,7 @@ import StopDefinition from '~/server/StopDefinition';
 // prettier-ignore
 const stopsMapping: { [key: string]: StopsGroup } = {
     stazione: new StopsGroup(
-        'Stazione FS (piazza Dante)',
+        'Stazione FS - Piazza Dante',
         [
             new StopDefinition(247, '', 12)
         ],
@@ -12,7 +12,7 @@ const stopsMapping: { [key: string]: StopsGroup } = {
         'trentofs'
     ),
     valoni: new StopsGroup(
-        'Povo (via Valoni)',
+        'Povo - Via Valoni',
         [
             new StopDefinition(150, '» Trento'),
             new StopDefinition(149, '» Povo')
@@ -20,7 +20,7 @@ const stopsMapping: { [key: string]: StopsGroup } = {
         [46.06574548186276, 11.146326675127716]
     ),
     scienze: new StopsGroup(
-        'Povo (Fac. Scienze)',
+        'Povo - Fac. Scienze',
         [
             new StopDefinition(189, '» Trento'),
             new StopDefinition(188, '» Villazzano')
@@ -28,14 +28,14 @@ const stopsMapping: { [key: string]: StopsGroup } = {
         [46.06330983749043, 11.150180452357045]
     ),
     povo1: new StopsGroup(
-        'Povo (Polo Scientifico)',
+        'Povo - Polo Scientifico',
         [
             new StopDefinition(2833, '» Trento')
         ],
         [46.06734081167142, 11.150381339337152]
     ),
     manci: new StopsGroup(
-        'Povo (piazza Manci)',
+        'Povo - Piazza Manci',
         [
             new StopDefinition(187, '» Trento'),
             new StopDefinition(186, '» Oltrecastello')
@@ -43,7 +43,7 @@ const stopsMapping: { [key: string]: StopsGroup } = {
         [46.06595385343375, 11.154597879587431]
     ),
     pante: new StopsGroup(
-        'Povo (Pantè)',
+        'Povo - Pantè',
         [
             new StopDefinition(2820, '» Trento'),
             new StopDefinition(2490, '» Oltrecastello')
@@ -51,7 +51,7 @@ const stopsMapping: { [key: string]: StopsGroup } = {
         [46.063935518450585, 11.150593092316743]
     ),
     povocentrocivico: new StopsGroup(
-        'Povo (Centro Civico)',
+        'Povo - Centro Civico',
         [
             new StopDefinition(184, '» Trento'),
             new StopDefinition(183, '» Oltrecastello')
@@ -59,7 +59,7 @@ const stopsMapping: { [key: string]: StopsGroup } = {
         [46.0640125, 11.1519555]
     ),
     mesiano: new StopsGroup(
-        'Mesiano (Fac. Ingegneria)',
+        'Mesiano - Fac. Ingegneria',
         [
             new StopDefinition(146, '» Trento'),
             new StopDefinition(145, '» Povo')
@@ -121,14 +121,14 @@ const stopsMapping: { [key: string]: StopsGroup } = {
         [46.06953418561028, 11.12782013439054]
     ),
     romagnosi: new StopsGroup(
-        'Via Romagnosi - Via Vannetti',
+        'Via Romagnosi - Vannetti',
         [
             new StopDefinition(403, '', 10)
         ],
         [46.072994, 11.122647]
     ),
     corallo: new StopsGroup(
-        'Via Venezia - Via Corallo',
+        'Via Venezia - Corallo',
         [
             new StopDefinition(452, '» Povo'),
             new StopDefinition(453, '» Trento')
@@ -136,7 +136,7 @@ const stopsMapping: { [key: string]: StopsGroup } = {
         [46.06855693542798, 11.136371283967751]
     ),
     formigheta: new StopsGroup(
-        'Martignano (via alla Formigheta)',
+        'Martignano - Via alla Formigheta',
         [
             new StopDefinition(101, '» Cognola'),
             new StopDefinition(102, '» Trento')
@@ -159,7 +159,7 @@ const stopsMapping: { [key: string]: StopsGroup } = {
         [46.058390, 11.133083]
     ),
     fogazzaro: new StopsGroup(
-        'Viale Verona - Via Fogazzaro',
+        'Viale Verona - Fogazzaro',
         [
             new StopDefinition(457, '» Nord'),
             new StopDefinition(458, '» Sud')
@@ -175,7 +175,7 @@ const stopsMapping: { [key: string]: StopsGroup } = {
         [46.0479325, 11.131114]
     ),
     bolghera: new StopsGroup(
-        'Via Bolghera - Via S. Antonio',
+        'Via Bolghera - S. Antonio',
         [new StopDefinition(284, '', 7)],
         [46.058155, 11.131195]
     )
