@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { createError, defineEventHandler } from 'h3';
 import * as cheerio from 'cheerio';
 import StationDefinition from '~/server/StationDefinition';
@@ -15,17 +15,47 @@ const client = axios.create({
     },
 });
 
-async function getData(station: StationDefinition) {
-    const resp = await client.get('/ArriviPartenze/ArrivalsDepartures/Monitor', {
-        params: {
-            placeId: station.id,
-            arrivals: false,
-        },
-    });
+async function getHtml(stationId: number) {
+    let start = Date.now();
 
-    // TODO: handle response errors
+    try {
+        const resp = await client.get('/ArriviPartenze/ArrivalsDepartures/Monitor', {
+            params: {
+                placeId: stationId,
+                arrivals: false,
+            },
+        });
+        console.log(`Loaded RFI ${stationId} in ${Date.now() - start} ms`);
+        return resp.data;
+    } catch (err) {
+        const elapsed = Date.now() - start;
+        if (axios.isAxiosError(err)) {
+            if (err.response) {
+                const resp = err.response as AxiosResponse;
+                console.error(
+                    `Error while fetching RFI ${stationId} after ${elapsed} ms: ${resp.status} ${resp.statusText}`
+                );
+            } else if (err.code == 'ETIMEDOUT') {
+                console.error(`Error (timeout) while fetching RFI ${stationId} after ${elapsed} ms`);
+            } else {
+                console.error(`Error while fetching RFI ${stationId} after ${elapsed} ms: ${err.message}`);
+            }
 
-    const $ = cheerio.load(resp.data);
+            throw createError({
+                statusCode: 503,
+                name: 'Service Unavailable',
+                message: 'The service is temporarily unavailable',
+            });
+        }
+
+        console.error(`Error while fetching RFI ${stationId} after ${elapsed} ms`);
+
+        throw err;
+    }
+}
+
+function parseTrains(html: string): Train[] {
+    const $ = cheerio.load(html);
 
     const trains: Train[] = [];
 
@@ -128,7 +158,8 @@ export default defineEventHandler(async (event) => {
     }
 
     if (!station.lastUpdatedAt || Date.now() - station.lastUpdatedAt.getTime() > CACHE_DURATION) {
-        station.trainsCache = await getData(station);
+        const html = await getHtml(station.id);
+        station.trainsCache = parseTrains(html);
         station.lastUpdatedAt = new Date();
     }
 
