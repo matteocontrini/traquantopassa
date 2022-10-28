@@ -8,7 +8,8 @@ const stopsMapping: { [key: string]: StopsGroup } = {
         [
             new StopDefinition(247, '', 12)
         ],
-        [46.071938002445414, 11.119560915153672]
+        [46.071938002445414, 11.119560915153672],
+        'trentofs'
     ),
     valoni: new StopsGroup(
         'Povo (via Valoni)',
@@ -71,7 +72,8 @@ const stopsMapping: { [key: string]: StopsGroup } = {
             new StopDefinition(148, '» Trento'),
             new StopDefinition(147, '» Povo')
         ],
-        [46.06506891439082, 11.14173376796036]
+        [46.06506891439082, 11.14173376796036],
+        'povomesiano'
     ),
     lodovico: new StopsGroup(
         'Ponte Lodovico',

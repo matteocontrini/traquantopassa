@@ -177,7 +177,8 @@ export default defineEventHandler(async (event) => {
 
     return {
         stationName: station.name,
-        lastUpdatedAt: station.lastUpdatedAt,
+        lastUpdatedAt: station.lastUpdatedAt.toISOString(),
         trains: station.trainsCache.slice(0, LIMIT),
+        busSlug: station.busSlug,
     } as StationsResponse;
 });

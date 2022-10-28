@@ -8,6 +8,7 @@ const stations: { [key: string]: StationDefinition } = {
         2912,
         [46.06514315843706, 11.142636316353439],
         'Ferrovia del Brennero/Valsugana',
+        'stazione',
     ),
     bolzano: new StationDefinition(
         'Bolzano',
@@ -89,6 +90,7 @@ const stations: { [key: string]: StationDefinition } = {
         2270,
         [46.06535630630152, 11.14263561042483],
         'Ferrovia della Valsugana',
+        'mesianofs'
     ),
     pergine: new StationDefinition(
         'Pergine Valsugana',

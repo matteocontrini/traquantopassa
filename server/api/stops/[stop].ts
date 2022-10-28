@@ -160,10 +160,10 @@ export default defineEventHandler(async (event) => {
         }
     }
 
-    // TODO: cast to StopResponse
     return {
         stopName: stopsGroup.name,
-        lastUpdatedAt: stopsGroup.lastUpdatedAt,
+        lastUpdatedAt: stopsGroup.lastUpdatedAt.toISOString(),
         directions,
-    };
+        trainSlug: stopsGroup.trainSlug,
+    } as StopResponse;
 });

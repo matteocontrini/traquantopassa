@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, useHead, useLazyFetch, useRoute, watch } from '#imports';
 import Trip from '@/components/Trip.vue';
+import Switch from '~/components/Switch.vue';
 
 enum ResponseError {
     NotFound = 1,
@@ -142,12 +143,16 @@ await loadStop();
                 </div>
             </header>
 
-            <main v-for="direction in data.directions" class="mt-10">
-                <div class="w-fit mx-auto text-lg uppercase font-medium mb-4 text-center">
-                    {{ direction.name }}
+            <main>
+                <Switch v-if="data.trainSlug" class="mt-6" :is-bus="true" :bus-slug="stopSlug" :train-slug="data.trainSlug" />
+
+                <div v-for="direction in data.directions" class="mt-10">
+                    <div class="w-fit mx-auto text-lg uppercase font-medium mb-4 text-center">
+                        {{ direction.name }}
+                    </div>
+                    <Trip v-for="trip in direction.trips" :trip="trip" />
+                    <div v-if="direction.trips.length === 0" class="text-center">Nessun autobus previsto per oggi</div>
                 </div>
-                <Trip v-for="trip in direction.trips" :trip="trip" />
-                <div v-if="direction.trips.length === 0" class="text-center">Nessun autobus previsto per oggi</div>
             </main>
 
             <footer class="my-12 text-neutral-500 text-sm">

@@ -1,5 +1,6 @@
 declare interface StationsResponse {
     stationName: string;
-    lastUpdatedAt: Date;
+    lastUpdatedAt: string;
     trains: Train[];
+    busSlug: string | null;
 }

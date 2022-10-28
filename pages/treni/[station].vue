@@ -137,8 +137,17 @@ await loadStation();
                 </div>
             </header>
 
-            <main class="mt-10">
-                <Train ref="root" v-for="train in data.trains" :train="train" />
+            <main>
+                <Switch
+                    v-if="data.busSlug != null"
+                    class="mt-6"
+                    :is-bus="false"
+                    :bus-slug="data.busSlug"
+                    :train-slug="stationSlug"
+                />
+                <div class="mt-10">
+                    <Train v-for="train in data.trains" :train="train" />
+                </div>
                 <div v-if="data.trains.length === 0" class="text-center">Nessun treno previsto</div>
             </main>
 

@@ -5,10 +5,12 @@ export default class StopsGroup {
     lastUpdatedAt?: Date;
     stops: StopDefinition[];
     coordinates: number[];
+    trainSlug: string | null;
 
-    constructor(name: string, stops: StopDefinition[], coordinates: number[]) {
+    constructor(name: string, stops: StopDefinition[], coordinates: number[], trainSlug?: string) {
         this.name = name;
         this.stops = stops;
         this.coordinates = coordinates;
+        this.trainSlug = trainSlug || null;
     }
 }
