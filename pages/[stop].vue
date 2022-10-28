@@ -121,7 +121,9 @@ await loadStop();
             </template>
 
             <div class="my-10 text-neutral-500 text-sm text-center">
-                <NuxtLink to="/">Altre fermate</NuxtLink>
+                <NuxtLink to="/">Lista fermate (autobus)</NuxtLink>
+                -
+                <NuxtLink to="/treni">Lista stazioni (treni)</NuxtLink>
                 -
                 <NuxtLink to="/info">Informazioni</NuxtLink>
             </div>
@@ -129,7 +131,7 @@ await loadStop();
         <template v-else-if="data">
             <header>
                 <h1 class="font-semibold text-center text-4xl">{{ data.stopName }}</h1>
-                <div class="mt-1 text-sm flex justify-center items-center">
+                <div class="mt-1 text-sm text-center">
                     aggiornato alle
                     {{
                         new Date(data.lastUpdatedAt).toLocaleTimeString([], {
@@ -164,7 +166,9 @@ await loadStop();
                 <div class="mt-2">La pagina si aggiorna automaticamente ogni 30 secondi.</div>
 
                 <div class="mt-3">
-                    <NuxtLink to="/">Altre fermate</NuxtLink>
+                    <NuxtLink to="/">Lista fermate (autobus)</NuxtLink>
+                    -
+                    <NuxtLink to="/treni">Lista stazioni (treni)</NuxtLink>
                     -
                     <NuxtLink to="/info">Informazioni</NuxtLink>
                 </div>
