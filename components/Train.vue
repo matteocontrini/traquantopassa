@@ -33,7 +33,7 @@ function getImageUrl(icon: string) {
                     <strong>Binario {{ train.platform }}</strong> •
                 </template>
                 {{ train.carrier }} {{ train.number }}
-                <template v-if="train.category"> • {{ train.category }}</template>
+                <template v-if="train.category && !train.icon"> • {{ train.category }}</template>
             </span>
         </div>
         <div
