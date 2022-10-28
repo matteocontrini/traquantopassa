@@ -3,11 +3,13 @@ defineProps<{
     isBus: boolean;
     busSlug: string;
     trainSlug: string;
+    align?: string;
 }>();
 </script>
 
 <template>
-    <div class="flex justify-center text-sm gap-x-2">
+    <div class="flex text-sm gap-x-2"
+    :class="[`justify-${align || 'center'}`]">
         <NuxtLink
             :to="`/${busSlug}`"
             class="cursor-pointer px-3 py-1 rounded-md no-underline"

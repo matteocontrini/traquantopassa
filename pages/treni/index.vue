@@ -70,17 +70,21 @@ await checkGeo();
 <template>
     <div>
         <header>
-            <h1 class="font-semibold text-4xl">Tra quanto passa il treno in...</h1>
+            <h1 class="font-semibold text-4xl">Tra quanto passa in...</h1>
         </header>
 
         <main>
-            <div class="mt-8" v-if="showSortButton">
-                <button
-                    @click="sortByPosition"
-                    class="cursor-pointer bg-neutral-800 hover:bg-neutral-700 px-3 py-1 rounded-md"
-                >
-                    Ordina per vicinanza
-                </button>
+            <div class="mt-8 flex justify-between sm:flex-row flex-col gap-y-4">
+                <Switch class="text-base" :is-bus="false" bus-slug="" train-slug="" align="left" />
+
+                <div v-if="showSortButton">
+                    <button
+                        @click="sortByPosition"
+                        class="cursor-pointer bg-neutral-800 hover:bg-neutral-700 px-3 py-1 rounded-md"
+                    >
+                        Ordina per vicinanza
+                    </button>
+                </div>
             </div>
 
             <div class="mt-10 text-lg grid grid-cols-2 gap-4">
