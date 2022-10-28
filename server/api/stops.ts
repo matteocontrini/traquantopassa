@@ -13,9 +13,11 @@ function getRoutesForStops(stops: StopDefinition[]): Route[] {
         }
     }
 
-    // Convert back to array and sort by route name
     const arr = Array.from(routes);
-    arr.sort((a, b) => a.name.localeCompare(b.name));
+
+    // Sort by route name
+    const collator = new Intl.Collator([], { numeric: true });
+    arr.sort((a, b) => collator.compare(a.name, b.name));
 
     return arr;
 }
