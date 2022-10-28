@@ -36,7 +36,7 @@ useHead({
         </p>
 
         <p class="mt-4">
-            <NuxtLink to="/">Vai alla lista delle stazioni (treni)</NuxtLink>
+            <NuxtLink to="/treni">Vai alla lista delle stazioni (treni)</NuxtLink>
         </p>
     </main>
 </template>
