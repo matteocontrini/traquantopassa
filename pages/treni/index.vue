@@ -83,16 +83,16 @@ await checkGeo();
                 </button>
             </div>
 
-            <ul class="mt-10 text-lg">
-                <li v-for="station in sortedStations" class="mt-4">
+            <div class="mt-10 text-lg grid grid-cols-2 gap-4">
+                <div v-for="station in sortedStations" class="bg-neutral-800 rounded-lg px-4 py-2">
                     <NuxtLink :to="`/treni/${station.slug}`" class="block no-underline">
                         {{ station.name }}
                     </NuxtLink>
                     <NuxtLink :to="`/treni/${station.slug}`" class="block text-sm no-underline text-neutral-500">
                         /{{ station.slug }}
                     </NuxtLink>
-                </li>
-            </ul>
+                </div>
+            </div>
         </main>
 
         <footer class="mb-10 mt-14 text-neutral-500 text-sm text-center">
