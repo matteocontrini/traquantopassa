@@ -91,11 +91,11 @@ await checkGeo();
                 <NuxtLink
                     v-for="station in sortedStations"
                     :to="`/treni/${station.slug}`"
-                    class="block no-underline bg-neutral-800 rounded-lg px-4 py-2"
+                    class="flex flex-col no-underline bg-neutral-800 rounded-lg px-4 pt-2 pb-3"
                 >
                     {{ station.name }}
-                    <span class="block text-sm no-underline text-neutral-500"> /{{ station.slug }} </span>
-                    <span class="text-xs font-semibold text-neutral-500">{{ station.railway }}</span>
+                    <span class="grow text-sm no-underline text-neutral-500">/{{ station.slug }}</span>
+                    <span class="mt-2 text-xs font-semibold text-neutral-500">{{ station.railway }}</span>
                 </NuxtLink>
             </div>
         </main>
