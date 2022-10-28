@@ -7,9 +7,9 @@ function getImageUrl(icon: string) {
 </script>
 
 <template>
-    <div class="flex items-center gap-x-4 mb-2">
+    <div class="flex items-center gap-x-3 sm:gap-x-4 mb-2">
         <div
-            class="h-10 w-20 bg-neutral-600 flex-shrink-0 flex justify-center items-center font-semibold text-xl rounded-md"
+            class="h-10 w-16 sm:w-20 bg-neutral-600 flex-shrink-0 flex justify-center items-center font-semibold text-lg rounded-md"
         >
             {{ train.time }}
         </div>
