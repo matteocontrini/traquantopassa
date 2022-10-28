@@ -9,4 +9,5 @@ declare interface Train {
     delay: string;
     isDelayed: boolean;
     isBlinking: boolean;
+    isReplacedByBus: boolean;
 }
