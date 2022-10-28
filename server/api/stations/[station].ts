@@ -132,6 +132,8 @@ function categoryToIcon(category: string): string | null {
         return 'av';
     } else if (category.includes('intercity')) {
         return 'ic';
+    } else if (category.includes('intercity notte')) {
+        return 'icn';
     }
 
     return null;
