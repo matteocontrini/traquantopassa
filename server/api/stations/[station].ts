@@ -89,13 +89,17 @@ function parseTrains(html: string): Train[] {
             isDelayed = true;
         }
 
-        const platform = cells.eq(6).text().trim();
+        let platform = cells.eq(6).text().trim();
 
         const isBlinking = cells.eq(7).find('img').length > 0;
 
         const notes = cells.eq(8).text().trim();
         const isReplacedByBus =
             notes.toLowerCase().includes('bus sostitutivo') || notes.toLowerCase().includes('autosostituito');
+
+        if (platform == 'PF' || isReplacedByBus) {
+            platform = '';
+        }
 
         trains.push({
             carrier,
