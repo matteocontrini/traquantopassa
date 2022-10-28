@@ -1,16 +1,18 @@
 <script setup lang="ts">
+// TODO: this is a huge copy paste from the other index, refactor
+
 import { computed, ref, useFetch, useHead } from '#imports';
 
 /* State */
-const stops = ref<StopWithDistance[]>([]);
+const stations = ref<StationWithDistance[]>([]);
 const showSortButton = ref(false);
-const sortedStops = computed(() => stops.value.sort((a, b) => a.distance - b.distance));
+const sortedStations = computed(() => stations.value.sort((a, b) => a.distance - b.distance));
 
 /* Methods */
-async function loadStops() {
-    const res = await useFetch<StopWithDistance[]>('/api/stops');
+async function loadStations() {
+    const res = await useFetch<StationWithDistance[]>('/api/stations');
     if (res.data.value) {
-        stops.value = res.data.value;
+        stations.value = res.data.value;
     }
 }
 
@@ -34,10 +36,10 @@ function sortByPosition() {
         (pos) => {
             showSortButton.value = false;
             let coords = pos.coords;
-            for (let stop of stops.value) {
-                stop.distance = Math.sqrt(
-                    Math.pow(stop.coordinates[0] - coords.latitude, 2) +
-                        Math.pow(stop.coordinates[1] - coords.longitude, 2)
+            for (let station of stations.value) {
+                station.distance = Math.sqrt(
+                    Math.pow(station.coordinates[0] - coords.latitude, 2) +
+                        Math.pow(station.coordinates[1] - coords.longitude, 2)
                 );
             }
         },
@@ -55,21 +57,20 @@ function sortByPosition() {
 
 function updateHead() {
     useHead({
-        title: 'Tra quanto passa',
+        title: 'Tra quanto passa il treno',
     });
 }
 
 /* On created */
 updateHead();
-await loadStops();
+await loadStations();
 await checkGeo();
 </script>
 
 <template>
     <div>
         <header>
-            <h1 class="font-semibold text-4xl">Tra quanto passa l'autobus in...</h1>
-            <div class="mt-2 text-neutral-500 text-lg">Trento</div>
+            <h1 class="font-semibold text-4xl">Tra quanto passa il treno in...</h1>
         </header>
 
         <main>
@@ -83,12 +84,12 @@ await checkGeo();
             </div>
 
             <ul class="mt-10 text-lg">
-                <li v-for="stop in sortedStops" class="mt-4">
-                    <NuxtLink :to="`/${stop.slug}`" class="block no-underline">
-                        {{ stop.name }}
+                <li v-for="station in sortedStations" class="mt-4">
+                    <NuxtLink :to="`/treni/${station.slug}`" class="block no-underline">
+                        {{ station.name }}
                     </NuxtLink>
-                    <NuxtLink :to="`/${stop.slug}`" class="block text-sm no-underline text-neutral-500">
-                        /{{ stop.slug }}
+                    <NuxtLink :to="`/treni/${station.slug}`" class="block text-sm no-underline text-neutral-500">
+                        /{{ station.slug }}
                     </NuxtLink>
                 </li>
             </ul>
