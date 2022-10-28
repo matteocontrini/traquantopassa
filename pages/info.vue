@@ -13,7 +13,10 @@ useHead({
             mia. Se mancano i dati in tempo reale non è colpa mia.
         </p>
 
-        <p>I dati sui treni sono forniti da Rete Ferroviaria Italiana (RFI). Se perdi il treno non è colpa mia.</p>
+        <p>
+            I dati sui treni sono forniti da Rete Ferroviaria Italiana (RFI) e sono gli stessi mostrati nelle stazioni
+            ferroviarie. Se sono sbagliati non è colpa mia.
+        </p>
 
         <p>
             Il progetto non è comunque in alcun modo affiliato con Trentino Trasporti, con la Provincia Autonoma di

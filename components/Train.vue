@@ -29,7 +29,7 @@ function getImageUrl(icon: string) {
                     <span class="animate-blink block rounded-full w-2 h-2 bg-white"></span>
                 </span>
                 <template v-if="train.isReplacedByBus">
-                    <span class="font-semibold text-orange-400">Bus sostitutivo</span> •
+                    <span class="font-semibold text-orange-400">Sostituito da bus</span> •
                 </template>
                 <template v-if="train.platform">
                     <span class="font-bold">Binario {{ train.platform }}</span> •

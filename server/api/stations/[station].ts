@@ -94,8 +94,7 @@ function parseTrains(html: string): Train[] {
         const isBlinking = cells.eq(7).find('img').length > 0;
 
         const notes = cells.eq(8).text().trim();
-        const isReplacedByBus =
-            notes.toLowerCase().includes('bus sostitutivo') || notes.toLowerCase().includes('autosostituito');
+        const isReplacedByBus = notes.toLowerCase().includes('autosostituito');
 
         if (platform == 'PF' || isReplacedByBus) {
             platform = '';
