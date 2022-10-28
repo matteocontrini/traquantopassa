@@ -9,8 +9,7 @@ function getImageUrl(icon: string) {
 <template>
     <div class="flex items-center gap-x-4 mb-2">
         <div
-            class="h-10 w-20 flex-shrink-0 flex justify-center items-center font-semibold text-xl rounded-md"
-            :style="{ backgroundColor: '#565655' }"
+            class="h-10 w-20 bg-neutral-600 flex-shrink-0 flex justify-center items-center font-semibold text-xl rounded-md"
         >
             {{ train.time }}
         </div>
