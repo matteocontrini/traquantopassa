@@ -57,7 +57,7 @@ function sortByPosition() {
 
 function updateHead() {
     useHead({
-        title: 'Tra quanto passa il treno',
+        title: 'Tra quanto passa',
     });
 }
 
