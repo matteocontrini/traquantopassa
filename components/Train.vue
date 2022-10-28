@@ -38,10 +38,7 @@ function getImageUrl(icon: string) {
                 <template v-if="train.category && !train.icon"> • {{ train.category }}</template>
             </span>
         </div>
-        <div
-            class="text-right font-semibold whitespace-nowrap text-red-600"
-            :class="{ 'text-xl': train.isDelayed, 'text-lg': !train.isDelayed }"
-        >
+        <div class="text-right font-semibold whitespace-nowrap text-red-600" :class="{ 'text-xl': train.isDelayed }">
             {{ train.delay }}
         </div>
     </div>
