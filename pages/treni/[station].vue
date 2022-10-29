@@ -153,7 +153,8 @@ await loadStation();
 
             <footer class="my-12 text-neutral-500 text-sm">
                 <div>
-                    I dati si riferiscono ai treni in partenza dalla stazione. La granularità dei ritardi è di 5 minuti.
+                    Dati RFI. I dati si riferiscono alle partenze. La granularità dei ritardi è di 5 minuti. I dati
+                    sugli autobus sostitutivi non sono sempre affidabili, verifica sugli orari.
                 </div>
 
                 <div class="mt-2">
