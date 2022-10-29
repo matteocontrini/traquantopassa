@@ -54,7 +54,7 @@ async function loadStation() {
 
         if (data.value) {
             useHead({
-                title: data.value.stationName,
+                title: 'Stazione di ' + data.value.stationName,
             });
 
             // Initial loading finished
