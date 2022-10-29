@@ -94,8 +94,17 @@ function parseTrains(html: string): Train[] {
         const isBlinking = cells.eq(7).find('img').length > 0;
 
         const notes = cells.eq(8).text().trim();
-        const isReplacedByBus = notes.toLowerCase().includes('autosostituito');
 
+        let isReplacedByBus = false;
+        // If the train is marked as cancelled, look if it's replaced by a bus.
+        // Note: sometimes the train is marked as replaced by bus even if it's actually not at the current station
+        // (it could be in previous stations), hence the "cancelled" check, which tells us if it's actually a train.
+        if (icon != 'bus' && delay == 'Cancellato') {
+            isReplacedByBus =
+                notes.toLowerCase().includes('autosostituito') || notes.toLowerCase().includes('bus sostitutivo');
+        }
+
+        // Hide platform if it's "punto fermata" (bus) or if the train is replaced by bus (platform doesn't matter anymore)
         if (platform == 'PF' || isReplacedByBus) {
             platform = '';
         }
