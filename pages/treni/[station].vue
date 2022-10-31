@@ -153,8 +153,8 @@ await loadStation();
 
             <footer class="my-12 text-neutral-500 text-sm">
                 <div>
-                    Dati RFI. I dati si riferiscono alle partenze. La granularità dei ritardi è di 5 minuti. I dati
-                    sugli autobus sostitutivi non sono sempre affidabili, verifica sugli orari.
+                    Dati RFI. I dati si riferiscono alle partenze. La granularità dei ritardi è di 5 minuti. Alcuni treni
+                    potrebbero essere parzialmente sostituiti da bus, verifica sugli orari.
                 </div>
 
                 <div class="mt-2">
@@ -162,6 +162,11 @@ await loadStation();
                         <span class="animate-blink block rounded-full w-2 h-2 bg-white"></span>
                     </span>
                     indica che il treno è in partenza.
+                </div>
+
+                <div class="mt-2">
+                    ‼️ indica che i dettagli sul treno cancellato non sono temporaneamente disponibili (il treno potrebbe essere
+                    sostituito da bus).
                 </div>
 
                 <div class="mt-2">La pagina si aggiorna automaticamente ogni 30 secondi.</div>

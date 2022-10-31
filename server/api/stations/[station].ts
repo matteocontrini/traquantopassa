@@ -109,6 +109,8 @@ function parseTrains(html: string): Train[] {
             platform = '';
         }
 
+        const isIncomplete = delay == 'Cancellato' && notes == '';
+
         trains.push({
             carrier,
             category,
@@ -121,6 +123,7 @@ function parseTrains(html: string): Train[] {
             isDelayed,
             isBlinking,
             isReplacedByBus,
+            isIncomplete,
         });
     });
 
