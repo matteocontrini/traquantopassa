@@ -25,7 +25,7 @@ function getImageUrl(icon: string) {
                 {{ train.destination }}
             </span>
             <span class="block text-xs text-neutral-500 text-ellipsis overflow-hidden whitespace-nowrap">
-                <span v-if="train.isIncomplete">‼️ </span>
+                <span v-if="train.isIncomplete">⚠️ </span>
                 <span class="inline-block w-5" v-if="train.isBlinking">
                     <span class="animate-blink block rounded-full w-2 h-2 bg-white"></span>
                 </span>

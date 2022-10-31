@@ -165,7 +165,7 @@ await loadStation();
                 </div>
 
                 <div class="mt-2">
-                    ‼️ indica che i dettagli sul treno cancellato non sono temporaneamente disponibili (il treno
+                    ⚠️ indica che i dettagli sul treno cancellato sono temporaneamente non disponibili (il treno
                     potrebbe essere sostituito da bus).
                 </div>
 
