@@ -178,6 +178,14 @@ const stopsMapping: { [key: string]: StopsGroup } = {
         'Via Bolghera - S. Antonio',
         [new StopDefinition(284, '', 7)],
         [46.058155, 11.131195]
+    ),
+    borino: new StopsGroup(
+        'Borino',
+        [
+            new StopDefinition(9, '» Trento'),
+            new StopDefinition(2530, '» Cimirlo')
+        ],
+        [46.0670554, 11.1656085]
     )
 };
 
