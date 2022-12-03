@@ -4,7 +4,7 @@ import StopDefinition from '~/server/StopDefinition';
 // prettier-ignore
 const stopsMapping: { [key: string]: StopsGroup } = {
     stazione: new StopsGroup(
-        'Stazione FS - Piazza Dante',
+        'Piazza Dante - Stazione FS',
         [
             new StopDefinition(247, '', 12)
         ],
@@ -186,6 +186,21 @@ const stopsMapping: { [key: string]: StopsGroup } = {
             new StopDefinition(2530, '» Cimirlo')
         ],
         [46.0670554, 11.1656085]
+    ),
+    arcivescovile: new StopsGroup(
+        'Via Giuseppe Giusti - Arcivescovile',
+        [
+            new StopDefinition(349, '', 7)
+        ],
+        [46.061394, 11.119037]
+    ),
+    castello: new StopsGroup(
+        'Castello del Buonconsiglio',
+        [
+            new StopDefinition(276, '» Centro', 8),
+            new StopDefinition(275, '» Sud')
+        ],
+        [46.07123370184171, 11.12641307192195]
     )
 };
 
