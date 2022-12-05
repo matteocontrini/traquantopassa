@@ -161,8 +161,8 @@ const stopsMapping: { [key: string]: StopsGroup } = {
     fogazzaro: new StopsGroup(
         'Viale Verona - Fogazzaro',
         [
-            new StopDefinition(457, '» Nord'),
-            new StopDefinition(458, '» Sud')
+            new StopDefinition(458, '» Nord'),
+            new StopDefinition(457, '» Sud')
         ],
         [46.056511, 11.128369]
     ),
