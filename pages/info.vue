@@ -12,7 +12,7 @@ useHead({
             <h1 class="font-semibold text-4xl">Tra quanto passa</h1>
         </header>
 
-        <main class="mt-8">
+        <main class="my-8">
             <p>
                 I dati degli autobus mostrati sul sito sono forniti da Trentino Trasporti. Se perdi l'autobus non è
                 colpa mia. Se mancano i dati in tempo reale non è colpa mia.
@@ -44,12 +44,16 @@ useHead({
                 <a target="_blank" href="https://github.com/matteocontrini/traquantopassa">su GitHub</a>.
             </p>
 
-            <p class="mt-12">
-                <NuxtLink to="/">Vai alla lista delle fermate (autobus)</NuxtLink>
+            <p class="mt-10">
+                <NuxtLink class="px-3 py-2 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" to="/">
+                    🚍 Lista fermate autobus
+                </NuxtLink>
             </p>
 
-            <p class="mt-4">
-                <NuxtLink to="/treni">Vai alla lista delle stazioni (treni)</NuxtLink>
+            <p class="mt-6">
+                <NuxtLink class="px-3 py-2 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" to="/treni">
+                    🚆 Lista stazioni treni
+                </NuxtLink>
             </p>
         </main>
     </div>

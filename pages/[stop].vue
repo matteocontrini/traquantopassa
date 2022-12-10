@@ -142,7 +142,13 @@ await loadStop();
             </header>
 
             <main>
-                <Switch v-if="data.trainSlug" class="mt-6" :is-bus="true" :bus-slug="stopSlug" :train-slug="data.trainSlug" />
+                <Switch
+                    v-if="data.trainSlug"
+                    class="mt-6"
+                    :is-bus="true"
+                    :bus-slug="stopSlug"
+                    :train-slug="data.trainSlug"
+                />
 
                 <div v-for="direction in data.directions" class="mt-10">
                     <div class="w-fit mx-auto text-lg uppercase font-medium mb-4 text-center">
@@ -153,27 +159,35 @@ await loadStop();
                 </div>
             </main>
 
-            <footer class="my-12 text-neutral-500 text-sm">
-                <div>
-                    Il pallino verde
-                    <span class="inline-block rounded-full w-2 h-2 animate-ping bg-green-500 mr-1 mx-0.5"></span>
-                    indica che i dati sono in tempo reale.
+            <footer class="my-12">
+                <div class="text-sm text-neutral-500">
+                    <div>
+                        Il pallino verde
+                        <span class="inline-block rounded-full w-2 h-2 animate-ping bg-green-500 mr-1 mx-0.5"></span>
+                        indica che i dati sono in tempo reale.
+                    </div>
+
+                    <div class="mt-2">
+                        Il pallino è giallo
+                        <span class="inline-block rounded-full w-2 h-2 animate-ping bg-yellow-500 mr-1 mx-0.5"></span>
+                        se l'autobus non ha trasmesso aggiornamenti negli ultimi 5 minuti.
+                    </div>
+
+                    <div class="mt-2">La pagina si aggiorna automaticamente ogni 30 secondi.</div>
                 </div>
 
-                <div class="mt-2">
-                    Il pallino è giallo
-                    <span class="inline-block rounded-full w-2 h-2 animate-ping bg-yellow-500 mr-1 mx-0.5"></span>
-                    se l'autobus non ha trasmesso aggiornamenti negli ultimi 5 minuti.
-                </div>
+                <div class="mt-6 flex flex-col items-start gap-y-3">
+                    <NuxtLink class="px-3 py-1 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" to="/">
+                        🚍 Lista fermate autobus
+                    </NuxtLink>
 
-                <div class="mt-2">La pagina si aggiorna automaticamente ogni 30 secondi.</div>
+                    <NuxtLink class="px-3 py-1 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" to="/treni">
+                        🚆 Lista stazioni treni
+                    </NuxtLink>
 
-                <div class="mt-3">
-                    <NuxtLink to="/">Lista fermate (autobus)</NuxtLink>
-                    -
-                    <NuxtLink to="/treni">Lista stazioni (treni)</NuxtLink>
-                    -
-                    <NuxtLink to="/info">Informazioni</NuxtLink>
+                    <NuxtLink class="px-3 py-1 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" to="/info">
+                        ℹ️ Informazioni
+                    </NuxtLink>
                 </div>
             </footer>
         </template>

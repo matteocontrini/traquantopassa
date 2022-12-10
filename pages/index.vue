@@ -107,8 +107,10 @@ await checkGeo();
             </div>
         </main>
 
-        <footer class="mb-10 mt-14 text-neutral-500 text-sm text-center">
-            <NuxtLink to="/info">Informazioni</NuxtLink>
+        <footer class="mb-12 mt-14 text-center">
+            <NuxtLink class="px-3 py-2 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" to="/info">
+                ℹ️ Informazioni
+            </NuxtLink>
         </footer>
     </div>
 </template>

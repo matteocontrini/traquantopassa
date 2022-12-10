@@ -149,32 +149,40 @@ await loadStation();
                 <div v-if="data.trains.length === 0" class="text-center">Nessun treno previsto</div>
             </main>
 
-            <footer class="my-12 text-neutral-500 text-sm">
-                <div>
-                    Dati RFI. I dati si riferiscono alle partenze. La granularità dei ritardi è di 5 minuti. I dati
-                    sugli autobus sostitutivi non sono sempre affidabili, verifica sugli orari.
+            <footer class="my-12">
+                <div class="text-sm text-neutral-500">
+                    <div>
+                        Dati RFI. I dati si riferiscono alle partenze. La granularità dei ritardi è di 5 minuti. I dati
+                        sugli autobus sostitutivi non sono sempre affidabili, verifica sugli orari.
+                    </div>
+
+                    <div class="mt-2">
+                        <span class="inline-block w-5">
+                            <span class="animate-blink block rounded-full w-2 h-2 bg-white"></span>
+                        </span>
+                        indica che il treno è in partenza.
+                    </div>
+
+                    <div class="mt-2">
+                        ⚠️ indica che i dettagli sul treno cancellato sono temporaneamente non disponibili (il treno
+                        potrebbe essere sostituito da bus).
+                    </div>
+
+                    <div class="mt-2">La pagina si aggiorna automaticamente ogni 30 secondi.</div>
                 </div>
 
-                <div class="mt-2">
-                    <span class="inline-block w-5">
-                        <span class="animate-blink block rounded-full w-2 h-2 bg-white"></span>
-                    </span>
-                    indica che il treno è in partenza.
-                </div>
+                <div class="mt-6 flex flex-col items-start gap-y-3">
+                    <NuxtLink class="px-3 py-1 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" to="/">
+                        🚍 Lista fermate autobus
+                    </NuxtLink>
 
-                <div class="mt-2">
-                    ⚠️ indica che i dettagli sul treno cancellato sono temporaneamente non disponibili (il treno
-                    potrebbe essere sostituito da bus).
-                </div>
+                    <NuxtLink class="px-3 py-1 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" to="/treni">
+                        🚆 Lista stazioni treni
+                    </NuxtLink>
 
-                <div class="mt-2">La pagina si aggiorna automaticamente ogni 30 secondi.</div>
-
-                <div class="mt-3">
-                    <NuxtLink to="/treni">Lista stazioni (treni)</NuxtLink>
-                    -
-                    <NuxtLink to="/">Lista fermate (autobus)</NuxtLink>
-                    -
-                    <NuxtLink to="/info">Informazioni</NuxtLink>
+                    <NuxtLink class="px-3 py-1 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" to="/info">
+                        ℹ️ Informazioni
+                    </NuxtLink>
                 </div>
             </footer>
         </template>
