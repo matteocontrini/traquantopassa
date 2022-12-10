@@ -24,9 +24,7 @@ function readStopSlug() {
 }
 
 async function loadStop() {
-    let response = useLazyFetch<StopResponse>(() => `/api/stops/${stopSlug}`, {
-        initialCache: false,
-    });
+    let response = useLazyFetch<StopResponse>(() => `/api/stops/${stopSlug}`);
 
     refreshData = response.refresh;
 

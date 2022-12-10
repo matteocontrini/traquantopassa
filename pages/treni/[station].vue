@@ -22,9 +22,7 @@ function readStationSlug() {
 }
 
 async function loadStation() {
-    let response = useLazyFetch<StationsResponse>(() => `/api/stations/${stationSlug}`, {
-        initialCache: false,
-    });
+    let response = useLazyFetch<StationsResponse>(() => `/api/stations/${stationSlug}`);
 
     refreshData = response.refresh;
 
