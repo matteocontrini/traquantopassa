@@ -6,7 +6,7 @@ It also takes into consideration delays based on real-time data, for both buses 
 
 It's currently hosted on [traquantopassa.in](https://traquantopassa.in).
 
-The application was built with the Nuxt 3 (release candidate) framework. 
+The application was built with the Nuxt 3 framework. 
 
 ## Development
 
