@@ -14,6 +14,8 @@ enum ResponseError {
 let stopSlug: string;
 const isLoading = ref(true);
 let data = ref<StopResponse | null>(null);
+let stopName = ref('');
+let trainSlug = ref<string | null>(null);
 let error = ref<ResponseError | null>(null);
 let refreshData: Function;
 let timer: NodeJS.Timer;
@@ -42,6 +44,10 @@ async function loadStop() {
                     } else if (err.response.status === 503) {
                         error.value = ResponseError.NotMyFault;
                     }
+
+                    if (error.value != ResponseError.NotFound) {
+                        loadStopInfo();
+                    }
                 }
             }
         } else {
@@ -58,12 +64,29 @@ async function loadStop() {
                 title: data.value.stopName,
             });
 
+            stopName.value = data.value.stopName;
+            trainSlug.value = data.value.trainSlug;
+
             // Initial loading finished
             if (isLoading.value) {
                 isLoading.value = false;
                 // Start refresh timer
                 timer = startRefreshTimer();
             }
+        }
+    });
+}
+
+async function loadStopInfo() {
+    let response = useLazyFetch<StopInfoResponse>(() => `/api/stops/${stopSlug}/info`);
+
+    watch(response.data, () => {
+        if (response.data.value) {
+            stopName.value = response.data.value.stopName;
+            trainSlug.value = response.data.value.trainSlug;
+            useHead({
+                title: stopName.value,
+            });
         }
     });
 }
@@ -102,6 +125,20 @@ await loadStop();
 
 <template>
     <div>
+        <header>
+            <h1 v-if="stopName" class="font-semibold text-center text-4xl">{{ stopName }}</h1>
+            <div v-if="data && data.lastUpdatedAt" class="mt-1 text-sm text-center">
+                aggiornato alle
+                {{
+                    new Date(data.lastUpdatedAt).toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                    })
+                }}
+            </div>
+            <Switch v-if="trainSlug" class="mt-6" :is-bus="true" :bus-slug="stopSlug" :train-slug="trainSlug" />
+        </header>
+
         <div v-if="isLoading" class="text-center">Caricamento...</div>
 
         <div v-else-if="error" class="text-center mt-12">
@@ -125,29 +162,9 @@ await loadStop();
 
             <FooterNavigation class="my-12" />
         </div>
+
         <template v-else-if="data">
-            <header>
-                <h1 class="font-semibold text-center text-4xl">{{ data.stopName }}</h1>
-                <div class="mt-1 text-sm text-center">
-                    aggiornato alle
-                    {{
-                        new Date(data.lastUpdatedAt).toLocaleTimeString([], {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                        })
-                    }}
-                </div>
-            </header>
-
             <main>
-                <Switch
-                    v-if="data.trainSlug"
-                    class="mt-6"
-                    :is-bus="true"
-                    :bus-slug="stopSlug"
-                    :train-slug="data.trainSlug"
-                />
-
                 <div v-for="direction in data.directions" class="mt-10">
                     <div class="w-fit mx-auto text-lg uppercase font-medium mb-4 text-center">
                         {{ direction.name }}

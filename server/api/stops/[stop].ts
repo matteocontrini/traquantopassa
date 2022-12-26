@@ -22,7 +22,7 @@ const client = axios.create({
 
 async function getData(stopId: number, limit: number = 5) {
     const path = `/gtlservice/trips_new?limit=${limit}&stopId=${stopId}&type=U`;
-    let start = Date.now();
+    const start = Date.now();
 
     try {
         const resp = await client.get(path);
