@@ -4,6 +4,7 @@ import axiosRetry from 'axios-retry';
 
 let routes: { [routeId: string]: Route };
 let stopRoutes: { [stopId: number]: Route[] };
+let isLoaded = false;
 
 const client = axios.create({
     baseURL: apiBaseUrl,
@@ -54,6 +55,8 @@ async function load() {
         const stopId: number = stop['stopId'];
         stopRoutes[stopId] = stop['routes'].map((route: any) => routes[route['routeId']]);
     }
+
+    isLoaded = true;
 }
 
 function fixRouteColor(routeShortName: string) {
@@ -71,4 +74,8 @@ function getRoutesForStop(stopId: number): Route[] {
     return stopRoutes[stopId];
 }
 
-export { load, getRoute, getRoutesForStop };
+function getIsLoaded() {
+    return isLoaded;
+}
+
+export { load, getRoute, getRoutesForStop, getIsLoaded };

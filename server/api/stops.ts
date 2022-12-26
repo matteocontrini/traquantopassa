@@ -1,9 +1,17 @@
 import { defineEventHandler } from 'h3';
 import stopsMapping from '~/server/stopsMapping';
-import { getRoutesForStop } from '~/server/routes';
+import { getIsLoaded, getRoutesForStop } from '~/server/routes';
 import StopDefinition from '~/server/StopDefinition';
 
 function getRoutesForStops(stops: StopDefinition[]): Route[] {
+    if (!getIsLoaded()) {
+        throw createError({
+            statusCode: 503,
+            name: 'Service Unavailable',
+            message: 'The service is temporarily unavailable',
+        })
+    }
+
     // Gather unique routes for all the stops
     const routes = new Set<Route>();
     for (const stop of stops) {
