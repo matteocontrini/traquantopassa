@@ -2,6 +2,7 @@
 import { onMounted, onUnmounted, ref, useHead, useLazyFetch, useRoute, watch } from '#imports';
 import Trip from '@/components/Trip.vue';
 import Switch from '~/components/Switch.vue';
+import FooterNavigation from '~/components/FooterNavigation.vue';
 
 enum ResponseError {
     NotFound = 1,
@@ -102,30 +103,27 @@ await loadStop();
 <template>
     <div>
         <div v-if="isLoading" class="text-center">Caricamento...</div>
-        <div v-else-if="error" class="text-center">
-            <template v-if="error === ResponseError.NotFound">
-                <p>Fermata non trovata</p>
-                <p>
-                    Puoi chiedere che venga aggiunta
-                    <a :href="`mailto:info@traquantopassa.in?subject=Richiesta fermata /${stopSlug}`">via email</a>.
-                </p>
-            </template>
-            <template v-else-if="error === ResponseError.NotMyFault">
-                <p>I dati di Trentino Trasporti non sono al momento disponibili 😕</p>
-                <p>Prova a ricaricare la pagina.</p>
-            </template>
-            <template v-else>
-                <p>Si è verificato un errore 😕</p>
-                <p>Prova a ricaricare la pagina.</p>
-            </template>
 
-            <div class="my-10 text-neutral-500 text-sm text-center">
-                <NuxtLink to="/">Lista fermate (autobus)</NuxtLink>
-                -
-                <NuxtLink to="/treni">Lista stazioni (treni)</NuxtLink>
-                -
-                <NuxtLink to="/info">Informazioni</NuxtLink>
+        <div v-else-if="error" class="text-center mt-12">
+            <div class="text-red-500">
+                <template v-if="error === ResponseError.NotFound">
+                    <p>Fermata non trovata</p>
+                    <p>
+                        Puoi chiedere che venga aggiunta
+                        <a :href="`mailto:info@traquantopassa.in?subject=Richiesta fermata /${stopSlug}`">via email</a>.
+                    </p>
+                </template>
+                <template v-else-if="error === ResponseError.NotMyFault">
+                    <p>I dati di Trentino Trasporti non sono al momento disponibili 😕</p>
+                    <p>Prova a ricaricare la pagina.</p>
+                </template>
+                <template v-else>
+                    <p>Si è verificato un errore 😕</p>
+                    <p>Prova a ricaricare la pagina. Se il problema persiste, contattaci.</p>
+                </template>
             </div>
+
+            <FooterNavigation class="my-12" />
         </div>
         <template v-else-if="data">
             <header>
@@ -176,19 +174,7 @@ await loadStop();
                     <div class="mt-2">La pagina si aggiorna automaticamente ogni 30 secondi.</div>
                 </div>
 
-                <div class="mt-6 flex flex-col items-start gap-y-3">
-                    <NuxtLink class="px-3 py-1 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" to="/">
-                        🚍 Lista fermate autobus
-                    </NuxtLink>
-
-                    <NuxtLink class="px-3 py-1 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" to="/treni">
-                        🚆 Lista stazioni treni
-                    </NuxtLink>
-
-                    <NuxtLink class="px-3 py-1 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" to="/info">
-                        ℹ️ Informazioni
-                    </NuxtLink>
-                </div>
+                <FooterNavigation class="mt-6" />
             </footer>
         </template>
     </div>

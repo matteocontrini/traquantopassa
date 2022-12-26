@@ -113,13 +113,7 @@ await loadStation();
                 <p>Prova a ricaricare la pagina.</p>
             </template>
 
-            <div class="my-10 text-neutral-500 text-sm text-center">
-                <NuxtLink to="/treni">Lista stazioni (treni)</NuxtLink>
-                -
-                <NuxtLink to="/">Lista fermate (autobus)</NuxtLink>
-                -
-                <NuxtLink to="/info">Informazioni</NuxtLink>
-            </div>
+            <FooterNavigation class="my-12" />
         </div>
         <template v-else-if="data">
             <header>
@@ -171,19 +165,7 @@ await loadStation();
                     <div class="mt-2">La pagina si aggiorna automaticamente ogni 30 secondi.</div>
                 </div>
 
-                <div class="mt-6 flex flex-col items-start gap-y-3">
-                    <NuxtLink class="px-3 py-1 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" to="/">
-                        🚍 Lista fermate autobus
-                    </NuxtLink>
-
-                    <NuxtLink class="px-3 py-1 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" to="/treni">
-                        🚆 Lista stazioni treni
-                    </NuxtLink>
-
-                    <NuxtLink class="px-3 py-1 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" to="/info">
-                        ℹ️ Informazioni
-                    </NuxtLink>
-                </div>
+                <FooterNavigation class="mt-6" />
             </footer>
         </template>
     </div>
