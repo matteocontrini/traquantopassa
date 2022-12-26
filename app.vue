@@ -19,7 +19,7 @@ useHead({
             src: 'https://gc.zgo.at/count.js',
             defer: true,
             tagPosition: 'bodyClose',
-            'data-goatcounter': 'https://traquanto.goatcounter.com/count',
+            'data-goatcounter': 'https://traquantopassa.goatcounter.com/count',
         },
     ],
 });
