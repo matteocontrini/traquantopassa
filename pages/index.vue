@@ -3,6 +3,7 @@ import { computed, ref, useFetch, useHead } from '#imports';
 
 /* State */
 const stops = ref<StopWithDistance[]>([]);
+const isError = ref<boolean>(false);
 const showSortButton = ref(false);
 const sortedStops = computed(() => stops.value.sort((a, b) => a.distance - b.distance));
 
@@ -11,6 +12,8 @@ async function loadStops() {
     const res = await useFetch<StopWithDistance[]>('/api/stops');
     if (res.data.value) {
         stops.value = res.data.value;
+    } else if (res.error.value) {
+        isError.value = true;
     }
 }
 
@@ -86,7 +89,13 @@ await checkGeo();
                 </div>
             </div>
 
-            <div class="mt-10 text-lg grid sm:grid-cols-2 gap-4">
+            <div v-if="isError" class="mt-10 text-center text-red-500">
+                <p>Si è verificato un errore. Ricarica la pagina per riprovare.</p>
+
+                <p>Se il problema persiste, contattaci.</p>
+            </div>
+
+            <div v-if="stops.length" class="mt-10 text-lg grid sm:grid-cols-2 gap-4">
                 <NuxtLink
                     :to="`/${stop.slug}`"
                     v-for="stop in sortedStops"
