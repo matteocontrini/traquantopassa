@@ -126,6 +126,7 @@ await loadStop();
 <template>
     <div>
         <header>
+            <Banner />
             <h1 v-if="stopName" class="font-semibold text-center text-4xl">{{ stopName }}</h1>
             <div v-if="data && data.lastUpdatedAt" class="mt-1 text-sm text-center">
                 aggiornato alle
