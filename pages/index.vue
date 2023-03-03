@@ -71,7 +71,6 @@ await checkGeo();
 <template>
     <div>
         <header>
-            <Banner />
             <h1 class="font-semibold text-4xl">Tra quanto passa in...</h1>
             <div class="mt-2 text-neutral-500 text-lg">Città di Trento</div>
         </header>
