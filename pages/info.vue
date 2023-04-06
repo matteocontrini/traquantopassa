@@ -1,9 +1,17 @@
 <script setup lang="ts">
-import { useHead } from '#imports';
+import { ref, useFetch, useHead } from '#imports';
+import Stats from '~/server/api/stats';
+
+const count = ref(0);
 
 useHead({
     title: 'Tra quanto passa',
 });
+
+const res = await useFetch<Stats>('/api/stats');
+if (res.data.value) {
+    count.value = res.data.value.count;
+}
 </script>
 
 <template>
@@ -42,6 +50,13 @@ useHead({
             <p>
                 Il codice sorgente è pubblicato
                 <a target="_blank" href="https://github.com/matteocontrini/traquantopassa">su GitHub</a>.
+            </p>
+
+            <p v-if="count">
+                Visitatori oggi:
+                <span class="font-bold font-mono">
+                    {{ count }}
+                </span>
             </p>
 
             <p class="mt-10">

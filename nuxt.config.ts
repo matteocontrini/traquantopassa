@@ -26,6 +26,7 @@ export default defineNuxtConfig({
         apiBaseUrl: '',
         apiUsername: '',
         apiPassword: '',
+        goatcounterToken: '',
     },
     ssr: false,
     sitemap: {
