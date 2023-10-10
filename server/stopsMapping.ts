@@ -201,6 +201,14 @@ const stopsMapping: { [key: string]: StopsGroup } = {
             new StopDefinition(275, '» Sud')
         ],
         [46.07123370184171, 11.12641307192195]
+    ),
+    maccanirotatoria: new StopsGroup(
+        'Via Maccani - Rotatoria',
+        [
+            new StopDefinition(360, '» Sud'),
+            new StopDefinition(370, '» Nord')
+        ],
+        [46.082459, 11.1142112]
     )
 };
 
