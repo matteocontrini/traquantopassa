@@ -6,7 +6,7 @@ const stations: { [key: string]: StationDefinition } = {
     trentofs: new StationDefinition(
         'Trento FS',
         2912,
-        [46.06535630630152, 11.14263561042483],
+        [46.07224810063012, 11.119214853916196],
         'Ferrovia del Brennero/Valsugana',
         'stazione',
     ),
