@@ -213,7 +213,7 @@ const stopsMapping: { [key: string]: StopsGroup } = {
     sandona: new StopsGroup(
         'San Donà',
         [
-            new StopDefinition(219, '» Trento Centro'),
+            new StopDefinition(219, '» Centro'),
             new StopDefinition(222, '» Villamontagna')
         ],
         [46.071135, 11.138812]
