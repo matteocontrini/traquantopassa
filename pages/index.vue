@@ -3,12 +3,12 @@ import { computed, ref, useFetch, useHead } from '#imports';
 
 /* State */
 const stops = ref<StopWithDistance[]>([]);
+const routes = ref<Route[]>([]);
 const isError = ref<boolean>(false);
 const showSortButton = ref(false);
 const sortedStops = computed(() => stops.value.toSorted((a, b) => a.distance - b.distance));
 
 const search = ref('');
-const routes = ref<Route[]>([]);
 const selectedRoutes = ref('');
 const filterSortedStops = computed(() => {
     if (!search && (!selectedRoutes || selectedRoutes.value === '')) {
@@ -39,21 +39,16 @@ function onRouteChange(e: Event) {
     selectedRoutes.value = target.value;
 }
 
-
-async function loadRoutes() {
-    const res = await useFetch<Route[]>('/api/routes');
-    if (res.data.value) {
-        routes.value = res.data.value;
-    } else if (res.error.value) {
-        isError.value = true;
-    }
-}
-
 /* Methods */
 async function loadStops() {
     const res = await useFetch<StopWithDistance[]>('/api/stops');
     if (res.data.value) {
         stops.value = res.data.value;
+        // Extract routes from stops, remove duplicates and sort by name
+        routes.value = stops.value
+            .flatMap((stop) => stop.routes)
+            .filter((route, index, self) => self.findIndex((r) => r.name === route.name) === index)
+            .sort((a, b) => a.name.localeCompare(b.name));
     } else if (res.error.value) {
         isError.value = true;
     }
@@ -108,7 +103,6 @@ function updateHead() {
 updateHead();
 await loadStops();
 await checkGeo();
-await loadRoutes();
 </script>
 
 <template>

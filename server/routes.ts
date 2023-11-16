@@ -70,10 +70,6 @@ function getRoute(routeId: string): Route {
     return routes[routeId];
 }
 
-function getAllRoutes(): Route[] {
-    return Object.values(routes);
-}
-
 function getRoutesForStop(stopId: number): Route[] {
     return stopRoutes[stopId];
 }
@@ -82,4 +78,4 @@ function getIsLoaded() {
     return isLoaded;
 }
 
-export { load, getRoute, getRoutesForStop, getIsLoaded, getAllRoutes };
+export { load, getRoute, getRoutesForStop, getIsLoaded };
