@@ -29,15 +29,6 @@ const filterSortedStops = computed(() => {
                 stop.routes.some((route) => selectedRoutes.value.includes(route.name)));
     }
 });
-// Event Handler
-function okKeyDown(e: Event) {
-    const target = e.target as HTMLInputElement;
-    search.value = target.value;
-}
-function onRouteChange(e: Event) {
-    const target = e.target as HTMLSelectElement;
-    selectedRoutes.value = target.value;
-}
 
 /* Methods */
 async function loadStops() {
@@ -131,12 +122,10 @@ await checkGeo();
                     placeholder="🔍 Cerca fermata..."
                     class="basis-9/12 shrink min-w-0 h-8 pl-3 rounded-md bg-neutral-800 text-neutral-100 focus:outline focus:outline-2 focus:outline-neutral-700"
                     v-model="search"
-                    @keydown="okKeyDown"
                 />
                 <select
                     class="basis-4/12 xs:shrink-0 xs:basis-[190px] h-8 px-3 rounded-md bg-neutral-800"
                     v-model="selectedRoutes"
-                    @change="onRouteChange"
                 >
                     <option value="">🚏 Linea</option>
                     <option v-for="route in routes" :value="route.name">
