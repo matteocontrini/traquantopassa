@@ -8,11 +8,11 @@ defineProps<{
 </script>
 
 <template>
-    <div class="flex text-sm gap-x-2"
+    <div class="flex gap-x-2"
     :class="[`justify-${align || 'center'}`]">
         <NuxtLink
             :to="`/${busSlug}`"
-            class="cursor-pointer px-3 py-1 rounded-md no-underline"
+            class="h-8 px-3 flex items-center rounded-md no-underline cursor-pointer"
             :class="{
                 'bg-neutral-100': isBus,
                 'hover:bg-neutral-200': isBus,
@@ -26,7 +26,7 @@ defineProps<{
         </NuxtLink>
         <NuxtLink
             :to="`/treni/${trainSlug}`"
-            class="cursor-pointer px-3 py-1 rounded-md no-underline"
+            class="h-8 px-3 flex items-center rounded-md no-underline cursor-pointer"
             :class="{
                 'bg-neutral-100': !isBus,
                 'hover:bg-neutral-200': !isBus,
