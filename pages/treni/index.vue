@@ -74,15 +74,15 @@ await checkGeo();
         </header>
 
         <main>
-            <div class="mt-8 flex justify-between sm:flex-row flex-col gap-y-4">
-                <Switch class="text-base" :is-bus="false" bus-slug="" train-slug="" align="left" />
+            <div class="mt-8 flex justify-between sm:flex-row flex-col gap-y-4 text-mid">
+                <Switch :is-bus="false" bus-slug="" train-slug="" align="left" />
 
                 <div v-if="showSortButton">
                     <button
                         @click="sortByPosition"
-                        class="cursor-pointer bg-neutral-800 hover:bg-neutral-700 px-3 py-1 rounded-md"
+                        class="h-8 flex items-center cursor-pointer bg-neutral-800 hover:bg-neutral-700 px-3 rounded-md"
                     >
-                        Ordina per vicinanza
+                        📍 Ordina per vicinanza
                     </button>
                 </div>
             </div>

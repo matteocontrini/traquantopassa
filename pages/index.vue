@@ -119,44 +119,36 @@ await loadRoutes();
         </header>
 
         <main>
-            <div class="mt-8 flex justify-between sm:flex-row flex-col gap-y-4">
-                <Switch class="text-base" :is-bus="true" bus-slug="" train-slug="" align="left" />
+            <div class="mt-8 flex justify-between xs:flex-row flex-col gap-2 text-mid">
+                <Switch :is-bus="true" bus-slug="" train-slug="" align="left" />
 
-                <div v-if="showSortButton">
-                    <button
-                        @click="sortByPosition"
-                        class="cursor-pointer bg-neutral-800 hover:bg-neutral-700 px-3 py-1 rounded-md"
-                    >
-                        Ordina per vicinanza
-                    </button>
-                </div>
+                <button
+                    v-if="showSortButton"
+                    @click="sortByPosition"
+                    class="h-8 flex items-center justify-center xs:basis-[190px] bg-neutral-800 hover:bg-neutral-700 px-3 rounded-md text-ellipsis whitespace-nowrap overflow-hidden"
+                >
+                    📍 Ordina per vicinanza
+                </button>
             </div>
 
-            <div class="mt-2 grid grid-cols-12 gap-4">
-                <div class="flex flex-col gap-y-2 col-span-12 sm:col-span-8">
-                    <label for="search" class="text-base">Cerca fermata </label>
-                    <input
-                        type="text"
-                        id="search"
-                        v-model="search"
-                        class="px-3 py-1 rounded-md bg-neutral-800 text-neutral-100"
-                        @keydown="okKeyDown"
-                    />
-                </div>
-                <div class="flex flex-col gap-y-2 col-span-12 sm:col-span-4">
-                    <label for="routes" class="text-base">Filtra per linea </label>
-                    <select
-                        id="routes"
-                        v-model="selectedRoutes"
-                        class="px-3 py-1 rounded-md bg-neutral-800 text-neutral-100"
-                        @change="onRouteChange"
-                    >
-                        <option value="">Tutte</option>
-                        <option v-for="route in routes" :value="route.name">
-                            {{ route.name }}
-                        </option>
-                    </select>
-                </div>
+            <div class="mt-2 flex flex-row gap-2 text-mid">
+                <input
+                    type="search"
+                    placeholder="🔍 Cerca fermata..."
+                    class="basis-9/12 shrink min-w-0 h-8 pl-3 rounded-md bg-neutral-800 text-neutral-100 focus:outline focus:outline-2 focus:outline-neutral-700"
+                    v-model="search"
+                    @keydown="okKeyDown"
+                />
+                <select
+                    class="basis-4/12 xs:shrink-0 xs:basis-[190px] h-8 px-3 rounded-md bg-neutral-800"
+                    v-model="selectedRoutes"
+                    @change="onRouteChange"
+                >
+                    <option value="">🚏 Linea</option>
+                    <option v-for="route in routes" :value="route.name">
+                        {{ route.name }}
+                    </option>
+                </select>
             </div>
             <div v-if="isError" class="mt-10 text-center text-red-500">
                 <p>Si è verificato un errore. Ricarica la pagina per riprovare.</p>
