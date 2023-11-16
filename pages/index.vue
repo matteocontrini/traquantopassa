@@ -32,8 +32,7 @@ async function loadStops() {
         routes.value = stops.value
             .flatMap((stop) => stop.routes)
             .filter((route, index, self) => self.findIndex((r) => r.name === route.name) === index)
-            // TODO: fix sorting
-            .sort((a, b) => a.name.localeCompare(b.name));
+            .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
     } else if (res.error.value) {
         isError.value = true;
     }
