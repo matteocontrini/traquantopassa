@@ -6,7 +6,7 @@ const stops = ref<StopWithDistance[]>([]);
 const routes = ref<Route[]>([]);
 const isError = ref<boolean>(false);
 const showSortButton = ref(false);
-const sortedStops = computed(() => stops.value.toSorted((a, b) => a.distance - b.distance));
+const sortedStops = computed(() => [...stops.value].sort((a, b) => a.distance - b.distance));
 
 const search = ref('');
 const selectedRoutes = ref('');
