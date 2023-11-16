@@ -6,28 +6,21 @@ const stops = ref<StopWithDistance[]>([]);
 const routes = ref<Route[]>([]);
 const isError = ref<boolean>(false);
 const showSortButton = ref(false);
-const sortedStops = computed(() => [...stops.value].sort((a, b) => a.distance - b.distance));
+const searchTerm = ref('');
+const selectedRoute = ref('');
+const filteredStops = computed(() => {
+    // Sort stops by distance (copy to avoid mutating the original array)
+    const sortedStops = [...stops.value].sort((a, b) => a.distance - b.distance);
 
-const search = ref('');
-const selectedRoutes = ref('');
-const filterSortedStops = computed(() => {
-    if (!search && (!selectedRoutes || selectedRoutes.value === '')) {
-        return sortedStops.value;
-    }
-    else if (!selectedRoutes || selectedRoutes.value === ''){
-        return sortedStops.value.filter((stop) => 
-            stop.name.toLowerCase().includes(search.value.toLowerCase()) ||
-                stop.slug.toLowerCase().includes(search.value.toLowerCase()));
-    }else if (!search){
-        return sortedStops.value.filter((stop) => 
-            stop.routes.some((route) => selectedRoutes.value.includes(route.name)));
-    }else{
-        return sortedStops.value.filter((stop) => 
-            stop.name.toLowerCase().includes(search.value.toLowerCase()) ||
-                stop.slug.toLowerCase().includes(search.value.toLowerCase()))
-            .filter((stop) => 
-                stop.routes.some((route) => selectedRoutes.value.includes(route.name)));
-    }
+    return sortedStops.filter(
+        (stop) =>
+            // Filter by route. Evaluates to true if no route is selected
+            (selectedRoute.value == '' || stop.routes.some((route) => selectedRoute.value == route.name)) &&
+            // Filter by search term on both name and slug. Evaluates to true if no search term is present
+            (searchTerm.value == '' ||
+                stop.name.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
+                stop.slug.toLowerCase().includes(searchTerm.value.toLowerCase()))
+    );
 });
 
 /* Methods */
@@ -39,6 +32,7 @@ async function loadStops() {
         routes.value = stops.value
             .flatMap((stop) => stop.routes)
             .filter((route, index, self) => self.findIndex((r) => r.name === route.name) === index)
+            // TODO: fix sorting
             .sort((a, b) => a.name.localeCompare(b.name));
     } else if (res.error.value) {
         isError.value = true;
@@ -121,11 +115,11 @@ await checkGeo();
                     type="search"
                     placeholder="🔍 Cerca fermata..."
                     class="basis-9/12 shrink min-w-0 h-8 pl-3 rounded-md bg-neutral-800 text-neutral-100 focus:outline focus:outline-2 focus:outline-neutral-700"
-                    v-model="search"
+                    v-model="searchTerm"
                 />
                 <select
                     class="basis-4/12 xs:shrink-0 xs:basis-[190px] h-8 px-3 rounded-md bg-neutral-800"
-                    v-model="selectedRoutes"
+                    v-model="selectedRoute"
                 >
                     <option value="">🚏 Linea</option>
                     <option v-for="route in routes" :value="route.name">
@@ -142,7 +136,7 @@ await checkGeo();
             <div v-if="stops.length" class="mt-10 text-lg grid sm:grid-cols-2 gap-4">
                 <NuxtLink
                     :to="`/${stop.slug}`"
-                    v-for="stop in filterSortedStops"
+                    v-for="stop in filteredStops"
                     class="bg-neutral-800 rounded-lg px-4 pt-2 pb-4 no-underline"
                 >
                     {{ stop.name }}
