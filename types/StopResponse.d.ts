@@ -1,4 +1,5 @@
 declare interface StopResponse {
+    coordinates: number[];
     stopName: string;
     lastUpdatedAt: string;
     trainSlug: string | null;

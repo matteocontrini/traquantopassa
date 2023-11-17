@@ -7,7 +7,9 @@ import axios, { AxiosResponse } from 'axios';
 import { apiAuthHeader, apiBaseUrl } from '~/server/config';
 
 const OUTDATED_DATA_THRESHOLD = 1000 * 60 * 5;
-const CACHE_DURATION = 1000 * 30;
+const CACHE_DURATION = 1000 * 29;   // 29 instead of 30 seconds to avoid situations where desync causes the infomration to not update correctly after 30 seconds on the client
+const DATA_LIMIT_DEFAULT = 5;
+const DATA_LIMIT_DETAIL = 20;
 
 const client = axios.create({
     baseURL: apiBaseUrl,
@@ -20,7 +22,7 @@ const client = axios.create({
     },
 });
 
-async function getData(stopId: number, limit: number = 5) {
+async function getData(stopId: number, limit: number = DATA_LIMIT_DEFAULT) {
     const path = `/gtlservice/trips_new?limit=${limit}&stopId=${stopId}&type=U`;
     const start = Date.now();
 
@@ -124,6 +126,11 @@ function parseTrips(stopId: number, data: any): Trip[] {
 
 export default defineEventHandler(async (event) => {
     const stopSlug = event.context.params.stop;
+    
+    const queryParams = getQuery(event);
+    let detail:number = parseInt(queryParams['d'],10); // Algorab flashbacks 
+
+    
     const stopsGroup: StopsGroup = stopsMapping[stopSlug];
 
     if (!stopsGroup) {
@@ -134,34 +141,64 @@ export default defineEventHandler(async (event) => {
         });
     }
 
+    if ( detail <= stopsGroup.stops.length )  // check validity of detail parameter
+        detail = detail - 1;            
+    else                                                    
+        detail = -1;                    // if invalid detail = -1 will be ignored
+
     let directions: { name: string; trips: Trip[] }[] = [];
 
-    if (!stopsGroup.lastUpdatedAt || Date.now() - stopsGroup.lastUpdatedAt.getTime() > CACHE_DURATION) {
-        const promises = stopsGroup.stops.map((stop) => getData(stop.stopId, stop.limit));
+    
+    let cacheIsValid:boolean = !!stopsGroup.lastUpdatedAt && Date.now() - stopsGroup.lastUpdatedAt.getTime() > CACHE_DURATION
+
+    if (cacheIsValid && detail >= 0) {
+        const { stops } = stopsGroup;
+        const tripsCache = stops[detail].tripsCache;
+        const cacheLength = tripsCache.length;
+    
+        const limit = stops[detail]?.limit || DATA_LIMIT_DEFAULT;
+        //if the number of entries in the cache is equal to the limit, the cache is not valid for the detail
+        //when there is less this means there aren't enough busses planned for the day so don't bother updating
+        cacheIsValid = cacheLength !== limit;
+    }
+
+    
+    if (!cacheIsValid) {
+        const promises = stopsGroup.stops.map((stop) => getData(stop.stopId, detail<0?stop.limit:DATA_LIMIT_DETAIL));  //if requestig detail increase limit 
         const results = await Promise.all(promises);
         for (let i = 0; i < results.length; i++) {
             const stop: StopDefinition = stopsGroup.stops[i];
             let trips = parseTrips(stop.stopId, results[i]);
             trips.sort((a, b) => a.minutes - b.minutes);
-            directions.push({
-                name: stop.name,
-                trips,
-            });
+            if (detail < 0 || i == detail ) // if detail only send that specific request, otherwise send all
+                directions.push({
+                    name: stop.name,
+                    trips,
+                });
             stop.tripsCache = trips;
         }
         stopsGroup.lastUpdatedAt = new Date();
     } else {
-        for (let i = 0; i < stopsGroup.stops.length; i++) {
-            const stop = stopsGroup.stops[i];
+        if (detail < 0){
+            for (let i = 0; i < stopsGroup.stops.length; i++) {
+                const stop = stopsGroup.stops[i];
+                directions.push({
+                    name: stop.name,
+                    trips: stop.tripsCache.slice(0,stop.limit?stop.limit:DATA_LIMIT_DEFAULT), //ignore potential extra results in cache from detail
+                });
+            }
+        } else {
+            const stop = stopsGroup.stops[detail];
             directions.push({
                 name: stop.name,
-                trips: stop.tripsCache,
+                trips: stop.tripsCache
             });
         }
     }
 
     return {
         stopName: stopsGroup.name,
+        coordinates: stopsGroup.coordinates,
         lastUpdatedAt: stopsGroup.lastUpdatedAt.toISOString(),
         directions,
         trainSlug: stopsGroup.trainSlug,

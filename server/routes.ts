@@ -60,10 +60,13 @@ async function load() {
 }
 
 function fixRouteColor(routeShortName: string) {
-    if (routeShortName === '5/') {
+    if (routeShortName === '5/')
         return '#F5C500';
-    }
-    return '#000000';
+    if (routeShortName === 'CM') //custom colors for CM and P because TT used the same as for 5 and 3 and forgot to put them in the API
+        return '#b58e1a';
+    if (routeShortName === 'P')
+        return '#570300';
+    return '#2b2b2b';
 }
 
 function getRoute(routeId: string): Route {

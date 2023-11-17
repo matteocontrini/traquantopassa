@@ -101,17 +101,23 @@ await loadStation();
     <div>
         <div v-if="isLoading" class="text-center">Caricamento...</div>
         <div v-else-if="error" class="text-center">
-            <template v-if="error === ResponseError.NotFound">
-                <p>Stazione ferroviaria non trovata</p>
-            </template>
-            <template v-else-if="error === ResponseError.NotMyFault">
-                <p>I dati sui treni non sono al momento disponibili 😕</p>
-                <p>Prova a ricaricare la pagina.</p>
-            </template>
-            <template v-else>
-                <p>Si è verificato un errore 😕</p>
-                <p>Prova a ricaricare la pagina.</p>
-            </template>
+            <div class="text-red-500">
+                <template v-if="error === ResponseError.NotFound">
+                    <p>Stazione ferroviaria non trovata</p>
+                    <p>
+                        Puoi chiedere che venga aggiunta
+                        <a :href="`mailto:info@traquantopassa.in?subject=Richiesta stazione /${stationSlug}`">via email</a>.
+                    </p>
+                </template>
+                <template v-else-if="error === ResponseError.NotMyFault">
+                    <p>I dati sui treni non sono al momento disponibili 😕</p>
+                    <p>Prova a ricaricare la pagina.</p>
+                </template>
+                <template v-else>
+                    <p>Si è verificato un errore 😕</p>
+                    <p>Prova a ricaricare la pagina. Se il problema persiste, contattaci.</p>
+                </template>
+            </div>
 
             <FooterNavigation class="my-12" />
         </div>
@@ -127,6 +133,10 @@ await loadStation();
                         })
                     }}
                 </div>
+                
+            <div v-if="data" class="mt-1 text-sm text-center">
+                <a :href =  "`https://www.google.com/maps/place/${data.coordinates}`">📍 GoogleMaps </a>
+            </div>
             </header>
 
             <main>

@@ -187,6 +187,7 @@ export default defineEventHandler(async (event) => {
     }
 
     return {
+        coordinates: station.coordinates,
         stationName: station.name,
         lastUpdatedAt: station.lastUpdatedAt.toISOString(),
         trains: station.trainsCache.slice(0, LIMIT),
