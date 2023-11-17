@@ -180,7 +180,7 @@ await loadStop();
                     </div>
                     <Trip v-for="trip in direction.trips" :trip="trip" />
 
-                    <div v-if="!/\?d=([1-9])/.test(stopFullPath)" class="mt-1 text-sm text-center">
+                    <div v-if="!/\?d=([1-9])/.test(stopFullPath) && direction.trips.length>=5" class="mt-1 text-sm text-center">
                         <br>
                         <a :href =  "`/${stopSlug}?d=${index+1}`">Mostra ancora..</a>
                     </div>
