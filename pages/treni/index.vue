@@ -8,6 +8,21 @@ const stations = ref<StationWithDistance[]>([]);
 const showSortButton = ref(false);
 const sortedStations = computed(() => stations.value.sort((a, b) => a.distance - b.distance));
 
+const searchTerm = ref('');
+const filteredStations= computed(() => {
+    // Sort stops by distance (copy to avoid mutating the original array)
+    const sortedStops = [...stations.value].sort((a, b) => a.distance - b.distance);
+
+    return sortedStops.filter(
+        (stop) =>
+            // Filter by search term on both name and slug. Evaluates to true if no search term is present
+            (searchTerm.value == '' ||
+                stop.name.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
+                stop.slug.toLowerCase().includes(searchTerm.value.toLowerCase()))
+    );
+});
+
+
 /* Methods */
 async function loadStations() {
     const res = await useFetch<StationWithDistance[]>('/api/stations');
@@ -77,19 +92,27 @@ await checkGeo();
             <div class="mt-8 flex justify-between sm:flex-row flex-col gap-y-4 text-mid">
                 <Switch :is-bus="false" bus-slug="" train-slug="" align="left" />
 
-                <div v-if="showSortButton">
-                    <button
-                        @click="sortByPosition"
-                        class="h-8 flex items-center cursor-pointer bg-neutral-800 hover:bg-neutral-700 px-3 rounded-md"
-                    >
-                        📍 Ordina per vicinanza
-                    </button>
-                </div>
+                <button
+                    v-if="showSortButton"
+                    @click="sortByPosition"
+                    class="h-8 flex items-center justify-center xs:basis-[190px] bg-neutral-800 hover:bg-neutral-700 px-3 rounded-md text-ellipsis whitespace-nowrap overflow-hidden"
+                >
+                    📍 Ordina per vicinanza
+                </button>
+            </div>
+
+            <div class="mt-2 flex flex-row gap-2 text-mid">
+                <input
+                    type="search"
+                    placeholder="🔍 Cerca stazione..."
+                    class="basis-9/12 shrink min-w-0 h-8 pl-3 rounded-md bg-neutral-800 text-neutral-100 focus:outline focus:outline-2 focus:outline-neutral-700"
+                    v-model="searchTerm"
+                />
             </div>
 
             <div class="mt-10 text-lg grid grid-cols-2 gap-4">
                 <NuxtLink
-                    v-for="station in sortedStations"
+                    v-for="station in filteredStations"
                     :to="`/treni/${station.slug}`"
                     class="flex flex-col no-underline bg-neutral-800 rounded-lg px-4 pt-2 pb-3"
                 >
