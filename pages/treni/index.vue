@@ -86,6 +86,7 @@ await checkGeo();
     <div>
         <header>
             <h1 class="font-semibold text-4xl">Tra quanto passa in...</h1>
+            <div class="mt-2 text-neutral-500 text-lg">Trentino e Dintorni</div>
         </header>
 
         <main>
@@ -105,7 +106,7 @@ await checkGeo();
                 <input
                     type="search"
                     placeholder="🔍 Cerca stazione..."
-                    class="basis-9/12 shrink min-w-0 h-8 pl-3 rounded-md bg-neutral-800 text-neutral-100 focus:outline focus:outline-2 focus:outline-neutral-700"
+                    class="w-full h-8 pl-3 rounded-md bg-neutral-800 text-neutral-100 focus:outline focus:outline-2 focus:outline-neutral-700"
                     v-model="searchTerm"
                 />
             </div>
