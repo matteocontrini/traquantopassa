@@ -11,6 +11,13 @@ const stopsMapping: { [key: string]: StopsGroup } = {
         [46.071938002445414, 11.119560915153672],
         'trentofs'
     ),
+    palregione: new StopsGroup(
+        'Piazza Dante - Palazzo Regione',
+        [
+            new StopDefinition(202, '', 12)
+        ],
+        [46.07175969129938, 11.121396939608053],
+    ),
     valoni: new StopsGroup(
         'Povo - Via Valoni',
         [

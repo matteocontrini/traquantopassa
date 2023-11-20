@@ -146,54 +146,39 @@ export default defineEventHandler(async (event) => {
     else                                                    
         detail = -1;                    // if invalid detail = -1 will be ignored
 
-    let directions: { name: string; trips: Trip[] }[] = [];
+    let directions: { name: string; detailAvailable: boolean; trips: Trip[] }[] = [];
 
     
     let cacheIsValid:boolean = !!stopsGroup.lastUpdatedAt && Date.now() - stopsGroup.lastUpdatedAt.getTime() > CACHE_DURATION
-
-    if (cacheIsValid && detail >= 0) {
-        const { stops } = stopsGroup;
-        const tripsCache = stops[detail].tripsCache;
-        const cacheLength = tripsCache.length;
-    
-        const limit = stops[detail]?.limit || DATA_LIMIT_DEFAULT;
-        //if the number of entries in the cache is equal to the limit, the cache is not valid for the detail
-        //when there is less this means there aren't enough busses planned for the day so don't bother updating
-        cacheIsValid = cacheLength !== limit;
-    }
-
     
     if (!cacheIsValid) {
-        const promises = stopsGroup.stops.map((stop) => getData(stop.stopId, detail<0?stop.limit:DATA_LIMIT_DETAIL));  //if requestig detail increase limit 
+        const promises = stopsGroup.stops.map((stop) => getData(stop.stopId, DATA_LIMIT_DETAIL)); 
         const results = await Promise.all(promises);
         for (let i = 0; i < results.length; i++) {
             const stop: StopDefinition = stopsGroup.stops[i];
             let trips = parseTrips(stop.stopId, results[i]);
             trips.sort((a, b) => a.minutes - b.minutes);
-            if (detail < 0 || i == detail ) // if detail only send that specific request, otherwise send all
-                directions.push({
-                    name: stop.name,
-                    trips,
-                });
             stop.tripsCache = trips;
         }
         stopsGroup.lastUpdatedAt = new Date();
-    } else {
-        if (detail < 0){
-            for (let i = 0; i < stopsGroup.stops.length; i++) {
-                const stop = stopsGroup.stops[i];
-                directions.push({
-                    name: stop.name,
-                    trips: stop.tripsCache.slice(0,stop.limit?stop.limit:DATA_LIMIT_DEFAULT), //ignore potential extra results in cache from detail
-                });
-            }
-        } else {
-            const stop = stopsGroup.stops[detail];
+    } 
+
+    if (detail < 0){
+        for (let i = 0; i < stopsGroup.stops.length; i++) {
+            const stop = stopsGroup.stops[i];
             directions.push({
                 name: stop.name,
-                trips: stop.tripsCache
+                detailAvailable: stop.tripsCache.length > (stop.limit?stop.limit:DATA_LIMIT_DEFAULT),
+                trips: stop.tripsCache.slice(0,stop.limit?stop.limit:DATA_LIMIT_DEFAULT), //ignore potential extra results in cache from detail
             });
         }
+    } else {
+        const stop = stopsGroup.stops[detail];
+        directions.push({
+            name: stop.name,
+            detailAvailable: false,
+            trips: stop.tripsCache
+        });
     }
 
     return {
