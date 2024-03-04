@@ -218,6 +218,13 @@ const stopsMapping: { [key: string]: StopsGroup } = {
         ],
         [46.071135, 11.138812]
     ),
+    bezzifilzi: new StopsGroup(
+        'Via Bezzi - Via Filzi',
+        [
+            new StopDefinition(283, '', 10)
+        ],
+        [46.058483, 11.119231]
+    )
 };
 
 export default stopsMapping;
