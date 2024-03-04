@@ -121,7 +121,7 @@ await loadStation();
                 <div class="mt-1 text-sm text-center">
                     aggiornato alle
                     {{
-                        new Date(data.lastUpdatedAt).toLocaleTimeString([], {
+                        new Date(data.lastUpdatedAt).toLocaleTimeString(['it-IT'], {
                             hour: '2-digit',
                             minute: '2-digit',
                         })
