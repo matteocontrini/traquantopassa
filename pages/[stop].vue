@@ -3,6 +3,7 @@ import { onMounted, onUnmounted, ref, useHead, useLazyFetch, useRoute, watch } f
 import Trip from '@/components/Trip.vue';
 import Switch from '~/components/Switch.vue';
 import FooterNavigation from '~/components/FooterNavigation.vue';
+import Ads from '~/components/Ads.vue';
 
 enum ResponseError {
     NotFound = 1,
@@ -192,6 +193,8 @@ await loadStop();
                 </div>
 
                 <FooterNavigation class="mt-6" />
+
+                <Ads />
             </footer>
         </template>
     </div>

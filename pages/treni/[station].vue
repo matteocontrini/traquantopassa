@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, useHead, useLazyFetch, useRoute, watch } from '#imports';
+import Ads from '~/components/Ads.vue';
 
 enum ResponseError {
     NotFound = 1,
@@ -166,6 +167,8 @@ await loadStation();
                 </div>
 
                 <FooterNavigation class="mt-6" />
+
+                <Ads />
             </footer>
         </template>
     </div>
