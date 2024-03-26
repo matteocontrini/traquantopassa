@@ -13,6 +13,8 @@ enum ResponseError {
 
 /* State */
 let stopSlug: string;
+let stopFullPath: string;
+let stopDetail: LocationQuery;
 const isLoading = ref(true);
 let data = ref<StopResponse | null>(null);
 let stopName = ref('');
@@ -24,11 +26,14 @@ let timer: NodeJS.Timer;
 /* Methods */
 function readStopSlug() {
     const route = useRoute();
-    stopSlug = route.params.stop as string;
+    stopSlug = route.params.stop  as string;
+    stopFullPath = route.fullPath as string;
+    console.log(stopSlug)
+    console.log(stopFullPath)
 }
 
 async function loadStop() {
-    let response = useLazyFetch<StopResponse>(() => `/api/stops/${stopSlug}`);
+    let response = useLazyFetch<StopResponse>(() => `/api/stops${stopFullPath}`);
 
     refreshData = response.refresh;
 
@@ -79,7 +84,7 @@ async function loadStop() {
 }
 
 async function loadStopInfo() {
-    let response = useLazyFetch<StopInfoResponse>(() => `/api/stops/${stopSlug}/info`);
+    let response = useLazyFetch<StopInfoResponse>(() => `/api/stops${stopSlug}/info`);
 
     watch(response.data, () => {
         if (response.data.value) {
@@ -137,6 +142,10 @@ await loadStop();
                     })
                 }}
             </div>
+            <div v-if="data" class="mt-1 text-sm text-center">
+                <a :href =  "`https://www.google.com/maps/place/${data.coordinates}`">📍 GoogleMaps </a>
+            </div>
+            
             <Switch v-if="trainSlug" class="mt-6" :is-bus="true" :bus-slug="stopSlug" :train-slug="trainSlug" />
         </header>
 
@@ -166,11 +175,17 @@ await loadStop();
 
         <template v-else-if="data">
             <main>
-                <div v-for="direction in data.directions" class="mt-10">
+                <div v-for="(direction,index) in data.directions" class="mt-10">
                     <div class="w-fit mx-auto text-lg uppercase font-medium mb-4 text-center">
                         {{ direction.name }}
                     </div>
                     <Trip v-for="trip in direction.trips" :trip="trip" />
+
+                    <div v-if="direction.detailAvailable" class="mt-1 text-sm text-center">
+                        <br>
+                        <a :href =  "`/${stopSlug}?d=${index+1}`">Mostra ancora..</a>
+                    </div>
+
                     <div v-if="direction.trips.length === 0" class="text-center">Nessun autobus previsto per oggi</div>
                 </div>
             </main>
