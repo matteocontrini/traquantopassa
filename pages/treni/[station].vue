@@ -101,21 +101,29 @@ await loadStation();
 <template>
     <div>
         <div v-if="isLoading" class="text-center">Caricamento...</div>
+
         <div v-else-if="error" class="text-center">
-            <template v-if="error === ResponseError.NotFound">
-                <p>Stazione ferroviaria non trovata</p>
-            </template>
-            <template v-else-if="error === ResponseError.NotMyFault">
-                <p>I dati sui treni non sono al momento disponibili 😕</p>
-                <p>Prova a ricaricare la pagina.</p>
-            </template>
-            <template v-else>
-                <p>Si è verificato un errore 😕</p>
-                <p>Prova a ricaricare la pagina.</p>
-            </template>
+            <div class="text-red-500">
+                <template v-if="error === ResponseError.NotFound">
+                    <p>Stazione ferroviaria non trovata</p>
+                    <p>
+                        Puoi chiedere che venga aggiunta
+                        <a :href="`mailto:info@traquantopassa.in?subject=Richiesta stazione /${stationSlug}`">via email</a>.
+                    </p>
+                </template>
+                <template v-else-if="error === ResponseError.NotMyFault">
+                    <p>I dati sui treni non sono al momento disponibili 😕</p>
+                    <p>Prova a ricaricare la pagina.</p>
+                </template>
+                <template v-else>
+                    <p>Si è verificato un errore 😕</p>
+                    <p>Prova a ricaricare la pagina. Se il problema persiste, contattaci.</p>
+                </template>
+            </div>
 
             <FooterNavigation class="my-12" />
         </div>
+
         <template v-else-if="data">
             <header>
                 <h1 class="font-semibold text-center text-4xl">Stazione di {{ data.stationName }}</h1>
