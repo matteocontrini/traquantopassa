@@ -224,6 +224,13 @@ const stopsMapping: { [key: string]: StopsGroup } = {
             new StopDefinition(283, '', 10)
         ],
         [46.058483, 11.119231]
+    ),
+    palregione: new StopsGroup(
+        'Piazza Dante - Palazzo Regione',
+        [
+            new StopDefinition(202, '', 12)
+        ],
+        [46.07175969129938, 11.121396939608053]
     )
 };
 
