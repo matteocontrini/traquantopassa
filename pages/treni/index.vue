@@ -83,6 +83,7 @@ await checkGeo();
     <div>
         <header>
             <h1 class="font-semibold text-4xl">Tra quanto passa in...</h1>
+            <div class="mt-2 text-neutral-500 text-lg">Ferrovia del Brennero e della Valsugana</div>
         </header>
 
         <main>
