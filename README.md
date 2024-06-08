@@ -10,8 +10,38 @@ The application was built with the Nuxt 3 framework.
 
 ## Development
 
+Create a `.env` file with the following content:
+
+```
+NUXT_API_BASE_URL=https://app-tpl.tndigit.it
+NUXT_API_USERNAME=mittmobile
+NUXT_API_PASSWORD=ecGsp.RHB3
+NUXT_GOATCOUNTER_TOKEN=
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
+
 ```bash
 npm run dev
 ```
 
-TODO
+## Production
+
+Build the application:
+
+```bash
+npm ci
+npm run build
+```
+
+Start the production server (you can pass configuration options with environment variables):
+
+```bash
+npm start
+```
