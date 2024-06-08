@@ -9,12 +9,12 @@
     "lint": "eslint ."
   },
   "engines": {
-    "node": "16.x"
+    "node": "20.x"
   },
   "devDependencies": {
     "@flydotio/dockerfile": "^0.5.2",
     "@nuxtjs/tailwindcss": "^6.6.4",
-    "nuxt": "^3.3.2",
+    "nuxt": "^3.11.2",
     "prettier": "^2.8.7"
   },
   "dependencies": {

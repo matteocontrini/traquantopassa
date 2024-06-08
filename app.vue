@@ -1,6 +1,6 @@
 <script setup>
 import '@fontsource/inter/variable.css';
-import { useHead } from '#head';
+import { useHead } from '#imports';
 
 useHead({
     title: 'Tra quanto passa',

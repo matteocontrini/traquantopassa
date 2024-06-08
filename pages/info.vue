@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, useFetch, useHead } from '#imports';
-import Stats from '~/server/api/stats';
 
 const count = ref(0);
 
