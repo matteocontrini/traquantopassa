@@ -1,15 +1,4 @@
 import { defineNuxtConfig } from 'nuxt/config';
-import sitemapDynamicRoutes from './sitemapDynamicRoutes';
-
-// Fixes TypeScript complaints about the `sitemap` key
-declare module '@nuxt/schema' {
-    export interface NuxtConfig {
-        sitemap?: {
-            hostname: string;
-            routes: () => Promise<string[]>;
-        };
-    }
-}
 
 export default defineNuxtConfig({
     typescript: {
@@ -18,7 +7,7 @@ export default defineNuxtConfig({
     imports: {
         autoImport: false,
     },
-    modules: ['@nuxtjs/tailwindcss', '@funken-studio/sitemap-nuxt-3'],
+    modules: ['@nuxtjs/tailwindcss', '@nuxtjs/sitemap'],
     tailwindcss: {
         cssPath: '~/assets/main.css',
     },
@@ -30,7 +19,6 @@ export default defineNuxtConfig({
     },
     ssr: false,
     sitemap: {
-        hostname: 'https://traquantopassa.in',
-        routes: sitemapDynamicRoutes,
+        sources: ['/api/__sitemap__/urls'],
     },
 });

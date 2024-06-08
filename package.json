@@ -13,13 +13,13 @@
   },
   "devDependencies": {
     "@flydotio/dockerfile": "^0.5.2",
+    "@nuxtjs/sitemap": "^5.2.0",
     "@nuxtjs/tailwindcss": "^6.6.4",
     "nuxt": "^3.11.2",
     "prettier": "^2.8.7"
   },
   "dependencies": {
     "@fontsource/inter": "^4.5.15",
-    "@funken-studio/sitemap-nuxt-3": "^4.0.4",
     "axios": "^1.3.4",
     "axios-retry": "^3.4.0",
     "cheerio": "^1.0.0-rc.12"
