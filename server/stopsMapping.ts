@@ -231,7 +231,14 @@ const stopsMapping: { [key: string]: StopsGroup } = {
             new StopDefinition(202, '', 12)
         ],
         [46.07175969129938, 11.121396939608053]
-    )
+    ),
+    buc: new StopsGroup(
+        'Lavoro e Scienza BUC',
+        [
+            new StopDefinition(3100, '',10)
+        ],
+        [46.05879416580441, 11.115330469110598]
+    ),
 };
 
 export default stopsMapping;
