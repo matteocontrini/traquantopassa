@@ -1,11 +1,24 @@
 node_modules
-*.log*
-.nuxt
-.nitro
-.cache
+
+# Output
 .output
+.vercel
+/.svelte-kit
+/build
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
 .env
-dist
+.env.*
+!.env.example
+!.env.test
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
 .idea
-logo
-sticker
+TODO

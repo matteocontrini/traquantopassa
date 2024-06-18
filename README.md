@@ -6,16 +6,16 @@ It also takes into consideration delays based on real-time data, for both buses 
 
 It's currently hosted on [traquantopassa.in](https://traquantopassa.in).
 
-The application was built with the Nuxt 3 framework. 
+The application is built with the SvelteKit framework (previously Nuxt 3).
 
 ## Development
 
-Create a `.env` file with the following content:
+Create a `.env` file with the following content (add missing credentials):
 
 ```
 NUXT_API_BASE_URL=https://app-tpl.tndigit.it
-NUXT_API_USERNAME=mittmobile
-NUXT_API_PASSWORD=ecGsp.RHB3
+NUXT_API_USERNAME=
+NUXT_API_PASSWORD=
 NUXT_GOATCOUNTER_TOKEN=
 ```
 
@@ -43,5 +43,5 @@ npm run build
 Start the production server (you can pass configuration options with environment variables):
 
 ```bash
-npm start
+npm run preview
 ```
