@@ -116,6 +116,13 @@
 				</select>
 			</div>
 
+			{#if searchTerm || selectedRoute}
+				<button class="w-full mt-4 px-3.5 py-2 rounded-md bg-neutral-800 hover:bg-neutral-700"
+								on:click={() => { searchTerm = ''; selectedRoute = ''; }}>
+					❌ Rimuovi filtri
+				</button>
+			{/if}
+
 			<div class="mt-4 text-lg grid sm:grid-cols-2 gap-4">
 				{#each filteredStops as stop (stop.slugs[0])}
 					<div class="flex">
