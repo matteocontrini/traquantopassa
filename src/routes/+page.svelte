@@ -39,3 +39,8 @@
 	{/each}
 </div>
 
+<footer class="mb-12 mt-14 text-center">
+	<a class="px-3 py-2 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" href="/info">
+		ℹ️ Informazioni
+	</a>
+</footer>
