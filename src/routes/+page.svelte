@@ -1,9 +1,10 @@
 <script lang="ts">
-	import StopBlock from './[stop]/StopBlock.svelte';
+	import StopBlock from './StopBlock.svelte';
 
 	export let data;
 
-	const stopsWithRanking = data.stops.filter(x => x.ranking !== null).sort((x, y) => y.ranking! - x.ranking!);
+	$: stops = data.stops;
+	$: stopsWithRanking = stops.filter(x => x.ranking !== null).sort((x, y) => y.ranking! - x.ranking!);
 </script>
 
 <svelte:head>
