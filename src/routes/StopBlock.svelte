@@ -30,17 +30,17 @@
 </script>
 
 <a href="/{stop.slugs[0]}"
-	 class="w-full h-full bg-neutral-800 rounded-lg px-4 pt-2 pb-4 no-underline"
+	 class="w-full h-full bg-neutral-800 rounded-lg px-4 pt-3 pb-4 no-underline"
 >
 	<div class="flex gap-2 justify-between items-start">
-		<div>
-			{stop.name}
-			<span class="block text-sm no-underline text-neutral-500">
+		<div class="flex flex-col gap-1">
+			<span class="leading-snug">{stop.name}</span>
+			<span class="text-sm no-underline text-neutral-500">
 				/{stop.slugs[0]}
 			</span>
 		</div>
 
-		<button class="pt-2" on:click|preventDefault={toggleFavorite}>
+		<button class="pl-2" on:click|preventDefault={toggleFavorite}>
 			<img src={isFavorite ? starFilled : star} alt="star" class="size-6" bind:this={starElement} />
 		</button>
 	</div>
