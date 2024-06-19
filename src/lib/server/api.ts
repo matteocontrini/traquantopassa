@@ -21,6 +21,7 @@ export interface ApiStop {
 export interface ApiRoute {
 	routeId: number;
 	routeShortName: string;
+	routeLongName: string;
 	routeColor: string | null;
 }
 

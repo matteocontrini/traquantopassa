@@ -21,6 +21,9 @@ export async function getRoutes() {
 
 	routes = apiRoutes.map(apiRoute => apiRouteToRoute(apiRoute));
 
+	// Sort by route name (numeric)
+	routes.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
+
 	// TODO: cache expiration?
 	cache.set(routesCacheKey, routes);
 
@@ -43,6 +46,7 @@ function apiRouteToRoute(apiRoute: api.ApiRoute): Route {
 	return {
 		id: apiRoute.routeId,
 		name: apiRoute.routeShortName,
+		longName: apiRoute.routeLongName,
 		color: mapRouteColor(apiRoute)
 	};
 }
