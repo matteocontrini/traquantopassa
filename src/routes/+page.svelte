@@ -1,10 +1,12 @@
 <script lang="ts">
-	import { slide } from 'svelte/transition';
+	import { slide, fade } from 'svelte/transition';
+	import { flip } from 'svelte/animate';
 	import StopBlock from './StopBlock.svelte';
 	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
 	import TabButton from './TabButton.svelte';
-	import { onMount } from 'svelte';
+	import { onMount, setContext } from 'svelte';
 	import { distance, getCurrentPosition, handleGeolocationError, isGeolocationGranted } from '$lib/location-helpers';
+	import { createFavoritesStore } from '$lib/stores/favorites';
 
 	export let data;
 
@@ -15,6 +17,9 @@
 
 	let showGeolocationButton = false;
 	let distances = new Map<string, number>();
+
+	const favorites = createFavoritesStore();
+	setContext('favorites', favorites);
 
 	$: filteredStops = data.stops
 		// Sort by distance
@@ -30,6 +35,8 @@
 		);
 
 	$: rankedStops = data.stops.filter(x => x.ranking !== null).sort((x, y) => y.ranking! - x.ranking!);
+
+	$: favoriteStops = data.stops.filter(x => $favorites.has(x.code));
 
 	onMount(async () => {
 		if (await isGeolocationGranted()) {
@@ -93,12 +100,12 @@
 				<button
 					on:click={updatePosition}
 					transition:slide
-					class="mt-4 px-3.5 py-2 w-full flex items-center justify-center bg-neutral-800 hover:bg-neutral-700 rounded-md text-ellipsis whitespace-nowrap overflow-hidden">
+					class="mt-3 px-3.5 py-2 w-full flex items-center justify-center bg-neutral-800 hover:bg-neutral-700 rounded-md text-ellipsis whitespace-nowrap overflow-hidden">
 					⚠️ Concedi accesso alla posizione
 				</button>
 			{/if}
 
-			<div class="mt-4 flex gap-4">
+			<div class="mt-3 flex gap-4">
 				<input
 					type="search"
 					placeholder="🔍 Cerca fermata..."
@@ -125,23 +132,27 @@
 
 			<div class="mt-4 text-lg grid sm:grid-cols-2 gap-4">
 				{#each filteredStops as stop (stop.slugs[0])}
-					<div class="flex">
-						<StopBlock {stop} routes={data.routes} />
-					</div>
+					<StopBlock {stop} routes={data.routes} isFavorite={$favorites.has(stop.code)} />
 				{/each}
 			</div>
 		</div>
 	{:else if activeTab === 'ranked'}
 		<div class="mt-4 text-lg grid sm:grid-cols-2 gap-4">
 			{#each rankedStops as stop (stop.slugs[0])}
-				<StopBlock {stop} routes={data.routes} />
+				<StopBlock {stop} routes={data.routes} isFavorite={$favorites.has(stop.code)} />
 			{/each}
 		</div>
 	{:else}
 		<div class="mt-4">
-			<p class="text-neutral-500 mt-2">
-				Tieni premuto su una fermata per aggiungerla ai preferiti.
-			</p>
+			<div class="mt-4 text-lg grid sm:grid-cols-2 gap-4">
+				{#each favoriteStops as stop (stop.slugs[0])}
+					<div class="flex shrink-0"
+							 animate:flip={{duration: 500, delay: 1000}}
+							 out:fade={{delay: 1000, duration: 100}}>
+						<StopBlock {stop} routes={data.routes} isFavorite={$favorites.has(stop.code)} />
+					</div>
+				{/each}
+			</div>
 		</div>
 	{/if}
 </main>
