@@ -13,10 +13,9 @@ The application is built with the SvelteKit framework (previously Nuxt 3).
 Create a `.env` file with the following content (add missing credentials):
 
 ```
-NUXT_API_BASE_URL=https://app-tpl.tndigit.it
-NUXT_API_USERNAME=
-NUXT_API_PASSWORD=
-NUXT_GOATCOUNTER_TOKEN=
+API_BASE_URL=https://app-tpl.tndigit.it
+API_USERNAME=
+API_PASSWORD=
 ```
 
 Install dependencies:
