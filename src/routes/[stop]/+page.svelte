@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { StopGroupDetails } from '$lib/StopGroupDetails';
 	import Trip from './Trip.svelte';
+	import FooterNavigation from '$lib/components/FooterNavigation.svelte';
 
 	export let data;
 
@@ -10,7 +11,7 @@
 </script>
 
 <svelte:head>
-	<title>{ details.name } - Tra quanto passa</title>
+	<title>{ details.name }</title>
 </svelte:head>
 
 <header>
@@ -70,4 +71,6 @@
 
 		<div class="mt-2">La pagina si aggiorna automaticamente ogni 30 secondi.</div>
 	</div>
+
+	<FooterNavigation className="mt-6" />
 </footer>
