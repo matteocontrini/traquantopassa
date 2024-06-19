@@ -1,16 +1,31 @@
 <script lang="ts">
-	import { flip } from 'svelte/animate';
-	import { fly } from 'svelte/transition';
 	import StopBlock from './StopBlock.svelte';
 	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
 	import TabButton from './TabButton.svelte';
 
 	export let data;
 
-	$: stops = data.stops;
-	$: stopsWithRanking = stops.filter(x => x.ranking !== null).sort((x, y) => y.ranking! - x.ranking!);
-
 	let activeTab: 'all' | 'ranked' | 'favorites' = 'all';
+
+	let searchTerm = '';
+	let selectedRoute = '';
+
+	$: filteredStops =
+		// Sort stops by distance (copy to avoid mutating the original array)
+		// [...data.stops]
+		// .sort((a, b) => a.distance - b.distance)
+		data.stops
+			.filter((stop) =>
+				// Filter by route. Evaluates to true if no route is selected
+				(selectedRoute == '' || stop.routeIds.has(data.routes.find(x => x.name == selectedRoute)!.id)) &&
+				// Filter by search term on both name and slug. Evaluates to true if no search term is present
+				(searchTerm == '' ||
+					stop.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+					stop.code.includes(searchTerm)
+				)
+			);
+
+	$: stopsWithRanking = data.stops.filter(x => x.ranking !== null).sort((x, y) => y.ranking! - x.ranking!);
 </script>
 
 <svelte:head>
@@ -45,9 +60,11 @@
 					type="search"
 					placeholder="🔍 Cerca fermata..."
 					class="w-full px-3.5 py-2 rounded-md bg-neutral-800 text-neutral-100 focus:outline focus:outline-2 focus:outline-neutral-700"
+					bind:value={searchTerm}
 				/>
 
 				<select
+					bind:value={selectedRoute}
 					class="w-full py-2 px-3.5 rounded-md bg-neutral-800 text-neutral-100 focus:outline focus:outline-2 focus:outline-neutral-700">
 					<option value="">🚏 Filtra per linea</option>
 					{#each data.routes as route}
@@ -57,8 +74,8 @@
 			</div>
 
 			<div class="mt-4 text-lg grid sm:grid-cols-2 gap-4">
-				{#each data.stops as stop (stop.slugs[0])}
-					<div animate:flip class="flex">
+				{#each filteredStops as stop (stop.slugs[0])}
+					<div class="flex">
 						<StopBlock {stop} routes={data.routes} />
 					</div>
 				{/each}
