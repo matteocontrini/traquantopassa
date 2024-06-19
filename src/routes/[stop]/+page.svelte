@@ -12,12 +12,24 @@
 	$: showMore = details.directions.length < 2;
 	$: limit = showMore ? 15 : 5;
 
-	onMount(() => {
-		const interval = setInterval(() => {
-			invalidateAll();
-		}, 30 * 1000);
+	const REFRESH_INTERVAL = 30 * 1000;
+	let timer: ReturnType<typeof setInterval>;
 
-		return () => clearInterval(interval);
+	function onVisibilityChange() {
+		clearInterval(timer);
+		if (document.visibilityState != 'hidden') {
+			invalidateAll();
+			timer = setInterval(invalidateAll, REFRESH_INTERVAL);
+		}
+	}
+
+	onMount(() => {
+		timer = setInterval(invalidateAll, REFRESH_INTERVAL);
+		document.addEventListener('visibilitychange', onVisibilityChange);
+		return () => {
+			clearInterval(timer);
+			document.removeEventListener('visibilitychange', onVisibilityChange);
+		};
 	});
 </script>
 
