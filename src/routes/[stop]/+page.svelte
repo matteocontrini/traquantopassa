@@ -43,9 +43,9 @@
 				{/each}
 
 				{#if !showMore && direction.trips.length > limit}
-					<button class="mt-3 px-3 py-1 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700"
+					<button class="mt-2 px-3 py-1 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700 text-mid"
 									on:click={() => showMore = true}>
-						Mostra di più
+						Mostra altri {direction.trips.length - limit}
 					</button>
 				{/if}
 			{:else}

@@ -7,9 +7,9 @@
     @apply bg-neutral-900 text-white;
   }
 
-  /*a {
+  a {
     @apply underline;
-  }*/
+  }
 
   p {
     @apply mt-4;
