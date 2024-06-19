@@ -1,13 +1,24 @@
 <script lang="ts">
-	import type { StopGroupDetails } from '$lib/StopGroupDetails';
 	import Trip from './Trip.svelte';
 	import FooterNavigation from '$lib/components/FooterNavigation.svelte';
+	import { onMount } from 'svelte';
+	import { invalidateAll } from '$app/navigation';
+	import { flip } from 'svelte/animate';
+	import { fade } from 'svelte/transition';
 
 	export let data;
 
-	const details: StopGroupDetails = data.details;
-	let showMore = details.directions.length < 2;
+	$: details = data.details;
+	$: showMore = details.directions.length < 2;
 	$: limit = showMore ? 15 : 5;
+
+	onMount(() => {
+		const interval = setInterval(() => {
+			invalidateAll();
+		}, 30 * 1000);
+
+		return () => clearInterval(interval);
+	});
 </script>
 
 <svelte:head>
@@ -39,7 +50,11 @@
 			{/if}
 			{#if direction.trips.length > 0}
 				{#each direction.trips.slice(0, limit) as trip (trip.id)}
-					<Trip trip={trip} />
+					<div animate:flip={{delay: 200, duration: 1000}}
+							 in:fade={{duration: 200, delay: 1000}}
+							 out:fade={{duration: 200}}>
+						<Trip trip={trip} />
+					</div>
 				{/each}
 
 				{#if !showMore && direction.trips.length > limit}
