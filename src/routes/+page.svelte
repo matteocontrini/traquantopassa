@@ -1,7 +1,10 @@
 <script lang="ts">
+	import { slide } from 'svelte/transition';
 	import StopBlock from './StopBlock.svelte';
 	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
 	import TabButton from './TabButton.svelte';
+	import { onMount } from 'svelte';
+	import { distance, getCurrentPosition, handleGeolocationError, isGeolocationGranted } from '$lib/location-helpers';
 
 	export let data;
 
@@ -10,22 +13,47 @@
 	let searchTerm = '';
 	let selectedRoute = '';
 
-	$: filteredStops =
-		// Sort stops by distance (copy to avoid mutating the original array)
-		// [...data.stops]
-		// .sort((a, b) => a.distance - b.distance)
-		data.stops
-			.filter((stop) =>
-				// Filter by route. Evaluates to true if no route is selected
-				(selectedRoute == '' || stop.routeIds.has(data.routes.find(x => x.name == selectedRoute)!.id)) &&
-				// Filter by search term on both name and slug. Evaluates to true if no search term is present
-				(searchTerm == '' ||
-					stop.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-					stop.code.includes(searchTerm)
-				)
-			);
+	let showGeolocationButton = false;
+	let distances = new Map<string, number>();
 
-	$: stopsWithRanking = data.stops.filter(x => x.ranking !== null).sort((x, y) => y.ranking! - x.ranking!);
+	$: filteredStops = data.stops
+		// Sort by distance
+		.sort((a, b) => (distances.get(a.code) ?? Infinity) - (distances.get(b.code) ?? Infinity))
+		.filter((stop) =>
+			// Filter by route. Evaluates to true if no route is selected
+			(selectedRoute == '' || stop.routeIds.has(data.routes.find(x => x.name == selectedRoute)!.id)) &&
+			// Filter by search term on both name and slug. Evaluates to true if no search term is present
+			(searchTerm == '' ||
+				stop.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+				stop.code.includes(searchTerm)
+			)
+		);
+
+	$: rankedStops = data.stops.filter(x => x.ranking !== null).sort((x, y) => y.ranking! - x.ranking!);
+
+	onMount(async () => {
+		if (await isGeolocationGranted()) {
+			await updatePosition();
+		} else {
+			showGeolocationButton = true;
+		}
+	});
+
+	async function updatePosition() {
+		try {
+			const position = await getCurrentPosition();
+
+			// Recalculate distances
+			for (let stop of data.stops) {
+				distances.set(stop.code, distance(position.coords, stop.coordinates));
+			}
+
+			distances = distances; // trigger re-render
+			showGeolocationButton = false;
+		} catch (err) {
+			handleGeolocationError(err);
+		}
+	}
 </script>
 
 <svelte:head>
@@ -50,10 +78,14 @@
 
 	{#if activeTab === 'all'}
 		<div>
-			<button
-				class="mt-4 px-3.5 py-2 w-full flex items-center justify-center bg-neutral-800 hover:bg-neutral-700 rounded-md text-ellipsis whitespace-nowrap overflow-hidden">
-				⚠️ Concedi accesso alla posizione
-			</button>
+			{#if showGeolocationButton}
+				<button
+					on:click={updatePosition}
+					transition:slide
+					class="mt-4 px-3.5 py-2 w-full flex items-center justify-center bg-neutral-800 hover:bg-neutral-700 rounded-md text-ellipsis whitespace-nowrap overflow-hidden">
+					⚠️ Concedi accesso alla posizione
+				</button>
+			{/if}
 
 			<div class="mt-4 flex gap-4">
 				<input
@@ -83,7 +115,7 @@
 		</div>
 	{:else if activeTab === 'ranked'}
 		<div class="mt-4 text-lg grid sm:grid-cols-2 gap-4">
-			{#each stopsWithRanking as stop (stop.slugs[0])}
+			{#each rankedStops as stop (stop.slugs[0])}
 				<StopBlock {stop} routes={data.routes} />
 			{/each}
 		</div>
