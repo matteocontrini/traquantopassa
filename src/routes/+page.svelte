@@ -1,11 +1,16 @@
 <script lang="ts">
+	import { flip } from 'svelte/animate';
+	import { fly } from 'svelte/transition';
 	import StopBlock from './StopBlock.svelte';
 	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
+	import TabButton from './TabButton.svelte';
 
 	export let data;
 
 	$: stops = data.stops;
 	$: stopsWithRanking = stops.filter(x => x.ranking !== null).sort((x, y) => y.ranking! - x.ranking!);
+
+	let activeTab: 'all' | 'ranked' | 'favorites' = 'all';
 </script>
 
 <svelte:head>
@@ -21,49 +26,57 @@
 	<div class="mt-8 flex justify-center text-mid">
 		<ModesSwitch isBus={true} />
 	</div>
-	<div class="mt-8 flex flex-col gap-2">
-		<input
-			type="search"
-			placeholder="🔍 Cerca fermata..."
-			class="w-full px-3.5 py-2 rounded-md bg-neutral-800 text-neutral-100 focus:outline focus:outline-2 focus:outline-neutral-700"
-		/>
 
-		<select
-			class="w-full py-2 px-3.5 rounded-md bg-neutral-800 text-neutral-100 focus:outline focus:outline-2 focus:outline-neutral-700">
-			<option value="">🚏 Filtra per linea</option>
-			{#each data.routes as route}
-				<option value={route.name}>{route.name} - {route.longName}</option>
+	<div class="mt-8 overflow-x-scroll whitespace-nowrap flex gap-x-4" style="scrollbar-width: none">
+		<TabButton text="📍 Più vicine" isSelected={activeTab === 'all'} onClick={() => activeTab = 'all'} />
+		<TabButton text="📊 Più richieste" isSelected={activeTab === 'ranked'} onClick={() => activeTab = 'ranked'} />
+		<TabButton text="⭐️ Preferiti" isSelected={activeTab === 'favorites'} onClick={() => activeTab = 'favorites'} />
+	</div>
+
+	{#if activeTab === 'all'}
+		<div>
+			<button
+				class="mt-4 px-3.5 py-2 w-full flex items-center justify-center bg-neutral-800 hover:bg-neutral-700 rounded-md text-ellipsis whitespace-nowrap overflow-hidden">
+				⚠️ Concedi accesso alla posizione
+			</button>
+
+			<div class="mt-4 flex gap-4">
+				<input
+					type="search"
+					placeholder="🔍 Cerca fermata..."
+					class="w-full px-3.5 py-2 rounded-md bg-neutral-800 text-neutral-100 focus:outline focus:outline-2 focus:outline-neutral-700"
+				/>
+
+				<select
+					class="w-full py-2 px-3.5 rounded-md bg-neutral-800 text-neutral-100 focus:outline focus:outline-2 focus:outline-neutral-700">
+					<option value="">🚏 Filtra per linea</option>
+					{#each data.routes as route}
+						<option value={route.name}>{route.name} - {route.longName}</option>
+					{/each}
+				</select>
+			</div>
+
+			<div class="mt-4 text-lg grid sm:grid-cols-2 gap-4">
+				{#each data.stops as stop (stop.slugs[0])}
+					<div animate:flip class="flex">
+						<StopBlock {stop} routes={data.routes} />
+					</div>
+				{/each}
+			</div>
+		</div>
+	{:else if activeTab === 'ranked'}
+		<div class="mt-4 text-lg grid sm:grid-cols-2 gap-4">
+			{#each stopsWithRanking as stop (stop.slugs[0])}
+				<StopBlock {stop} routes={data.routes} />
 			{/each}
-		</select>
-	</div>
-
-	<p class="mt-10 text-lg">
-		⭐️ Preferiti
-	</p>
-
-	<p class="text-neutral-500 mt-2">
-		Tieni premuto su una fermata per aggiungerla ai preferiti.
-	</p>
-
-	<p class="mt-10 text-lg">
-		📊 Più richieste
-	</p>
-
-	<div class="mt-4 text-lg grid sm:grid-cols-2 gap-4">
-		{#each stopsWithRanking as stop (stop.slugs[0])}
-			<StopBlock {stop} routes={data.routes} />
-		{/each}
-	</div>
-
-	<p class="mt-10 text-lg">
-		✅ Tutte le fermate
-	</p>
-
-	<div class="mt-4 text-lg grid sm:grid-cols-2 gap-4">
-		{#each data.stops as stop (stop.slugs[0])}
-			<StopBlock {stop} routes={data.routes} />
-		{/each}
-	</div>
+		</div>
+	{:else}
+		<div class="mt-4">
+			<p class="text-neutral-500 mt-2">
+				Tieni premuto su una fermata per aggiungerla ai preferiti.
+			</p>
+		</div>
+	{/if}
 </main>
 
 <footer class="mb-12 mt-14 text-center">

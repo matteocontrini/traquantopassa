@@ -8,7 +8,7 @@
 </script>
 
 <a href="/{stop.slugs[0]}"
-	 class="bg-neutral-800 rounded-lg px-4 pt-2 pb-4 no-underline"
+	 class="w-full h-full bg-neutral-800 rounded-lg px-4 pt-2 pb-4 no-underline"
 >
 	{stop.name}
 	<span class="block text-sm no-underline text-neutral-500">
