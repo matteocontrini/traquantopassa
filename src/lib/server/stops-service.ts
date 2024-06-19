@@ -4,6 +4,7 @@ import type { StopGroup } from '$lib/StopGroup';
 import type { Stop } from '$lib/Stop';
 import type { StopCoordinates } from '$lib/StopCoordinates';
 import customSlugs from '$lib/server/custom-slugs';
+import customRanking from '$lib/server/custom-ranking';
 
 const cache = new NodeCache();
 
@@ -57,18 +58,11 @@ function mapApiStopToStop(apiStop: api.ApiStop): Stop {
 function mapApiStopToStopGroup(apiStop: api.ApiStop): StopGroup {
 	const code = apiStop.stopCode.replace(/[^0-9]/g, ''); // keep only digits
 
-	// TODO: remove?
-	const automaticSlug = apiStop.stopName.toLowerCase()
-		.replace(/\. /g, '') // es. 'S. Bartolameo' -> 'S.Bartolameo'
-		.replace(/\s/g, '-') // convert spaces to hyphens
-		.normalize('NFD') // https://stackoverflow.com/a/37511463/1633924
-		.replace(/[^a-z0-9-]/g, '') // remove non-alphanumeric characters
-		.replace(/-+/g, '-'); // merge multiple hyphens
-
 	// Use slug override as default slug if available
-	const slugs = [code, automaticSlug];
-	if (customSlugs[code]) {
-		slugs.splice(0, 0, customSlugs[code]);
+	const slugs = [code];
+	const customSlug = customSlugs[code];
+	if (customSlug) {
+		slugs.splice(0, 0, customSlug);
 	}
 
 	const stop = mapApiStopToStop(apiStop);
@@ -78,7 +72,8 @@ function mapApiStopToStopGroup(apiStop: api.ApiStop): StopGroup {
 		slugs: slugs,
 		coordinates: calculateCoordinates([stop]),
 		stops: [stop],
-		routeIds: new Set(apiStop.routes.map(r => r.routeId))
+		routeIds: new Set(apiStop.routes.map(r => r.routeId)),
+		ranking: customSlug ? customRanking[customSlug] ?? null : null
 	};
 }
 
