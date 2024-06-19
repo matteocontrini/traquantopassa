@@ -31,9 +31,11 @@
 <main>
 	{#each details.directions as direction}
 		<div class="mt-10 flex flex-col">
-			<div class="w-fit mx-auto text-lg uppercase font-medium mb-4 text-center">
-				{ direction.name }
-			</div>
+			{#if direction.name}
+				<div class="w-fit mx-auto text-lg uppercase font-medium mb-4 text-center">
+					{ direction.name }
+				</div>
+			{/if}
 			{#if direction.trips.length > 0}
 				{#each direction.trips.slice(0, limit) as trip (trip.id)}
 					<Trip trip={trip} />
