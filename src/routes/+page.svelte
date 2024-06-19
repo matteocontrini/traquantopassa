@@ -54,6 +54,17 @@
 			handleGeolocationError(err);
 		}
 	}
+
+	export const snapshot = {
+		capture: () => ({
+			activeTab, searchTerm, selectedRoute
+		}),
+		restore: (values) => {
+			activeTab = values.activeTab;
+			searchTerm = values.searchTerm;
+			selectedRoute = values.selectedRoute;
+		}
+	};
 </script>
 
 <svelte:head>
