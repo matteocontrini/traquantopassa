@@ -10,7 +10,7 @@
 
 	export let data;
 
-	let activeTab: 'all' | 'ranked' | 'favorites' = 'all';
+	let activeTab: 'all' | 'ranked' | 'filter' | 'favorites' = 'all';
 
 	let searchTerm = '';
 	let selectedRoute = '';
@@ -88,15 +88,16 @@
 		<ModesSwitch isBus={true} />
 	</div>
 
-	<div class="mt-8 overflow-x-scroll whitespace-nowrap flex gap-x-4" style="scrollbar-width: none">
+	<div class="mt-8 flex max-xs:flex-wrap gap-2 xs:gap-3" style="scrollbar-width: none">
 		<TabButton text="📍 Più vicine" isSelected={activeTab === 'all'} onClick={() => activeTab = 'all'} />
 		<TabButton text="📊 Più usate" isSelected={activeTab === 'ranked'} onClick={() => activeTab = 'ranked'} />
+		<TabButton text="🔍 Cerca" isSelected={activeTab === 'filter'} onClick={() => activeTab = 'filter'} />
 		<TabButton text="⭐️ Preferiti" isSelected={activeTab === 'favorites'} onClick={() => activeTab = 'favorites'} />
 	</div>
 
-	{#if activeTab === 'all'}
-		<div class="{showGeolocationButton ? 'mt-4' : 'mt-8'}">
-			{#if showGeolocationButton}
+	{#if activeTab === 'all' || activeTab === 'filter'}
+		<div class="{activeTab === 'all' && showGeolocationButton ? 'mt-4' : 'mt-8'}">
+			{#if activeTab === 'all' && showGeolocationButton}
 				<button on:click={updatePosition}
 								in:slide
 								class="px-3.5 py-2 w-full text-center">
@@ -104,29 +105,31 @@
 				</button>
 			{/if}
 
-			<div class="mt-4 flex gap-4">
-				<input
-					type="search"
-					placeholder="🔍 Cerca fermata..."
-					class="w-full px-3.5 py-2 rounded-md bg-neutral-800 text-neutral-100 focus:outline focus:outline-2 focus:outline-neutral-700"
-					bind:value={searchTerm}
-				/>
+			{#if activeTab === 'filter'}
+				<div class="mt-4 flex max-xs:flex-col gap-x-4 gap-y-3">
+					<input
+						type="search"
+						placeholder="🔍 Cerca fermata..."
+						class="w-full px-3.5 py-2 rounded-md bg-neutral-800 text-neutral-100 focus:outline focus:outline-2 focus:outline-neutral-700"
+						bind:value={searchTerm}
+					/>
 
-				<select
-					bind:value={selectedRoute}
-					class="w-full py-2 px-3.5 rounded-md bg-neutral-800 text-neutral-100 focus:outline focus:outline-2 focus:outline-neutral-700">
-					<option value="">🚏 Filtra per linea</option>
-					{#each data.routes as route}
-						<option value={route.name}>{route.name} - {route.longName}</option>
-					{/each}
-				</select>
-			</div>
+					<select
+						bind:value={selectedRoute}
+						class="w-full py-2 px-3.5 rounded-md bg-neutral-800 text-neutral-100 focus:outline focus:outline-2 focus:outline-neutral-700">
+						<option value="">🚏 Filtra per linea</option>
+						{#each data.routes as route}
+							<option value={route.name}>{route.name} - {route.longName}</option>
+						{/each}
+					</select>
+				</div>
 
-			{#if searchTerm || selectedRoute}
-				<button class="w-full mt-4 px-3.5 py-2 rounded-md bg-neutral-800 hover:bg-neutral-700"
-								on:click={() => { searchTerm = ''; selectedRoute = ''; }}>
-					❌ Rimuovi filtri
-				</button>
+				{#if searchTerm || selectedRoute}
+					<button class="w-full mt-4 px-3.5 py-2 rounded-md bg-neutral-800 hover:bg-neutral-700"
+									on:click={() => { searchTerm = ''; selectedRoute = ''; }}>
+						❌ Rimuovi filtri
+					</button>
+				{/if}
 			{/if}
 
 			<div class="mt-4 text-lg grid sm:grid-cols-2 gap-4">

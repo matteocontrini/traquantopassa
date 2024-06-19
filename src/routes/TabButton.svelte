@@ -5,7 +5,7 @@
 </script>
 
 <button
-	class="w-full h-8 px-3 py-5 inline-flex items-center justify-center rounded-md no-underline cursor-pointer leading-none"
+	class="h-8 px-3 py-5 inline-flex items-center justify-center rounded-md no-underline cursor-pointer leading-none basis-1/3 flex-grow"
 	class:bg-neutral-100={isSelected}
 	class:hover:bg-neutral-200={isSelected}
 	class:text-neutral-800={isSelected}
