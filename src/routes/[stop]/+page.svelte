@@ -9,8 +9,9 @@
 	export let data;
 
 	$: details = data.details;
-	$: showMore = details.directions.length < 2;
+	let showMore = data.details.directions.length < 2;
 	$: limit = showMore ? 15 : 5;
+	let showMoreInProgress = false;
 
 	const REFRESH_INTERVAL = 30 * 1000;
 	let timer: ReturnType<typeof setInterval>;
@@ -62,16 +63,22 @@
 			{/if}
 			{#if direction.trips.length > 0}
 				{#each direction.trips.slice(0, limit) as trip (trip.id)}
-					<div animate:flip={{delay: 200, duration: 1000}}
-							 in:fade={{duration: 200, delay: 1000}}
-							 out:fade={{duration: 200}}>
+					<div animate:flip={{delay: 300}}
+							 in:fade={{delay: showMoreInProgress ? 0 : 800, duration: 300}}
+							 out:fade={{duration: 300}}>
 						<Trip trip={trip} />
 					</div>
 				{/each}
 
 				{#if !showMore && direction.trips.length > limit}
 					<button class="mt-2 px-3 py-1 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700 text-mid"
-									on:click={() => showMore = true}>
+									on:click={() => {
+										showMore = true;
+										showMoreInProgress = true;
+										setTimeout(() => {
+											showMoreInProgress = false;
+										}, 50);
+									}}>
 						Mostra altri {direction.trips.length - limit}
 					</button>
 				{/if}
