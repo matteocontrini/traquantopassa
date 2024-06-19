@@ -90,7 +90,7 @@
 
 	<div class="mt-8 overflow-x-scroll whitespace-nowrap flex gap-x-4" style="scrollbar-width: none">
 		<TabButton text="📍 Più vicine" isSelected={activeTab === 'all'} onClick={() => activeTab = 'all'} />
-		<TabButton text="📊 Più richieste" isSelected={activeTab === 'ranked'} onClick={() => activeTab = 'ranked'} />
+		<TabButton text="📊 Più usate" isSelected={activeTab === 'ranked'} onClick={() => activeTab = 'ranked'} />
 		<TabButton text="⭐️ Preferiti" isSelected={activeTab === 'favorites'} onClick={() => activeTab = 'favorites'} />
 	</div>
 
