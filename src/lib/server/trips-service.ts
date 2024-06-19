@@ -9,6 +9,7 @@ import type { Trip } from '$lib/Trip';
 const cache = new NodeCache();
 
 const tripsCacheDurationSeconds = 30;
+const defaultLimit = 15;
 
 export async function getTrips(stop: Stop) {
 	const stopId = stop.id;
@@ -23,11 +24,11 @@ export async function getTrips(stop: Stop) {
 	// Fetch from API
 	console.log('Fetching trips for stop', stopId);
 	// TODO: limit
-	const apiTrips = await api.getTrips(stopId, 5);
+	const apiTrips = await api.getTrips(stopId, defaultLimit);
 	const routes = await routesService.getRoutes();
 
 	const trips = await mapApiTrips(apiTrips, routes);
-	
+
 	direction = {
 		name: directionName(stop),
 		trips

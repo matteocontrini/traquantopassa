@@ -13,6 +13,7 @@ export async function load({ params }) {
 
 	const directions = [];
 
+	// Gather results for all directions in parallel
 	const promises = stopGroup.stops.map(s => tripsService.getTrips(s));
 	const results = await Promise.all(promises);
 	for (const direction of results) {

@@ -5,6 +5,8 @@
 	export let data;
 
 	const details: StopGroupDetails = data.details;
+	let showMore = details.directions.length < 2;
+	$: limit = showMore ? 15 : 5;
 </script>
 
 <svelte:head>
@@ -28,14 +30,21 @@
 
 <main>
 	{#each details.directions as direction}
-		<div class="mt-10">
+		<div class="mt-10 flex flex-col">
 			<div class="w-fit mx-auto text-lg uppercase font-medium mb-4 text-center">
 				{ direction.name }
 			</div>
 			{#if direction.trips.length > 0}
-				{#each direction.trips as trip (trip.id)}
+				{#each direction.trips.slice(0, limit) as trip (trip.id)}
 					<Trip trip={trip} />
 				{/each}
+
+				{#if !showMore && direction.trips.length > limit}
+					<button class="mt-3 px-3 py-1 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700"
+									on:click={() => showMore = true}>
+						Mostra di più
+					</button>
+				{/if}
 			{:else}
 				<div class="text-center">Nessun autobus previsto per oggi</div>
 			{/if}
