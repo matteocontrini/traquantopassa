@@ -74,13 +74,13 @@
 	<div class="text-sm text-neutral-500">
 		<div>
 			Il pallino verde
-			<span class="inline-block rounded-full w-2 h-2 animate-ping bg-green-500 mr-1 mx-0.5"></span>
+			<span class="inline-block rounded-full w-2 h-2 animate-ping bg-green-500 mx-1"></span>
 			indica che i dati sono in tempo reale.
 		</div>
 
 		<div class="mt-2">
 			Il pallino è giallo
-			<span class="inline-block rounded-full w-2 h-2 animate-ping bg-yellow-500 mr-1 mx-0.5"></span>
+			<span class="inline-block rounded-full w-2 h-2 animate-ping bg-yellow-500 mx-1"></span>
 			se l'autobus non ha trasmesso aggiornamenti negli ultimi 5 minuti.
 		</div>
 
