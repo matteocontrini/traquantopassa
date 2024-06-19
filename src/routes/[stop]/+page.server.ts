@@ -20,6 +20,9 @@ export async function load({ params }) {
 		directions.push(direction);
 	}
 
+	// Sort by name
+	directions.sort((a, b) => a.name.localeCompare(b.name));
+
 	return {
 		details: {
 			code: stopGroup.code,
