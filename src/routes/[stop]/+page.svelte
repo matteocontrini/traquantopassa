@@ -1,7 +1,22 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import type { StopGroupDetails } from '$lib/StopGroupDetails';
 
-	const stopSlug = $page.params.stop;
+	export let data;
+
+	const details: StopGroupDetails = data.details;
 </script>
 
-<h1>{stopSlug}</h1>
+<header>
+	<h1 class="font-semibold text-center text-4xl">{ details.name }</h1>
+	<div class="mt-1 text-sm text-center">
+		aggiornato alle
+		{
+			new Date(details.lastUpdatedAt).toLocaleTimeString(['it-IT'], {
+				hour: '2-digit',
+				minute: '2-digit',
+			})
+		}
+	</div>
+
+	<!-- TODO: train switch -->
+</header>

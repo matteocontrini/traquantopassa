@@ -9,6 +9,7 @@ export async function getRoutes() {
 	// Return from cache if available
 	let routes = cache.get<Route[]>('routes') ?? [];
 	if (routes.length) {
+		// TODO: remove or user logger
 		console.log('Using cached routes');
 		return routes;
 	}
@@ -18,6 +19,7 @@ export async function getRoutes() {
 
 	routes = apiRoutes.map(apiRoute => apiRouteToRoute(apiRoute));
 
+	// TODO: cache expiration?
 	cache.set('routes', routes);
 
 	return routes;

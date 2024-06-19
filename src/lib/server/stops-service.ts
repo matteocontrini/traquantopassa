@@ -39,9 +39,15 @@ export async function getStopGroups() {
 	stopGroups.sort((a, b) => a.name.localeCompare(b.name));
 
 	// Save to cache
+	// TODO: cache expiration?
 	cache.set('stopGroups', stopGroups);
 
 	return stopGroups;
+}
+
+export async function getStopGroupBySlug(slug: string) {
+	const stopGroups = await getStopGroups();
+	return stopGroups.find(sg => sg.slugs.includes(slug));
 }
 
 function mapApiStopToStop(apiStop: api.ApiStop): Stop {
