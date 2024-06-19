@@ -8,9 +8,11 @@ import customRanking from '$lib/server/custom-ranking';
 
 const cache = new NodeCache();
 
+const stopGroupsCacheKey = 'stop-groups';
+
 export async function getStopGroups() {
 	// Return from cache if available
-	const stopGroups = cache.get<StopGroup[]>('stopGroups') ?? [];
+	const stopGroups = cache.get<StopGroup[]>(stopGroupsCacheKey) ?? [];
 	if (stopGroups.length) {
 		console.log('Using cached stop groups');
 		return stopGroups;
@@ -40,7 +42,7 @@ export async function getStopGroups() {
 
 	// Save to cache
 	// TODO: cache expiration?
-	cache.set('stopGroups', stopGroups);
+	cache.set(stopGroupsCacheKey, stopGroups);
 
 	return stopGroups;
 }

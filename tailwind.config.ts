@@ -8,6 +8,12 @@ export default {
 		extend: {
 			fontFamily: {
 				sans: ['Inter Variable', ...defaultTheme.fontFamily.sans]
+			},
+			fontSize: {
+				mid: '0.9375rem'
+			},
+			screens: {
+				xs: '420px'
 			}
 		}
 	},

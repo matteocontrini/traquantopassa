@@ -24,6 +24,23 @@ export interface ApiRoute {
 	routeColor: string | null;
 }
 
+export interface ApiTrip {
+	tripId: string;
+	routeId: number;
+	oraArrivoEffettivaAFermataSelezionata: string;
+	stopNext: number | null;
+	lastSequenceDetection: number;
+	delay: number | null;
+	lastEventRecivedAt: string;
+	tripHeadsign: string;
+	stopTimes: ApiStopTime[];
+}
+
+export interface ApiStopTime {
+	stopId: number;
+	stopSequence: number;
+}
+
 export async function getStops() {
 	const res = await fetch(BASE_URL + '/gtlservice/stops?type=U', {
 		headers: {
@@ -49,6 +66,21 @@ export async function getRoutes() {
 	});
 
 	const data: ApiRoute[] = await res.json();
+
+	return data;
+}
+
+export async function getTrips(stopId: number, limit: number) {
+	const path = `/gtlservice/trips_new?limit=${limit}&stopId=${stopId}&type=U`;
+
+	const res = await fetch(BASE_URL + path, {
+		headers: {
+			'Authorization': 'Basic ' + BASIC_AUTH
+		}
+		// TODO: timeout
+	});
+
+	const data: ApiTrip[] = await res.json();
 
 	return data;
 }

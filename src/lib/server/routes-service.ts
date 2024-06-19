@@ -5,9 +5,11 @@ import type { ApiRoute } from '$lib/server/api';
 
 const cache = new NodeCache();
 
+const routesCacheKey = 'routes';
+
 export async function getRoutes() {
 	// Return from cache if available
-	let routes = cache.get<Route[]>('routes') ?? [];
+	let routes = cache.get<Route[]>(routesCacheKey) ?? [];
 	if (routes.length) {
 		// TODO: remove or user logger
 		console.log('Using cached routes');
@@ -20,7 +22,7 @@ export async function getRoutes() {
 	routes = apiRoutes.map(apiRoute => apiRouteToRoute(apiRoute));
 
 	// TODO: cache expiration?
-	cache.set('routes', routes);
+	cache.set(routesCacheKey, routes);
 
 	return routes;
 }
