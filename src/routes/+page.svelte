@@ -90,7 +90,7 @@
 </header>
 
 <main>
-	<div class="mt-8 flex justify-center text-mid">
+	<div class="mt-8 flex justify-center">
 		<ModesSwitch isBus={true} />
 	</div>
 
@@ -113,16 +113,22 @@
 
 			{#if activeTab === 'filter'}
 				<div class="mt-4 flex max-xs:flex-col gap-x-4 gap-y-3">
-					<input
-						type="search"
-						placeholder="🔍 Cerca fermata..."
-						class="w-full px-3.5 py-2 rounded-md bg-neutral-800 text-neutral-100 focus:outline focus:outline-2 focus:outline-neutral-700"
-						bind:value={searchTerm}
-					/>
+					<div class="flex gap-x-2 basis-1/2">
+						<input
+							type="search"
+							placeholder="🔍 Cerca fermata..."
+							class="w-full px-3.5 py-2 rounded-md bg-neutral-800 text-neutral-100 focus:outline focus:outline-2 focus:outline-neutral-700"
+							bind:value={searchTerm}
+						/>
+						<a href="/aiuto"
+							 class="w-fit flex items-center justify-center px-3 rounded-md bg-neutral-800 hover:bg-neutral-700 no-underline">
+							❓
+						</a>
+					</div>
 
 					<select
 						bind:value={selectedRoute}
-						class="w-full py-2 px-3.5 rounded-md bg-neutral-800 text-neutral-100 focus:outline focus:outline-2 focus:outline-neutral-700">
+						class="w-full basis-1/2 py-2 px-3.5 rounded-md bg-neutral-800 text-neutral-100 focus:outline focus:outline-2 focus:outline-neutral-700">
 						<option value="">🚏 Filtra per linea</option>
 						{#each data.routes as route}
 							<option value={route.name}>{route.name} - {route.longName}</option>

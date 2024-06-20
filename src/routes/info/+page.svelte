@@ -8,12 +8,12 @@
 
 <main class="my-8">
 	<p>
-		I dati degli autobus mostrati sul sito sono forniti da Trentino Trasporti. Se perdi l'autobus non è
+		I dati degli autobus mostrati sul sito sono forniti da <strong>Trentino Trasporti</strong>. Se perdi l'autobus non è
 		colpa mia. Se mancano i dati in tempo reale non è colpa mia.
 	</p>
 
 	<p>
-		I dati sui treni sono forniti da Rete Ferroviaria Italiana (RFI) e sono gli stessi mostrati nelle
+		I dati sui treni sono forniti da <strong>Rete Ferroviaria Italiana</strong> (RFI) e sono gli stessi mostrati nelle
 		stazioni ferroviarie. Se sono sbagliati non è colpa mia.
 	</p>
 
@@ -47,6 +47,12 @@
 	<p class="mt-6">
 		<a class="px-3 py-2 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" href="/treni">
 			🚆 Lista stazioni treni
+		</a>
+	</p>
+
+	<p class="mt-6">
+		<a class="px-3 py-2 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" href="/aiuto">
+			❓ Istruzioni per trovare le fermate
 		</a>
 	</p>
 </main>
