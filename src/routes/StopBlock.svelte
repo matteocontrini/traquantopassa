@@ -5,7 +5,7 @@
 	import star from '$lib/assets/star.svg';
 	import starFilled from '$lib/assets/star-filled.svg';
 	import { getContext } from 'svelte';
-	import type { FavoritesStore } from '$lib/stores/favorites';
+	import type { FavoritesStore } from '$lib/stores/stops-favorites';
 
 	export let stop: StopGroup;
 	export let routes: Route[];

@@ -6,7 +6,7 @@
 	import TabButton from './TabButton.svelte';
 	import { onMount, setContext } from 'svelte';
 	import { distance, getCurrentPosition, handleGeolocationError, isGeolocationGranted } from '$lib/location-helpers';
-	import { createFavoritesStore } from '$lib/stores/favorites';
+	import { createFavoritesStore } from '$lib/stores/stops-favorites';
 
 	export let data;
 
