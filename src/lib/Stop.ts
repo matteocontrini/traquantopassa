@@ -1,7 +1,7 @@
-import type { StopCoordinates } from '$lib/StopCoordinates';
+import type { Coordinates } from '$lib/Coordinates';
 
 export interface Stop {
 	id: number;
 	code: string;
-	coordinates: StopCoordinates;
+	coordinates: Coordinates;
 }

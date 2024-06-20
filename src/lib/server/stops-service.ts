@@ -2,7 +2,7 @@ import * as api from '$lib/server/api';
 import NodeCache from 'node-cache';
 import type { StopGroup } from '$lib/StopGroup';
 import type { Stop } from '$lib/Stop';
-import type { StopCoordinates } from '$lib/StopCoordinates';
+import type { Coordinates } from '$lib/Coordinates';
 import customSlugs from '$lib/server/custom-slugs';
 import customRanking from '$lib/server/custom-ranking';
 import * as logger from '$lib/logger';
@@ -57,8 +57,8 @@ function mapApiStopToStop(apiStop: api.ApiStop): Stop {
 		id: apiStop.stopId,
 		code: apiStop.stopCode,
 		coordinates: {
-			lat: apiStop.stopLat,
-			lon: apiStop.stopLon
+			latitude: apiStop.stopLat,
+			longitude: apiStop.stopLon
 		}
 	};
 }
@@ -86,11 +86,11 @@ function mapApiStopToStopGroup(apiStop: api.ApiStop): StopGroup {
 }
 
 function calculateCoordinates(stops: Stop[]) {
-	const lat = stops.reduce((acc, stop) => acc + stop.coordinates.lat, 0) / stops.length;
-	const lon = stops.reduce((acc, stop) => acc + stop.coordinates.lon, 0) / stops.length;
+	const lat = stops.reduce((acc, stop) => acc + stop.coordinates.latitude, 0) / stops.length;
+	const lon = stops.reduce((acc, stop) => acc + stop.coordinates.longitude, 0) / stops.length;
 
 	return {
-		lat,
-		lon
-	} as StopCoordinates;
+		latitude: lat,
+		longitude: lon
+	} as Coordinates;
 }

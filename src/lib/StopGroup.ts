@@ -1,11 +1,11 @@
 import type { Stop } from '$lib/Stop';
-import type { StopCoordinates } from '$lib/StopCoordinates';
+import type { Coordinates } from '$lib/Coordinates';
 
 export interface StopGroup {
 	name: string;
 	slugs: string[];
 	code: string;
-	coordinates: StopCoordinates;
+	coordinates: Coordinates;
 	stops: Stop[];
 	routeIds: Set<number>;
 	ranking: number | null;

@@ -1,13 +1,13 @@
-import type { StopCoordinates } from '$lib/StopCoordinates';
+import type { Coordinates } from '$lib/Coordinates';
 
-export function distance(userCoordinates: GeolocationCoordinates | null, stopCoordinates: StopCoordinates) {
+export function distance(userCoordinates: GeolocationCoordinates | null, stopCoordinates: Coordinates) {
 	if (userCoordinates == null) {
 		return Infinity;
 	}
 
 	return Math.sqrt(
-		Math.pow(userCoordinates.latitude - stopCoordinates.lat, 2) +
-		Math.pow(userCoordinates.longitude - stopCoordinates.lon, 2)
+		Math.pow(userCoordinates.latitude - stopCoordinates.latitude, 2) +
+		Math.pow(userCoordinates.longitude - stopCoordinates.longitude, 2)
 	);
 }
 
