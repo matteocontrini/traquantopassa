@@ -5,6 +5,7 @@
 	import { invalidateAll } from '$app/navigation';
 	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
+	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
 
 	export let data;
 
@@ -50,13 +51,15 @@
 		}
 	</div>
 
-	<!-- TODO: train switch -->
+	<div class="mt-6 flex justify-center">
+		<ModesSwitch isBus={true} />
+	</div>
 </header>
 
 <main>
 	{#each details.directions as direction}
 		<div class="mt-10 flex flex-col">
-			{#if direction.name}
+			{#if direction.name && details.directions.length > 1}
 				<div class="w-fit mx-auto text-lg uppercase font-medium mb-4 text-center">
 					{ direction.name }
 				</div>
