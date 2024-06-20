@@ -5,6 +5,7 @@ import * as routesService from '$lib/server/routes-service';
 import type { Stop } from '$lib/Stop';
 import type { Route } from '$lib/Route';
 import type { Trip } from '$lib/Trip';
+import * as logger from '$lib/logger';
 
 const cache = new NodeCache();
 
@@ -18,12 +19,11 @@ export async function getTrips(stop: Stop) {
 	// Return from cache if available
 	let direction = cache.get<StopDirection>(`trips-${stopId}`);
 	if (direction) {
-		console.log('Using cached trips for stop', stopId);
 		return direction;
 	}
 
 	// Fetch from API
-	console.log('Fetching trips for stop', stopId);
+	logger.info(`Fetching trips for stop ${stopId}`);
 	const apiTrips = await api.getTrips(stopId, defaultLimit);
 	const routes = await routesService.getRoutes();
 

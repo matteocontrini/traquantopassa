@@ -2,6 +2,7 @@ import NodeCache from 'node-cache';
 import type { Route } from '$lib/Route';
 import * as api from '$lib/server/api';
 import type { ApiRoute } from '$lib/server/api';
+import * as logger from '$lib/logger';
 
 const cache = new NodeCache();
 
@@ -11,12 +12,10 @@ export async function getRoutes() {
 	// Return from cache if available
 	let routes = cache.get<Route[]>(routesCacheKey) ?? [];
 	if (routes.length) {
-		// TODO: remove or user logger
-		console.log('Using cached routes');
 		return routes;
 	}
 
-	console.log('Fetching routes from API');
+	logger.info('Fetching routes from API');
 	const apiRoutes = await api.getRoutes();
 
 	routes = apiRoutes.map(apiRoute => apiRouteToRoute(apiRoute));

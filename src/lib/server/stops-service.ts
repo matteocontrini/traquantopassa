@@ -5,6 +5,7 @@ import type { Stop } from '$lib/Stop';
 import type { StopCoordinates } from '$lib/StopCoordinates';
 import customSlugs from '$lib/server/custom-slugs';
 import customRanking from '$lib/server/custom-ranking';
+import * as logger from '$lib/logger';
 
 const cache = new NodeCache();
 
@@ -14,11 +15,10 @@ export async function getStopGroups() {
 	// Return from cache if available
 	const stopGroups = cache.get<StopGroup[]>(stopGroupsCacheKey) ?? [];
 	if (stopGroups.length) {
-		console.log('Using cached stop groups');
 		return stopGroups;
 	}
 
-	console.log('Fetching stop groups from API');
+	logger.info('Fetching stop groups from API');
 
 	// Fetch stops from the API
 	const apiStops = await api.getStops();
