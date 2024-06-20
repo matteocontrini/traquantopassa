@@ -20,8 +20,7 @@
 	</p>
 
 	<p>
-		Puoi quindi filtrare la lista con questo codice oppure accedere direttamente alla pagina della fermata con
-		l'indirizzo:
+		Dopo aver tolto la "p" o altri simboli, puoi usare questo codice per filtrare la lista oppure per accedere direttamente alla pagina della fermata. Ad esempio:
 	</p>
 
 	<p class="text-center">
