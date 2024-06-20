@@ -1,4 +1,4 @@
-import * as api from '$lib/server/api';
+import * as api from '$lib/server/trentino-trasporti-api';
 import NodeCache from 'node-cache';
 import type { StopGroup } from '$lib/StopGroup';
 import type { Stop } from '$lib/Stop';

@@ -1,7 +1,7 @@
 import NodeCache from 'node-cache';
 import type { Route } from '$lib/Route';
-import * as api from '$lib/server/api';
-import type { ApiRoute } from '$lib/server/api';
+import * as api from '$lib/server/trentino-trasporti-api';
+import type { ApiRoute } from '$lib/server/trentino-trasporti-api';
 import * as logger from '$lib/logger';
 
 const cache = new NodeCache();

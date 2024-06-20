@@ -1,6 +1,6 @@
 import NodeCache from 'node-cache';
 import type { StopDirection } from '$lib/StopDirection';
-import * as api from '$lib/server/api';
+import * as api from '$lib/server/trentino-trasporti-api';
 import * as routesService from '$lib/server/routes-service';
 import type { Stop } from '$lib/Stop';
 import type { Route } from '$lib/Route';
