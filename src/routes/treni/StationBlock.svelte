@@ -1,14 +1,11 @@
 <script lang="ts">
-	import { mapRouteIdsToRoutes } from '$lib/routes-helper';
-	import type { StopGroup } from '$lib/StopGroup';
-	import type { Route } from '$lib/Route';
+	import type { Station } from '$lib/Station';
 	import star from '$lib/assets/star.svg';
 	import starFilled from '$lib/assets/star-filled.svg';
 	import { getContext } from 'svelte';
-	import type { FavoritesStore } from '$lib/stores/stops-favorites';
+	import type { FavoritesStore } from '$lib/stores/stations-favorites';
 
-	export let stop: StopGroup;
-	export let routes: Route[];
+	export let station: Station;
 	export let isFavorite = false;
 
 	const favorites: FavoritesStore = getContext('favorites');
@@ -17,10 +14,10 @@
 	function toggleFavorite() {
 		isFavorite = !isFavorite;
 		if (isFavorite) {
-			favorites.addFavorite(stop.code);
+			favorites.addFavorite(station.id);
 			starElement.classList.add('animate-spin-forward');
 		} else {
-			favorites.removeFavorite(stop.code);
+			favorites.removeFavorite(station.id);
 			starElement.classList.add('animate-spin-backward');
 		}
 		starElement.addEventListener('animationend', () => {
@@ -29,14 +26,14 @@
 	}
 </script>
 
-<a href="/{stop.slugs[0]}"
-	 class="w-full h-full bg-neutral-800 rounded-lg px-4 pt-3 pb-4 no-underline"
+<a href="/treni/{station.slug}"
+	 class="w-full flex flex-col justify-between bg-neutral-800 rounded-lg px-4 pt-3 pb-4 no-underline"
 >
 	<div class="flex gap-2 justify-between items-start">
 		<div class="flex flex-col gap-1 break-all hyphens-auto">
-			<span class="leading-snug">{stop.name}</span>
+			<span class="leading-snug">{station.name}</span>
 			<span class="text-sm no-underline text-neutral-500">
-				/{stop.slugs[0]}
+				/{station.slug}
 			</span>
 		</div>
 
@@ -44,14 +41,10 @@
 			<img src={isFavorite ? starFilled : star} alt="star" class="size-6" bind:this={starElement} />
 		</button>
 	</div>
-	<div class="mt-4 flex gap-2 flex-wrap">
-		{#each mapRouteIdsToRoutes(stop.routeIds, routes) as route (route.id)}
-			<div
-				class="w-7 h-7 flex-shrink-0 flex justify-center items-center font-semibold text-base rounded select-none"
-				style="background-color: {route.color}"
-			>
-				{route.name}
-			</div>
+
+	<div class="mt-2 text-xs font-semibold text-neutral-500 flex flex-col">
+		{#each station.railways as railway (railway)}
+			<span>{railway}</span>
 		{/each}
 	</div>
 </a>

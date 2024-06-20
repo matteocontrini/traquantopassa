@@ -1,5 +1,5 @@
 import { type Writable, writable } from 'svelte/store';
-import { loadFavorites, persistFavorites } from '$lib/storage/stops-favorites';
+import { loadStopsFavorites, persistStopsFavorites } from '$lib/storage/favorites';
 
 
 export interface FavoritesStore extends Writable<Set<string>> {
@@ -9,18 +9,18 @@ export interface FavoritesStore extends Writable<Set<string>> {
 
 
 export function createFavoritesStore() {
-	const { subscribe, update } = writable<Set<string>>(new Set(loadFavorites()));
+	const { subscribe, update } = writable<Set<string>>(new Set(loadStopsFavorites()));
 
 	return {
 		subscribe,
 		addFavorite: (stopId: string) => update(favorites => {
 			favorites.add(stopId);
-			persistFavorites(favorites);
+			persistStopsFavorites(favorites);
 			return favorites;
 		}),
 		removeFavorite: (stopId: string) => update(favorites => {
 			favorites.delete(stopId);
-			persistFavorites(favorites);
+			persistStopsFavorites(favorites);
 			return favorites;
 		})
 	} as FavoritesStore;
