@@ -7,10 +7,11 @@
 	import { onMount, setContext } from 'svelte';
 	import { distance, getCurrentPosition, handleGeolocationError, isGeolocationGranted } from '$lib/location-helpers';
 	import { createFavoritesStore } from '$lib/stores/stops-favorites';
+	import { getDefaultTab, setDefaultTab, type Tab } from '$lib/storage/default-tab';
 
 	export let data;
 
-	let activeTab: 'all' | 'ranked' | 'filter' | 'favorites' = 'all';
+	let activeTab = getDefaultTab();
 
 	let searchTerm = '';
 	let selectedRoute = '';
@@ -62,6 +63,11 @@
 		}
 	}
 
+	function switchTab(tab: Tab) {
+		activeTab = tab;
+		setDefaultTab(tab);
+	}
+
 	export const snapshot = {
 		capture: () => ({
 			activeTab, searchTerm, selectedRoute
@@ -89,10 +95,10 @@
 	</div>
 
 	<div class="mt-8 flex max-xs:flex-wrap gap-2 xs:gap-3" style="scrollbar-width: none">
-		<TabButton text="📍 Più vicine" isSelected={activeTab === 'all'} onClick={() => activeTab = 'all'} />
-		<TabButton text="📊 Più usate" isSelected={activeTab === 'ranked'} onClick={() => activeTab = 'ranked'} />
-		<TabButton text="🔍 Cerca" isSelected={activeTab === 'filter'} onClick={() => activeTab = 'filter'} />
-		<TabButton text="⭐️ Preferiti" isSelected={activeTab === 'favorites'} onClick={() => activeTab = 'favorites'} />
+		<TabButton text="📍 Più vicine" isSelected={activeTab === 'all'} onClick={() => switchTab('all')} />
+		<TabButton text="📊 Più usate" isSelected={activeTab === 'ranked'} onClick={() => switchTab('ranked')} />
+		<TabButton text="🔍 Cerca" isSelected={activeTab === 'filter'} onClick={() => switchTab('filter')} />
+		<TabButton text="⭐️ Preferiti" isSelected={activeTab === 'favorites'} onClick={() => switchTab('favorites')} />
 	</div>
 
 	{#if activeTab === 'all' || activeTab === 'filter'}
