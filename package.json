@@ -37,6 +37,7 @@
 	"type": "module",
 	"dependencies": {
 		"@fontsource-variable/inter": "^5.0.18",
+		"cheerio": "^1.0.0-rc.12",
 		"node-cache": "^5.1.2",
 		"topbar": "^3.0.0"
 	}

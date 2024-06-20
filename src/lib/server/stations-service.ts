@@ -13,3 +13,7 @@ export function getRailways() {
 	}
 	return Array.from(railways);
 }
+
+export function getStationBySlug(slug: string) {
+	return stationsList.find(s => s.slug === slug);
+}

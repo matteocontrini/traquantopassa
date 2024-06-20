@@ -1,7 +1,7 @@
 import * as stopsService from '$lib/server/stops-service';
 import * as tripsService from '$lib/server/trips-service';
 import { error } from '@sveltejs/kit';
-import type { StopGroupDetails } from '$lib/StopGroupDetails';
+import type { StopGroupDetails } from '$lib/StopGroupDetails'; // TODO: use default export
 
 export async function load({ params }) {
 	const slug = params.stop;
@@ -25,10 +25,9 @@ export async function load({ params }) {
 
 	return {
 		details: {
-			code: stopGroup.code,
 			name: stopGroup.name,
 			lastUpdatedAt: new Date(),
 			directions
-		} as StopGroupDetails
+		} satisfies StopGroupDetails as StopGroupDetails // TODO: ???
 	};
 }
