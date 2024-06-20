@@ -6,13 +6,13 @@
 <div class="text-center mt-12">
 	<div class="text-red-500">
 		{#if $page.status === 404}
-			<p>Pagina non trovata 😕</p>
+			<p>Stazione ferroviaria non trovata</p>
 			<p>
-				Se pensi sia un errore, contattaci
-				<a href="mailto:ciao@traquantopassa.in">via email</a>.
+				Puoi chiedere che venga aggiunta
+				<a href="mailto:ciao@traquantopassa.in?subject=Richiesta stazione /{$page.params.station}">via email</a>.
 			</p>
 		{:else if $page.status === 503}
-			<p>I dati di Trentino Trasporti non sono al momento disponibili 😕</p>
+			<p>I dati di RFI non sono al momento disponibili 😕</p>
 			<p>Prova a ricaricare la pagina.</p>
 			<p>
 				Se il problema persiste, contattaci
@@ -28,5 +28,5 @@
 		{/if}
 	</div>
 
-	<FooterNavigation className="my-12" />
+	<FooterNavigation className="my-12" isBus={false} />
 </div>
