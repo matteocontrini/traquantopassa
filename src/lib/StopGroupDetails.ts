@@ -1,6 +1,6 @@
 import type { StopDirection } from '$lib/StopDirection';
 
-export interface StopGroupDetails {
+export default interface StopGroupDetails {
 	name: string;
 	canonicalSlug: string;
 	lastUpdatedAt: Date;
