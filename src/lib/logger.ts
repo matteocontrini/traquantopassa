@@ -1,7 +1,7 @@
-function log(level: string, message: string) {
+function log(level: string, message: string, ...args: unknown[]) {
 	// @ts-expect-error
 	const fn = console[level.toLowerCase()];
-	fn(`${new Date().toISOString()} [${level}] ${message}`);
+	fn(`${new Date().toISOString()} [${level}] ${message}`, ...args);
 }
 
 function info(message: string) {
@@ -12,8 +12,8 @@ function warn(message: string) {
 	log('WARN', message);
 }
 
-function error(message: string) {
-	log('ERROR', message);
+function error(message: string, e?: unknown) {
+	log('ERROR', message, e);
 }
 
 function debug(message: string) {

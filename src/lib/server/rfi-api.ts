@@ -22,7 +22,12 @@ export async function getTrains(stationId: string): Promise<ApiTrain[]> {
 	logger.info(`Fetching trains for station ${stationId}`);
 	const start = performance.now();
 
-	const res = await fetch('https://iechub.rfi.it/ArriviPartenze/ArrivalsDepartures/Monitor?' + params.toString());
+	const res = await fetch(
+		'https://iechub.rfi.it/ArriviPartenze/ArrivalsDepartures/Monitor?' + params.toString(),
+		{
+			signal: AbortSignal.timeout(6 * 1000)
+		}
+	);
 	const text = await res.text();
 
 	logger.info(`Fetched trains for station ${stationId} in ${elapsed(start)} ms`);

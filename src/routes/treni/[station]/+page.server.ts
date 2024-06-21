@@ -3,6 +3,7 @@ import * as trainsService from '$lib/server/trains-service';
 import { error } from '@sveltejs/kit';
 import type StationDetails from '$lib/StationDetails';
 import { getStopForStation } from '$lib/server/stops-stations-mapping';
+import * as logger from '$lib/logger';
 
 export async function load({ params }) {
 	const slug = params.station;
@@ -12,7 +13,13 @@ export async function load({ params }) {
 		error(404);
 	}
 
-	const trains = await trainsService.getTrains(station.id);
+	let trains;
+	try {
+		trains = await trainsService.getTrains(station.id);
+	} catch (e) {
+		logger.error(`Error while fetching trains for station ${station.slug}:`, e);
+		error(503);
+	}
 
 	return {
 		details: {

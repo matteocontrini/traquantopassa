@@ -53,8 +53,8 @@ export async function getStops() {
 	const res = await fetch(BASE_URL + path, {
 		headers: {
 			'Authorization': 'Basic ' + BASIC_AUTH
-		}
-		// TODO: timeout
+		},
+		signal: AbortSignal.timeout(10 * 1000)
 	});
 
 	let data: ApiStop[] = await res.json();
@@ -76,8 +76,8 @@ export async function getRoutes() {
 	const res = await fetch(BASE_URL + path, {
 		headers: {
 			'Authorization': 'Basic ' + BASIC_AUTH
-		}
-		// TODO: timeout
+		},
+		signal: AbortSignal.timeout(10 * 1000)
 	});
 
 	const data: ApiRoute[] = await res.json();
@@ -96,8 +96,8 @@ export async function getTrips(stopId: number, limit: number) {
 	const res = await fetch(BASE_URL + path, {
 		headers: {
 			'Authorization': 'Basic ' + BASIC_AUTH
-		}
-		// TODO: timeout
+		},
+		signal: AbortSignal.timeout(6 * 1000)
 	});
 
 	const data: ApiTrip[] = await res.json();
