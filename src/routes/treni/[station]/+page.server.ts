@@ -16,6 +16,7 @@ export async function load({ params }) {
 	return {
 		details: {
 			name: station.name,
+			canonicalSlug: station.slug,
 			lastUpdatedAt: new Date(), // TODO: use real cache time
 			trains
 		} satisfies StationDetails as StationDetails

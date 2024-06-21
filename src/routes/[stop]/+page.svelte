@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { PUBLIC_BASE_URL } from '$env/static/public';
 	import Trip from './Trip.svelte';
 	import FooterNavigation from '$lib/components/FooterNavigation.svelte';
 	import { onMount } from 'svelte';
@@ -37,6 +38,7 @@
 
 <svelte:head>
 	<title>{ details.name }</title>
+	<link rel="canonical" href="{PUBLIC_BASE_URL}/{details.canonicalSlug}" />
 </svelte:head>
 
 <header>

@@ -26,6 +26,7 @@ export async function load({ params }) {
 	return {
 		details: {
 			name: stopGroup.name,
+			canonicalSlug: stopGroup.slugs[0],
 			lastUpdatedAt: new Date(),
 			directions
 		} satisfies StopGroupDetails as StopGroupDetails // TODO: ???

@@ -13,6 +13,7 @@ The application is built with the SvelteKit framework (previously Nuxt 3).
 Create a `.env` file with the following content (add missing credentials):
 
 ```
+PUBLIC_BASE_URL=https://traquantopassa.in
 API_BASE_URL=https://app-tpl.tndigit.it
 API_USERNAME=
 API_PASSWORD=
