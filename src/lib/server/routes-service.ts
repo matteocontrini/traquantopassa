@@ -4,7 +4,10 @@ import * as api from '$lib/server/trentino-trasporti-api';
 import type { ApiRoute } from '$lib/server/trentino-trasporti-api';
 import * as logger from '$lib/logger';
 
-const cache = new NodeCache();
+// TODO: should use stale data instead of simply expiring it
+const cache = new NodeCache({
+	stdTTL: 24 * 60 * 60 // 24 hours
+});
 
 const routesCacheKey = 'routes';
 
@@ -23,7 +26,6 @@ export async function getRoutes() {
 	// Sort by route name (numeric)
 	routes.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
 
-	// TODO: cache expiration?
 	cache.set(routesCacheKey, routes);
 
 	return routes;

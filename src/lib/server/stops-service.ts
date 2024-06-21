@@ -6,7 +6,9 @@ import type { Coordinates } from '$lib/Coordinates';
 import customSlugs from '$lib/server/custom-slugs';
 import customRanking from '$lib/server/custom-ranking';
 
-const cache = new NodeCache();
+const cache = new NodeCache({
+	stdTTL: 24 * 60 * 60 // 24 hours
+});
 
 const stopGroupsCacheKey = 'stop-groups';
 
@@ -38,7 +40,6 @@ export async function getStopGroups() {
 	stopGroups.sort((a, b) => a.name.localeCompare(b.name));
 
 	// Save to cache
-	// TODO: cache expiration?
 	cache.set(stopGroupsCacheKey, stopGroups);
 
 	return stopGroups;
