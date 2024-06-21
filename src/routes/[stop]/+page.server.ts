@@ -2,6 +2,7 @@ import * as stopsService from '$lib/server/stops-service';
 import * as tripsService from '$lib/server/trips-service';
 import { error } from '@sveltejs/kit';
 import type { StopGroupDetails } from '$lib/StopGroupDetails'; // TODO: use default export
+import { getStationForStop } from '$lib/server/stops-stations-mapping';
 
 export async function load({ params }) {
 	const slug = params.stop;
@@ -28,7 +29,8 @@ export async function load({ params }) {
 			name: stopGroup.name,
 			canonicalSlug: stopGroup.slugs[0],
 			lastUpdatedAt: new Date(),
-			directions
+			directions,
+			trainStationSlug: getStationForStop(stopGroup.slugs[0]),
 		} satisfies StopGroupDetails as StopGroupDetails // TODO: ???
 	};
 }

@@ -5,4 +5,5 @@ export default interface StationDetails {
 	canonicalSlug: string;
 	lastUpdatedAt: Date;
 	trains: Train[];
+	stopSlug: string | null;
 }

@@ -53,9 +53,11 @@
 		}
 	</div>
 
-	<div class="mt-6 flex justify-center">
-		<ModesSwitch isBus={false} />
-	</div>
+	{#if details.stopSlug}
+		<div class="mt-6 flex justify-center">
+			<ModesSwitch isBus={false} stopSlug={details.stopSlug} stationSlug={details.canonicalSlug} />
+		</div>
+	{/if}
 </header>
 
 <main>

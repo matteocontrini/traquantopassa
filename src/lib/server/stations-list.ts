@@ -20,7 +20,7 @@ export default [
 	// Ferrovia del Brennero
 	station(
 		2912,
-		'stazione',
+		'trentofs',
 		'Trento FS',
 		[46.07224810063012, 11.119214853916196],
 		railwayBrennero.concat(railwayValsugana)

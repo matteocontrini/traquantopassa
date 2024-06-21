@@ -5,4 +5,5 @@ export interface StopGroupDetails {
 	canonicalSlug: string;
 	lastUpdatedAt: Date;
 	directions: StopDirection[];
+	trainStationSlug: string | null;
 }

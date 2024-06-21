@@ -1,5 +1,5 @@
 export default {
-	'20125': 'stazionefs',
+	'20125': 'stazione',
 	'25045': 'valoni',
 	'25015': 'scienze',
 	'25055': 'povo1',
