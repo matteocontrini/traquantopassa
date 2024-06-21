@@ -1,27 +1,28 @@
 import NodeCache from 'node-cache';
 import * as api from './rfi-api';
 import type { Train } from '$lib/Train';
-import * as logger from '$lib/logger';
+import CachedItem from '$lib/server/CachedItem';
 
 const cache = new NodeCache();
 
 const cacheDurationSeconds = 30;
 
-export async function getTrainsForStation(stationId: string): Promise<Train[]> {
-	let trains = cache.get<Train[]>(`trains-${stationId}`);
-	if (trains) {
-		return trains;
+export async function getTrains(stationId: string): Promise<CachedItem<Train[]>> {
+	let cachedItem = cache.get<CachedItem<Train[]>>(`trains-${stationId}`);
+	if (cachedItem) {
+		return cachedItem;
 	}
 
 	// Fetch from API
 	const apiTrains = await api.getTrains(stationId);
 
-	trains = mapTrains(apiTrains);
+	const trains = mapTrains(apiTrains);
+	cachedItem = new CachedItem(trains);
 
 	// Save to cache
-	cache.set(`trains-${stationId}`, trains, cacheDurationSeconds);
+	cache.set(`trains-${stationId}`, cachedItem, cacheDurationSeconds);
 
-	return trains;
+	return cachedItem;
 }
 
 function mapTrains(apiTrains: api.ApiTrain[]): Train[] {

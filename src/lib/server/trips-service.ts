@@ -6,6 +6,7 @@ import type { Stop } from '$lib/Stop';
 import type { Route } from '$lib/Route';
 import type { Trip } from '$lib/Trip';
 import * as logger from '$lib/logger';
+import CachedItem from '$lib/server/CachedItem';
 
 const cache = new NodeCache();
 
@@ -13,13 +14,13 @@ const tripsCacheDurationSeconds = 30;
 const defaultLimit = 15;
 const outdatedDataThresholdMillis = 1000 * 60 * 5;
 
-export async function getTrips(stop: Stop) {
+export async function getTrips(stop: Stop): Promise<CachedItem<StopDirection>> {
 	const stopId = stop.id;
 
 	// Return from cache if available
-	let direction = cache.get<StopDirection>(`trips-${stopId}`);
-	if (direction) {
-		return direction;
+	let cachedItem = cache.get<CachedItem<StopDirection>>(`trips-${stopId}`);
+	if (cachedItem) {
+		return cachedItem;
 	}
 
 	// Fetch from API
@@ -29,15 +30,17 @@ export async function getTrips(stop: Stop) {
 
 	const trips = await mapApiTrips(apiTrips, routes, stopId);
 
-	direction = {
+	const direction = {
 		name: directionName(stop),
 		trips
 	} as StopDirection;
 
-	// Save to cache
-	cache.set(`trips-${stopId}`, direction, tripsCacheDurationSeconds);
+	cachedItem = new CachedItem(direction);
 
-	return direction;
+	// Save to cache
+	cache.set(`trips-${stopId}`, cachedItem, tripsCacheDurationSeconds);
+
+	return cachedItem;
 }
 
 async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId: number) {

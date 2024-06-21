@@ -12,14 +12,14 @@ export async function load({ params }) {
 		error(404);
 	}
 
-	const trains = await trainsService.getTrainsForStation(station.id);
+	const trains = await trainsService.getTrains(station.id);
 
 	return {
 		details: {
 			name: station.name,
 			canonicalSlug: station.slug,
-			lastUpdatedAt: new Date(), // TODO: use real cache time
-			trains,
+			lastUpdatedAt: trains.cachedAt,
+			trains: trains.value,
 			stopSlug: getStopForStation(station.slug)
 		} satisfies StationDetails as StationDetails
 	};
