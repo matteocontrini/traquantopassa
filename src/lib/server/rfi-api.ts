@@ -1,4 +1,6 @@
 import * as cheerio from 'cheerio';
+import * as logger from '$lib/logger';
+import { elapsed } from '$lib/server/time-helpers';
 
 export interface ApiTrain {
 	carrier: string;
@@ -17,9 +19,15 @@ export async function getTrains(stationId: string): Promise<ApiTrain[]> {
 	params.append('placeId', stationId);
 	params.append('arrivals', 'false');
 
-	const res = await fetch('https://iechub.rfi.it/ArriviPartenze/ArrivalsDepartures/Monitor?' + params.toString());
+	logger.info(`Fetching trains for station ${stationId}`);
+	const start = performance.now();
 
-	return parseTrains(await res.text());
+	const res = await fetch('https://iechub.rfi.it/ArriviPartenze/ArrivalsDepartures/Monitor?' + params.toString());
+	const text = await res.text();
+
+	logger.info(`Fetched trains for station ${stationId} in ${elapsed(start)} ms`);
+
+	return parseTrains(text);
 }
 
 function parseTrains(html: string): ApiTrain[] {

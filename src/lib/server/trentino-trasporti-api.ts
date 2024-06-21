@@ -1,4 +1,6 @@
 import { env } from '$env/dynamic/private';
+import * as logger from '$lib/logger';
+import { elapsed } from '$lib/server/time-helpers';
 
 const BASE_URL = env.API_BASE_URL;
 
@@ -43,7 +45,12 @@ export interface ApiStopTime {
 }
 
 export async function getStops() {
-	const res = await fetch(BASE_URL + '/gtlservice/stops?type=U', {
+	const path = '/gtlservice/stops?type=U';
+
+	logger.info('Fetching stops from API');
+	const start = performance.now();
+
+	const res = await fetch(BASE_URL + path, {
 		headers: {
 			'Authorization': 'Basic ' + BASIC_AUTH
 		}
@@ -52,6 +59,8 @@ export async function getStops() {
 
 	let data: ApiStop[] = await res.json();
 
+	logger.info(`Fetched stops in ${elapsed(start)} ms`);
+
 	// Keep only stops in Trento and exclude "funivia" which has a different stop code pattern
 	data = data.filter(stop => stop.town == 'Trento' && /^[0-9]+[a-z-]*$/.test(stop.stopCode));
 
@@ -59,7 +68,12 @@ export async function getStops() {
 }
 
 export async function getRoutes() {
-	const res = await fetch(BASE_URL + '/gtlservice/routes?areas=23', {
+	const path = '/gtlservice/routes?areas=23';
+
+	logger.info('Fetching routes from API');
+	const start = performance.now();
+
+	const res = await fetch(BASE_URL + path, {
 		headers: {
 			'Authorization': 'Basic ' + BASIC_AUTH
 		}
@@ -68,11 +82,16 @@ export async function getRoutes() {
 
 	const data: ApiRoute[] = await res.json();
 
+	logger.info(`Fetched routes in ${elapsed(start)} ms`);
+
 	return data;
 }
 
 export async function getTrips(stopId: number, limit: number) {
 	const path = `/gtlservice/trips_new?limit=${limit}&stopId=${stopId}&type=U`;
+
+	logger.info(`Fetching trips for ${stopId}`);
+	const start = performance.now();
 
 	const res = await fetch(BASE_URL + path, {
 		headers: {
@@ -82,6 +101,8 @@ export async function getTrips(stopId: number, limit: number) {
 	});
 
 	const data: ApiTrip[] = await res.json();
+
+	logger.info(`Fetched trips for ${stopId} in ${elapsed(start)} ms`);
 
 	return data;
 }

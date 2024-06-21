@@ -14,7 +14,6 @@ export async function getTrainsForStation(stationId: string): Promise<Train[]> {
 	}
 
 	// Fetch from API
-	logger.info(`Fetching trains for station ${stationId}`);
 	const apiTrains = await api.getTrains(stationId);
 
 	trains = mapTrains(apiTrains);
