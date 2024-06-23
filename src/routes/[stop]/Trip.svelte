@@ -1,22 +1,9 @@
 <script lang="ts">
 	import type { Trip } from '$lib/Trip';
 	import LiveTripAnimation from './LiveTripAnimation.svelte';
+	import PulsingMinutes from './PulsingMinutes.svelte';
 
 	export let trip: Trip;
-
-	function formatMinutes(minutes: number) {
-		if (minutes < 60) {
-			return `${minutes}′`;
-		} else {
-			let hours = Math.floor(minutes / 60);
-			let minutesLeft = minutes % 60;
-			if (minutesLeft === 0) {
-				return `${hours}h`;
-			} else {
-				return `${hours}h ${minutesLeft}m`;
-			}
-		}
-	}
 </script>
 
 <div class="flex items-center gap-x-4 mb-2">
@@ -56,13 +43,7 @@
 			{/if}
 		</span>
 	</div>
-	<div
-		class="text-right text-xl font-semibold whitespace-nowrap"
-		class:animate-pulse={trip.minutes === 0}
-		class:text-red-600={trip.minutes === 0}
-	>
-		{ formatMinutes(trip.minutes) }
-	</div>
+	<PulsingMinutes minutes={trip.minutes} />
 	<LiveTripAnimation green={trip.delay != null && !trip.isOutdated}
 										 yellow={trip.delay != null && trip.isOutdated} />
 </div>
