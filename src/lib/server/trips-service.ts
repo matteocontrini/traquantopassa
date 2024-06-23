@@ -112,11 +112,19 @@ async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId:
 	});
 }
 
-function directionName(stop: Stop) {
+function directionName(stop: Stop): string {
 	if (stop.code.endsWith('z')) {
 		return `» Periferia`;
 	} else if (stop.code.endsWith('x')) {
 		return `» Centro`;
+	} else if (stop.code.endsWith('s')) {
+		return `» Sud`;
+	} else if (stop.code.endsWith('n')) {
+		return `» Nord`;
+	} else if (stop.code.endsWith('o')) {
+		return `» Ovest`;
+	} else if (stop.code.endsWith('e')) {
+		return `» Est`;
 	} else {
 		return '';
 	}
