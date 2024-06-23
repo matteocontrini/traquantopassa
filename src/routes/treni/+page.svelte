@@ -7,7 +7,7 @@
 	import { onMount, setContext } from 'svelte';
 	import { distance, getCurrentPosition, handleGeolocationError, isGeolocationGranted } from '$lib/location-helpers';
 	import { createFavoritesStore } from '$lib/stores/stations-favorites';
-	import { getDefaultTab, setDefaultTab, type Tab } from '$lib/storage/default-tab';
+	import { getDefaultTab, setDefaultTab, type Tab } from '$lib/storage/stations-default-tab';
 
 	export let data;
 
