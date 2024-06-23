@@ -8,9 +8,9 @@
 	let el: HTMLSpanElement;
 
 	onMount(() => {
-		// Get the first ping animation that isn't the one we're animating
+		// Get the first ping animation that is already in progress
 		const animations = document.getAnimations();
-		const anim = animations.find(x => x.animationName =='ping' && x.effect?.target != el);
+		const anim = animations.find(x => x.animationName =='ping' && x.currentTime != 0);
 		if (!anim) {
 			return;
 		}

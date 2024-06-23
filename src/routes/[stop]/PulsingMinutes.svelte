@@ -22,7 +22,7 @@
 		if (minutes != 0) {
 			return;
 		}
-		// Get the first ping animation that is already in progress
+		// Get the first pulse animation that is already in progress
 		const animations = document.getAnimations();
 		const anim = animations.find(x => x.animationName == 'pulse' && x.currentTime != 0);
 		if (!anim) {
