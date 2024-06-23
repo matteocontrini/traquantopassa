@@ -1,10 +1,11 @@
 {
 	"name": "traquantopassa",
-	"version": "0.0.1",
+	"version": "2.0.0",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
+		"start": "node -r dotenv/config build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -12,7 +13,7 @@
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-auto": "^3.0.0",
+		"@sveltejs/adapter-node": "^5.2.0",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"@types/eslint": "^8.56.7",
@@ -38,6 +39,7 @@
 	"dependencies": {
 		"@fontsource-variable/inter": "^5.0.18",
 		"cheerio": "^1.0.0-rc.12",
+		"dotenv": "^16.4.5",
 		"node-cache": "^5.1.2",
 		"topbar": "^3.0.0"
 	}
