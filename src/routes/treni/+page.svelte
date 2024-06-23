@@ -62,6 +62,8 @@
 
 	function switchTab(tab: Tab) {
 		activeTab = tab;
+		searchTerm = '';
+		selectedRailway = '';
 		setDefaultTab(tab);
 	}
 

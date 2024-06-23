@@ -65,15 +65,16 @@
 
 	function switchTab(tab: Tab) {
 		activeTab = tab;
+		searchTerm = '';
+		selectedRoute = '';
 		setDefaultTab(tab);
 	}
 
 	export const snapshot = {
 		capture: () => ({
-			activeTab, searchTerm, selectedRoute
+			searchTerm, selectedRoute
 		}),
 		restore: (values) => {
-			activeTab = values.activeTab;
 			searchTerm = values.searchTerm;
 			selectedRoute = values.selectedRoute;
 		}
