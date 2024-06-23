@@ -97,7 +97,7 @@ async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId:
 		}
 
 		// Add timestamp to the trip ID since there could be multiple trips with the same ID (e.g. hourly trips)
-		const id = trip.tripId + '-' + new Date(trip.oraArrivoEffettivaAFermataSelezionata).getTime();
+		const id = trip.tripId + '-' + new Date(trip.oraArrivoProgrammataAFermataSelezionata).getTime();
 
 		return {
 			id,
