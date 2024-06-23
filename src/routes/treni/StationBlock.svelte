@@ -30,7 +30,7 @@
 	 class="w-full flex flex-col justify-between bg-neutral-800 rounded-lg px-4 pt-3 pb-4 no-underline"
 >
 	<div class="flex gap-2 justify-between items-start">
-		<div class="flex flex-col gap-1 break-all hyphens-auto">
+		<div class="flex flex-col gap-1">
 			<span class="leading-snug">{station.name}</span>
 			<span class="text-sm no-underline text-neutral-500">
 				/{station.slug}
