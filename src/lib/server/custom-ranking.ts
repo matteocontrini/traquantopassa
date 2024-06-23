@@ -1,6 +1,6 @@
 export default {
 	'valoni': 1358,
-	'stazionefs': 1222,
+	'stazione': 1222,
 	'mesiano': 1191,
 	'smm': 933,
 	'fiera': 820,
