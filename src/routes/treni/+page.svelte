@@ -22,9 +22,11 @@
 	const favorites = createFavoritesStore();
 	setContext('favorites', favorites);
 
-	$: filteredStations = data.stations
+	$: sortedStations = data.stations
 		// Sort by distance
-		.sort((a, b) => (distances.get(a.id) ?? Infinity) - (distances.get(b.id) ?? Infinity))
+		.sort((a, b) => (distances.get(a.id) ?? Infinity) - (distances.get(b.id) ?? Infinity));
+
+	$: filteredStations = data.stations
 		.filter((station) =>
 			// Filter by railway. Evaluates to true if no route is selected
 			(selectedRailway == '' || station.railways.includes(selectedRailway)) &&
@@ -136,7 +138,7 @@
 			{/if}
 
 			<div class="mt-4 text-lg grid xs:grid-cols-2 gap-4">
-				{#each filteredStations as station (station.id)}
+				{#each (activeTab === 'all' ? sortedStations : filteredStations) as station (station.id)}
 					<StationBlock {station} isFavorite={$favorites.has(station.id)} />
 				{/each}
 			</div>
