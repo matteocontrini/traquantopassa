@@ -101,13 +101,13 @@
 	<div class="text-sm text-neutral-500">
 		<div>
 			Il pallino verde
-			<LiveTripAnimation className="inline-block mx-1" green={true} yellow={false} />
+			<LiveTripAnimation className="inline-block mx-1" live="green" />
 			indica che i dati sono in tempo reale.
 		</div>
 
 		<div class="mt-2">
 			Il pallino è giallo
-			<LiveTripAnimation className="inline-block mx-1" green={false} yellow={true} />
+			<LiveTripAnimation className="inline-block mx-1" live="yellow" />
 			se l'autobus non ha trasmesso aggiornamenti negli ultimi 5 minuti.
 		</div>
 

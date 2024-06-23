@@ -44,6 +44,5 @@
 		</span>
 	</div>
 	<PulsingMinutes minutes={trip.minutes} />
-	<LiveTripAnimation green={trip.delay != null && !trip.isOutdated}
-										 yellow={trip.delay != null && trip.isOutdated} />
+	<LiveTripAnimation live={trip.delay != null ? (trip.isOutdated ? 'yellow' : 'green') : null} />
 </div>
