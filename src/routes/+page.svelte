@@ -97,7 +97,7 @@
 		<ModesSwitch isBus={true} />
 	</div>
 
-	<div class="mt-8 flex max-xs:flex-wrap gap-2 xs:gap-3" style="scrollbar-width: none">
+	<div class="mt-8 flex max-sm:flex-wrap gap-2 xs:gap-3" style="scrollbar-width: none">
 		<TabButton text="📍 Più vicine" isSelected={activeTab === 'all'} onClick={() => switchTab('all')} />
 		<TabButton text="📊 Più usate" isSelected={activeTab === 'ranked'} onClick={() => switchTab('ranked')} />
 		<TabButton text="🔍 Cerca" isSelected={activeTab === 'filter'} onClick={() => switchTab('filter')} />
@@ -115,7 +115,7 @@
 			{/if}
 
 			{#if activeTab === 'filter'}
-				<div class="mt-4 flex max-xs:flex-col gap-x-4 gap-y-3">
+				<div class="mt-4 flex max-sm:flex-col gap-x-4 gap-y-3">
 					<div class="flex gap-x-2 basis-1/2">
 						<input
 							type="search"
