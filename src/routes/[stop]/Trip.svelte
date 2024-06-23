@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Trip } from '$lib/Trip';
+	import LiveTripAnimation from './LiveTripAnimation.svelte';
 
 	export let trip: Trip;
 
@@ -62,9 +63,6 @@
 	>
 		{ formatMinutes(trip.minutes) }
 	</div>
-	<span
-		class="rounded-full w-2 h-2 animate-ping"
-		class:bg-green-500={trip.delay != null && !trip.isOutdated}
-		class:bg-yellow-500={trip.delay != null && trip.isOutdated}
-	></span>
+	<LiveTripAnimation green={trip.delay != null && !trip.isOutdated}
+										 yellow={trip.delay != null && trip.isOutdated} />
 </div>

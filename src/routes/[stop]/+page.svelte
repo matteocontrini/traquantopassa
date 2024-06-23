@@ -7,6 +7,7 @@
 	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
 	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
+	import LiveTripAnimation from './LiveTripAnimation.svelte';
 
 	export let data;
 
@@ -100,13 +101,13 @@
 	<div class="text-sm text-neutral-500">
 		<div>
 			Il pallino verde
-			<span class="inline-block rounded-full w-2 h-2 animate-ping bg-green-500 mx-1"></span>
+			<LiveTripAnimation className="inline-block mx-1" green={true} yellow={false} />
 			indica che i dati sono in tempo reale.
 		</div>
 
 		<div class="mt-2">
 			Il pallino è giallo
-			<span class="inline-block rounded-full w-2 h-2 animate-ping bg-yellow-500 mx-1"></span>
+			<LiveTripAnimation className="inline-block mx-1" green={false} yellow={true} />
 			se l'autobus non ha trasmesso aggiornamenti negli ultimi 5 minuti.
 		</div>
 
