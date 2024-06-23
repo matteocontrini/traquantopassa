@@ -32,12 +32,18 @@ export async function getRoutes() {
 }
 
 function mapRouteColor(apiRoute: ApiRoute) {
-	if (apiRoute.routeShortName == '5/') {
+	if (apiRoute.routeShortName == '5/' || apiRoute.routeShortName == 'CM') {
 		return '#F5C500';
+	} else if (apiRoute.routeShortName == 'P') {
+		return '#C52720';
+	} else if (apiRoute.routeShortName == 'G') {
+		return '#542774';
+	} else if (apiRoute.routeShortName == 'M') {
+		return '#074E3C';
 	}
 
 	if (!apiRoute.routeColor) {
-		return '#000000';
+		return '#1f1a17';
 	}
 
 	return '#' + apiRoute.routeColor;
