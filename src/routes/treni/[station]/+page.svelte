@@ -12,9 +12,9 @@
 	export let data;
 
 	$: details = data.details;
-	$: trains = showMore ? details.trains : details.trains.slice(0, 15);
 	let showMore = false;
 	let showMoreInProgress = false;
+	$: limit = showMore ? Infinity : 5;
 
 	const REFRESH_INTERVAL = 30 * 1000;
 	let timer: ReturnType<typeof setInterval>;
@@ -63,8 +63,8 @@
 
 <main>
 	<div class="mt-10 flex flex-col">
-		{#if trains.length > 0}
-			{#each trains as train (train.number)}
+		{#if details.trains.length > 0}
+			{#each details.trains.slice(0, limit) as train (train.number)}
 				<div animate:flip={{delay: 300}}
 						 in:fade={{delay: showMoreInProgress ? 0 : 800, duration: 300}}
 						 out:fade={{duration: 300}}>
@@ -72,7 +72,7 @@
 				</div>
 			{/each}
 
-			{#if !showMore }
+			{#if !showMore && details.trains.length > limit}
 				<button class="mt-2 px-3 py-1 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700 text-mid"
 								on:click={() => {
 									showMore = true;
