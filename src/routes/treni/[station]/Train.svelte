@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Train } from '$lib/Train';
+	import DepartingTrainAnimation from './DepartingTrainAnimation.svelte';
 
 	export let train: Train;
 </script>
@@ -30,7 +31,7 @@
 			{/if}
 			{#if train.isBlinking}
 				<span class="inline-block w-5">
-						<span class="animate-blink block rounded-full w-2 h-2 bg-white"></span>
+					<DepartingTrainAnimation />
 				</span>
 			{/if}
 			{#if train.isReplacedByBus}

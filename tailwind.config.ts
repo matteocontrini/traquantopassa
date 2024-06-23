@@ -10,12 +10,12 @@ export default {
 				sans: ['Inter Variable', ...defaultTheme.fontFamily.sans]
 			},
 			animation: {
-				blink: '1s blink infinite step-end', // train departing
+				train: '1s train infinite step-end', // train departing
 				'spin-forward': '1s spin-forward 1',
 				'spin-backward': '1s spin-backward 1'
 			},
 			keyframes: {
-				blink: {
+				train: {
 					'0%': { 'margin-left': '0' },
 					'50%': { 'margin-left': '5px' },
 					'100%': { 'margin-left': '0' }

@@ -7,6 +7,7 @@
 	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
 	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
+	import DepartingTrainAnimation from './DepartingTrainAnimation.svelte';
 
 	export let data;
 
@@ -97,9 +98,9 @@
 		</div>
 
 		<div class="mt-2">
-                        <span class="inline-block w-5">
-                            <span class="animate-blink block rounded-full w-2 h-2 bg-white"></span>
-                        </span>
+			<span class="inline-block w-5">
+				<DepartingTrainAnimation />
+			</span>
 			indica che il treno è in partenza.
 		</div>
 
