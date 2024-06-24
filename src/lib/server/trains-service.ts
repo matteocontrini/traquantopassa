@@ -30,7 +30,7 @@ function mapTrains(apiTrains: api.ApiTrain[]): Train[] {
 		let isDelayed = false;
 		let delay = train.delay;
 		if (/^[0-9]+$/.test(delay)) {
-			delay = `+${delay}'`;
+			delay = `+${delay}′`;
 			isDelayed = true;
 		}
 
