@@ -5,7 +5,12 @@
 	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
 	import TabButton from '$lib/components/TabButton.svelte';
 	import { getContext, onMount } from 'svelte';
-	import { distance, getCurrentPosition, handleGeolocationError, isGeolocationGranted } from '$lib/location-helpers';
+	import {
+		computeDistances,
+		getCurrentPosition,
+		handleGeolocationError,
+		isGeolocationGranted
+	} from '$lib/location-helpers';
 	import { type FavoritesStore } from '$lib/stores/stops-favorites';
 	import { getDefaultTab, setDefaultTab, type Tab } from '$lib/storage/stops-default-tab';
 
@@ -18,7 +23,7 @@
 	$: escapedSearchTerm = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 	let showGeolocationButton = false;
-	let distances = new Map<string, number>();
+	let distances = computeDistances(data.stops);
 
 	const favorites: FavoritesStore = getContext('favorites');
 
@@ -54,13 +59,7 @@
 	async function updatePosition() {
 		try {
 			const position = await getCurrentPosition();
-
-			// Recalculate distances
-			for (let stop of data.stops) {
-				distances.set(stop.code, distance(position.coords, stop.coordinates));
-			}
-
-			distances = distances; // trigger re-render
+			distances = computeDistances(data.stops, position.coords);
 			showGeolocationButton = false;
 		} catch (err) {
 			handleGeolocationError(err);

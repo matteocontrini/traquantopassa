@@ -1,4 +1,20 @@
 import type { Coordinates } from '$lib/Coordinates';
+import type { StopGroup } from '$lib/StopGroup';
+
+export function computeDistances(stops: StopGroup[], userCoordinates: GeolocationCoordinates | null = null) {
+	const distances = new Map<string, number>();
+
+	// Default to Piazza Dante Trento
+	if (!userCoordinates) {
+		userCoordinates = { latitude: 46.071756, longitude: 11.119511 } as GeolocationCoordinates;
+	}
+
+	for (const stop of stops) {
+		distances.set(stop.code, distance(userCoordinates, stop.coordinates));
+	}
+
+	return distances;
+}
 
 export function distance(userCoordinates: GeolocationCoordinates | null, stopCoordinates: Coordinates) {
 	if (userCoordinates == null) {
