@@ -3,7 +3,7 @@
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'traquantopassa-beta'
+app = 'traquantopassa'
 primary_region = 'cdg'
 
 [build]
