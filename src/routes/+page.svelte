@@ -32,8 +32,9 @@
 			(selectedRoute == '' || stop.routeIds.has(data.routes.find(x => x.name == selectedRoute)!.id)) &&
 			// Filter by search term on both name and code. Evaluates to true if no search term is present
 			(searchTerm == '' ||
-				stop.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-				stop.code.includes(searchTerm)
+				// TODO: this can break since it's not escaped
+				new RegExp(`\\b${searchTerm}`, 'i').test(stop.name) ||
+				stop.slugs.some(slug => slug.includes(searchTerm))
 			)
 		);
 
