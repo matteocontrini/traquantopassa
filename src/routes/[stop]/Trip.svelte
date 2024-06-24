@@ -26,9 +26,12 @@
 				{:else if trip.distanceInStops === 0}
 					alla tua fermata
 				{:else if trip.distanceInStops === 1}
-					a {trip.distanceInStops} fermata da te
+					a 1 fermata da te
 				{:else}
 					a {trip.distanceInStops} fermate da te
+				{/if}
+				{#if trip.currentStopSequenceNumber <= 1}
+					(capolinea)
 				{/if}
 				{#if trip.delay != null} •{/if}
 			{/if}

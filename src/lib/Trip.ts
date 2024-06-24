@@ -6,5 +6,6 @@ export interface Trip {
 	minutes: number;
 	delay: number | null;
 	distanceInStops: number | null;
+	currentStopSequenceNumber: number;
 	isOutdated: boolean;
 }

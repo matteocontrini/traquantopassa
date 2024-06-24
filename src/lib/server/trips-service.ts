@@ -107,6 +107,7 @@ async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId:
 			minutes,
 			delay,
 			distanceInStops,
+			currentStopSequenceNumber,
 			isOutdated
 		} as Trip;
 	});
