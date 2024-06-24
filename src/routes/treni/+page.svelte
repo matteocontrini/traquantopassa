@@ -4,9 +4,9 @@
 	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
 	import TabButton from '$lib/components/TabButton.svelte';
 	import StationBlock from './StationBlock.svelte';
-	import { onMount, setContext } from 'svelte';
+	import { getContext, onMount } from 'svelte';
 	import { distance, getCurrentPosition, handleGeolocationError, isGeolocationGranted } from '$lib/location-helpers';
-	import { createFavoritesStore } from '$lib/stores/stations-favorites';
+	import { type FavoritesStore } from '$lib/stores/stations-favorites';
 	import { getDefaultTab, setDefaultTab, type Tab } from '$lib/storage/stations-default-tab';
 
 	export let data;
@@ -19,8 +19,7 @@
 	let showGeolocationButton = false;
 	let distances = new Map<string, number>();
 
-	const favorites = createFavoritesStore();
-	setContext('favorites', favorites);
+	const favorites: FavoritesStore = getContext('favorites');
 
 	$: sortedStations = data.stations
 		// Sort by distance
@@ -139,7 +138,7 @@
 
 			<div class="mt-4 text-lg grid xs:grid-cols-2 gap-4">
 				{#each (activeTab === 'all' ? sortedStations : filteredStations) as station (station.id)}
-					<StationBlock {station} isFavorite={$favorites.has(station.id)} />
+					<StationBlock {station} />
 				{/each}
 			</div>
 		</div>
@@ -156,7 +155,7 @@
 					<div class="flex shrink-0"
 							 animate:flip={{duration: 500, delay: 1000}}
 							 out:fade={{delay: 1000, duration: 100}}>
-						<StationBlock {station} isFavorite={true} />
+						<StationBlock {station} />
 					</div>
 				{/each}
 			</div>

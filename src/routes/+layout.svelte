@@ -2,8 +2,9 @@
 	import '@fontsource-variable/inter';
 	import '../app.css';
 	import { navigating } from '$app/stores';
-	import { onMount } from 'svelte';
+	import { onMount, setContext } from 'svelte';
 	import type { Topbar } from 'topbar';
+	import { createFavoritesStore } from '$lib/stores/stops-favorites';
 
 	let topbar: Topbar;
 	onMount(async () => {
@@ -22,10 +23,10 @@
 			topbar?.hide();
 		}
 	}
+
+	setContext('favorites', createFavoritesStore());
 </script>
 
 <div class="max-w-[600px] mx-auto mt-10 px-5">
 	<slot></slot>
 </div>
-
-<style></style>

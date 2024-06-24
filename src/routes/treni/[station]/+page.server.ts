@@ -23,6 +23,7 @@ export async function load({ params }) {
 
 	return {
 		details: {
+			id: station.id,
 			name: station.name,
 			canonicalSlug: station.slug,
 			lastUpdatedAt: trains.cachedAt,

@@ -8,6 +8,7 @@
 	import { fade } from 'svelte/transition';
 	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
 	import DepartingTrainAnimation from './DepartingTrainAnimation.svelte';
+	import StationFavoriteButton from '$lib/components/StationFavoriteButton.svelte';
 
 	export let data;
 
@@ -43,7 +44,10 @@
 </svelte:head>
 
 <header>
-	<h1 class="font-semibold text-center text-4xl">Stazione di { details.name }</h1>
+	<h1 class="font-semibold text-center text-4xl">
+		Stazione di { details.name }
+		<StationFavoriteButton stationId={details.id} className="pl-1" />
+	</h1>
 	<div class="mt-1 text-sm text-center">
 		aggiornato alle
 		{

@@ -4,9 +4,9 @@
 	import StopBlock from './StopBlock.svelte';
 	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
 	import TabButton from '$lib/components/TabButton.svelte';
-	import { onMount, setContext } from 'svelte';
+	import { getContext, onMount } from 'svelte';
 	import { distance, getCurrentPosition, handleGeolocationError, isGeolocationGranted } from '$lib/location-helpers';
-	import { createFavoritesStore } from '$lib/stores/stops-favorites';
+	import { type FavoritesStore } from '$lib/stores/stops-favorites';
 	import { getDefaultTab, setDefaultTab, type Tab } from '$lib/storage/stops-default-tab';
 
 	export let data;
@@ -19,8 +19,7 @@
 	let showGeolocationButton = false;
 	let distances = new Map<string, number>();
 
-	const favorites = createFavoritesStore();
-	setContext('favorites', favorites);
+	const favorites: FavoritesStore = getContext('favorites');
 
 	$: sortedStops = data.stops
 		// Sort by distance
@@ -150,14 +149,14 @@
 
 			<div class="mt-4 text-lg grid sm:grid-cols-2 gap-4">
 				{#each (activeTab === 'all' ? sortedStops : filteredStops) as stop (stop.slugs[0])}
-					<StopBlock {stop} routes={data.routes} isFavorite={$favorites.has(stop.code)} />
+					<StopBlock {stop} routes={data.routes} />
 				{/each}
 			</div>
 		</div>
 	{:else if activeTab === 'ranked'}
 		<div class="mt-8 text-lg grid sm:grid-cols-2 gap-4">
 			{#each rankedStops as stop (stop.slugs[0])}
-				<StopBlock {stop} routes={data.routes} isFavorite={$favorites.has(stop.code)} />
+				<StopBlock {stop} routes={data.routes} />
 			{/each}
 		</div>
 	{:else}
@@ -173,7 +172,7 @@
 					<div class="flex shrink-0"
 							 animate:flip={{duration: 500, delay: 1000}}
 							 out:fade={{delay: 1000, duration: 100}}>
-						<StopBlock {stop} routes={data.routes} isFavorite={true} />
+						<StopBlock {stop} routes={data.routes} />
 					</div>
 				{/each}
 			</div>

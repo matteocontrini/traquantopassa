@@ -8,6 +8,7 @@
 	import { fade } from 'svelte/transition';
 	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
 	import LiveTripAnimation from './LiveTripAnimation.svelte';
+	import StopFavoriteButton from '$lib/components/StopFavoriteButton.svelte';
 
 	export let data;
 
@@ -43,7 +44,10 @@
 </svelte:head>
 
 <header>
-	<h1 class="font-semibold text-center text-4xl">{ details.name }</h1>
+	<h1 class="font-semibold text-center text-4xl">
+		{ details.name }
+		<StopFavoriteButton stopCode={details.code} className="pl-1" />
+	</h1>
 	<div class="mt-1 text-sm text-center">
 		aggiornato alle
 		{

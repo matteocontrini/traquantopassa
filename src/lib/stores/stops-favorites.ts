@@ -7,7 +7,6 @@ export interface FavoritesStore extends Writable<Set<string>> {
 	removeFavorite: (stopId: string) => void;
 }
 
-
 export function createFavoritesStore() {
 	const { subscribe, update } = writable<Set<string>>(new Set(loadStopsFavorites()));
 

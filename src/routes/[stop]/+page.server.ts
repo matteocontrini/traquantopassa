@@ -36,6 +36,7 @@ export async function load({ params }) {
 	return {
 		details: {
 			name: stopGroup.name,
+			code: stopGroup.code,
 			canonicalSlug: stopGroup.slugs[0],
 			lastUpdatedAt: cacheTime,
 			directions,
