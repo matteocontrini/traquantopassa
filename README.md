@@ -43,8 +43,8 @@ npm ci
 npm run build
 ```
 
-Start the production server (you can pass configuration options with environment variables):
+Start the production server (you can pass configuration options with environment variables or the `.env` file):
 
 ```bash
-npm run preview
+npm start
 ```
