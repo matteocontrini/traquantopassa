@@ -8,5 +8,4 @@ export interface StopGroup {
 	coordinates: Coordinates;
 	stops: Stop[];
 	routeIds: Set<number>;
-	ranking: number | null;
 }

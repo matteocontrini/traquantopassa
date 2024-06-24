@@ -10,14 +10,17 @@ The application is built with the SvelteKit framework (previously Nuxt 3).
 
 ## Development
 
-Create a `.env` file with the following content (add missing credentials):
+Create a `.env` file with the following content:
 
 ```
 PUBLIC_BASE_URL=https://traquantopassa.in
 API_BASE_URL=https://app-tpl.tndigit.it
 API_USERNAME=
 API_PASSWORD=
+GOATCOUNTER_API_KEY=
 ```
+
+Make sure to add missing credentials (Goatcounter is optional).
 
 Install dependencies:
 

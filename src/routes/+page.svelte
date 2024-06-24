@@ -37,7 +37,9 @@
 			)
 		);
 
-	$: rankedStops = data.stops.filter(x => x.ranking !== null).sort((x, y) => y.ranking! - x.ranking!);
+	$: rankedStops = data.stops
+		.filter(x => data.rankings[x.code])
+		.sort((x, y) => data.rankings[y.code] - data.rankings[x.code]);
 
 	$: favoriteStops = data.stops.filter(x => $favorites.has(x.code));
 
