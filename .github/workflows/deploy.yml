@@ -9,7 +9,9 @@ jobs:
     name: Deploy app
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    environment: ${{ github.ref_name == 'production' && 'production' || 'beta' }}
+    environment:
+      name: ${{ github.ref_name == 'production' && 'production' || 'beta' }}
+      url: ${{ github.ref_name == 'production' && 'https://traquantopassa.in' || 'https://traquantopassa-beta.fly.dev' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
