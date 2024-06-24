@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     environment:
-      name: ${{ github.ref_name == 'production' && 'production' || 'beta' }}
-      url: ${{ github.ref_name == 'production' && 'https://traquantopassa.in' || 'https://traquantopassa-beta.fly.dev' }}
+      name: ${{ github.ref_name == 'main' && 'production' || 'beta' }}
+      url: ${{ github.ref_name == 'main' && 'https://traquantopassa.in' || 'https://traquantopassa-beta.fly.dev' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
