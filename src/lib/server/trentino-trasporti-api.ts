@@ -1,10 +1,11 @@
 import { env } from '$env/dynamic/private';
 import * as logger from '$lib/logger';
 import { elapsed } from '$lib/server/time-helpers';
+import { building } from '$app/environment';
 
 const BASE_URL = env.API_BASE_URL;
 
-if (!BASE_URL) {
+if (!building && !BASE_URL) {
 	throw new Error('Missing API_BASE_URL environment variable');
 }
 
