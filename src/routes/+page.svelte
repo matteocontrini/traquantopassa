@@ -15,6 +15,7 @@
 
 	let searchTerm = '';
 	let selectedRoute = '';
+	$: escapedSearchTerm = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 	let showGeolocationButton = false;
 	let distances = new Map<string, number>();
@@ -31,8 +32,7 @@
 			(selectedRoute == '' || stop.routeIds.has(data.routes.find(x => x.name == selectedRoute)!.id)) &&
 			// Filter by search term on both name and code. Evaluates to true if no search term is present
 			(searchTerm == '' ||
-				// TODO: this can break since it's not escaped
-				new RegExp(`\\b${searchTerm}`, 'i').test(stop.name) ||
+				new RegExp(`\\b${escapedSearchTerm}`, 'i').test(stop.name) ||
 				stop.slugs.some(slug => slug.includes(searchTerm))
 			)
 		);
