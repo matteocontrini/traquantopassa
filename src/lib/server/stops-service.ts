@@ -4,6 +4,7 @@ import type { StopGroup } from '$lib/StopGroup';
 import type { Stop } from '$lib/Stop';
 import type { Coordinates } from '$lib/Coordinates';
 import customSlugs from '$lib/server/custom-slugs';
+import customStopNames from '$lib/server/custom-stop-names';
 
 const cache = new NodeCache({
 	stdTTL: 24 * 60 * 60 // 24 hours
@@ -76,10 +77,15 @@ function createStopGroup(apiStop: api.ApiStop): StopGroup {
 		slugs.splice(0, 0, customSlug);
 	}
 
+	let name = apiStop.stopName;
+	if (customStopNames[code]) {
+		name = customStopNames[code];
+	}
+
 	return {
-		name: apiStop.stopName,
-		code: code,
-		slugs: slugs,
+		name,
+		code,
+		slugs,
 		coordinates: null!, // will be filled later
 		stops: [],
 		routeIds: new Set()
