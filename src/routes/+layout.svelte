@@ -18,7 +18,7 @@
 
 	$: {
 		if ($navigating) {
-			topbar?.show();
+			topbar?.show(150);
 		} else {
 			topbar?.hide();
 		}
