@@ -44,10 +44,12 @@
 </svelte:head>
 
 <header>
-	<h1 class="font-semibold text-center text-4xl">
-		{ details.name }
-		<StopFavoriteButton stopCode={details.code} className="pl-1" />
-	</h1>
+	<div class="text-center">
+		<h1 class="font-semibold text-center text-4xl inline">
+			{ details.name }
+		</h1>
+		<StopFavoriteButton stopCode={details.code} className="pl-2" />
+	</div>
 	<div class="mt-1 text-sm text-center">
 		aggiornato alle
 		{
