@@ -2,6 +2,7 @@
 	import type { Trip } from '$lib/Trip';
 	import LiveTripAnimation from './LiveTripAnimation.svelte';
 	import PulsingMinutes from './PulsingMinutes.svelte';
+	import { Flag } from 'lucide-svelte';
 
 	export let trip: Trip;
 </script>
@@ -14,8 +15,14 @@
 		{trip.routeName}
 	</div>
 	<div class="flex-grow whitespace-nowrap overflow-hidden">
-		<span class="block leading-tight text-lg font-medium text-ellipsis overflow-hidden whitespace-nowrap">
-				{trip.destination}
+		<span
+			class="flex gap-x-2 items-center leading-tight text-lg text-ellipsis overflow-hidden whitespace-nowrap"
+			class:text-neutral-500={trip.isEndOfRouteForUser}
+			class:font-medium={!trip.isEndOfRouteForUser}>
+			{trip.destination}
+			{#if trip.isEndOfRouteForUser}
+				<Flag class="size-4" strokeWidth={2.5} />
+			{/if}
 		</span>
 		<span class="block leading-none text-xs text-neutral-500">
 			{#if trip.distanceInStops != null}
@@ -31,7 +38,7 @@
 					a {trip.distanceInStops} fermate da te
 				{/if}
 				{#if trip.currentStopSequenceNumber <= 1}
-					(capolinea)
+					(1ª fermata)
 				{/if}
 				{#if trip.delay != null} •{/if}
 			{/if}
@@ -46,6 +53,6 @@
 			{/if}
 		</span>
 	</div>
-	<PulsingMinutes minutes={trip.minutes} />
+	<PulsingMinutes minutes={trip.minutes} dimmed={trip.isEndOfRouteForUser} />
 	<LiveTripAnimation live={trip.delay != null ? (trip.isOutdated ? 'yellow' : 'green') : null} />
 </div>

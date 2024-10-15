@@ -8,4 +8,5 @@ export interface Trip {
 	distanceInStops: number | null;
 	currentStopSequenceNumber: number;
 	isOutdated: boolean;
+	isEndOfRouteForUser: boolean;
 }

@@ -9,6 +9,7 @@
 	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
 	import LiveTripAnimation from './LiveTripAnimation.svelte';
 	import StopFavoriteButton from '$lib/components/StopFavoriteButton.svelte';
+	import { Flag } from 'lucide-svelte';
 
 	export let data;
 
@@ -104,20 +105,28 @@
 </main>
 
 <footer class="my-12">
-	<div class="text-sm text-neutral-500">
-		<div>
+	<div class="text-sm text-neutral-500 space-y-2">
+		<p>
 			Il pallino verde
 			<LiveTripAnimation className="inline-block mx-1" live="green" />
 			indica che i dati sono in tempo reale.
-		</div>
+		</p>
 
-		<div class="mt-2">
+		<p>
 			Il pallino è giallo
 			<LiveTripAnimation className="inline-block mx-1" live="yellow" />
 			se l'autobus non ha trasmesso aggiornamenti negli ultimi 5 minuti.
-		</div>
+		</p>
 
-		<div class="mt-2">La pagina si aggiorna automaticamente ogni 30 secondi.</div>
+		<p>
+			Il simbolo
+			<Flag class="size-4 inline" />
+			indica che la corsa terminerà a questa fermata.
+		</p>
+
+		<p>
+			La pagina si aggiorna automaticamente ogni 30 secondi.
+		</p>
 	</div>
 
 	<FooterNavigation className="mt-6" />

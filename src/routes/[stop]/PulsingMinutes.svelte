@@ -2,6 +2,8 @@
 	import { afterUpdate } from 'svelte';
 
 	export let minutes: number;
+	export let dimmed: boolean;
+
 	let el: HTMLDivElement;
 
 	function formatMinutes(minutes: number) {
@@ -43,6 +45,7 @@
 <div
 	bind:this={el}
 	class="text-right text-xl font-semibold whitespace-nowrap"
+	class:text-neutral-500={dimmed}
 	class:animate-pulse={minutes === 0}
 	class:text-red-600={minutes === 0}
 >
