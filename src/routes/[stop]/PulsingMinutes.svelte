@@ -47,7 +47,7 @@
 	class="text-right text-xl {dimmed ? 'font-medium' : 'font-semibold'} whitespace-nowrap"
 	class:text-neutral-500={dimmed}
 	class:animate-pulse={minutes === 0}
-	class:text-red-600={minutes === 0}
+	class:text-red-600={!dimmed && minutes === 0}
 >
 	{ formatMinutes(minutes) }
 </div>
