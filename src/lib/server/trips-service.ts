@@ -96,6 +96,10 @@ async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId:
 			isOutdated = (Date.now() - lastEventDate.getTime()) > outdatedDataThresholdMillis;
 		}
 
+		// Check if the trip will end at the current user stop,
+		// but not if it still has to depart (to exclude departures on circular routes)
+		const isEndOfRouteForUser = endOfRouteStopId == userStopId && currentStopSequenceNumber > 1;
+
 		// Add timestamp to the trip ID since there could be multiple trips with the same ID (e.g. hourly trips)
 		const id = trip.tripId + '-' + new Date(trip.oraArrivoProgrammataAFermataSelezionata).getTime();
 
@@ -109,7 +113,7 @@ async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId:
 			distanceInStops,
 			currentStopSequenceNumber,
 			isOutdated,
-			isEndOfRouteForUser: endOfRouteStopId == userStopId
+			isEndOfRouteForUser
 		} satisfies Trip as Trip;
 	});
 }
