@@ -57,9 +57,9 @@ async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId:
 		// Check if the trip is at the last stop and don't use the delay in that case
 		// (the delay is always 0 in that case)
 		// Note: use stopNext because sometimes the last stop is never reached
-		const endOfRouteStopId = trip.stopTimes.at(-1)!.stopId;
+		const endOfRoute = trip.stopTimes.at(-1)!;
 		const nextStopId = trip.stopNext;
-		const delay = endOfRouteStopId != nextStopId ? trip['delay'] : null;
+		const delay = endOfRoute.stopId != nextStopId ? trip['delay'] : null;
 
 		// *** Compute how many stops away the bus is
 		let distanceInStops = null;
@@ -96,12 +96,16 @@ async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId:
 			isOutdated = (Date.now() - lastEventDate.getTime()) > outdatedDataThresholdMillis;
 		}
 
-
 		// Check if the trip will end at the current user stop
-		let isEndOfRouteForUser = endOfRouteStopId == userStopId;
-		// If this route is a circular route, also make sure that the bus is arriving and not about to depart
-		if (trip.stopTimes[0].stopId == endOfRouteStopId) {
-			isEndOfRouteForUser &&= currentStopSequenceNumber > 1;
+		let isEndOfRouteForUser = endOfRoute.stopId == userStopId;
+		// If this route is a circular route, also make sure that this trip is
+		// for an arrival at the current user stop and not a departure from the stop.
+		// We use two strategies, in this order:
+		// 1. When live data is available, detect if the bus is already beyond the first stop
+		// 2. Check if the expected time at the current stop matches the time of the last stop of the trip
+		if (isEndOfRouteForUser && trip.stopTimes[0].stopId == endOfRoute.stopId) {
+			isEndOfRouteForUser = currentStopSequenceNumber > 1
+				|| formatTime(expectedTime) == endOfRoute.arrivalTime;
 		}
 
 		// Add timestamp to the trip ID since there could be multiple trips with the same ID (e.g. hourly trips)
@@ -138,4 +142,9 @@ function directionName(stop: Stop): string {
 	} else {
 		return '';
 	}
+}
+
+function formatTime(date: Date) {
+	// Output format should always be 15:00:00
+	return date.toLocaleTimeString('it-IT', { timeZone: 'Europe/Rome' });
 }

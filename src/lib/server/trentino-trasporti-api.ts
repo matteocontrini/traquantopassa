@@ -44,6 +44,7 @@ export interface ApiTrip {
 export interface ApiStopTime {
 	stopId: number;
 	stopSequence: number;
+	arrivalTime: string;
 }
 
 export async function getStops() {
