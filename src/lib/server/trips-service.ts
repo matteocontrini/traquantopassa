@@ -59,7 +59,7 @@ async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId:
 		// Note: use stopNext because sometimes the last stop is never reached
 		const endOfRoute = trip.stopTimes.at(-1)!;
 		const nextStopId = trip.stopNext;
-		const delay = endOfRoute.stopId != nextStopId ? trip['delay'] : null;
+		const delay = endOfRoute.stopId != nextStopId ? trip.delay : null;
 
 		// *** Compute how many stops away the bus is
 		let distanceInStops = null;
