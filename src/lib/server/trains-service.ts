@@ -99,6 +99,8 @@ function categoryToIcon(category: string): string | null {
 		return 'icn';
 	} else if (category.includes('intercity')) {
 		return 'ic';
+	} else if (category.includes('railjet')) {
+		return 'rj';
 	}
 
 	return null;
