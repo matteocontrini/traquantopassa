@@ -95,10 +95,10 @@ function categoryToIcon(category: string): string | null {
 		return 'ec';
 	} else if (category.includes('alta velocità')) {
 		return 'av';
-	} else if (category.includes('intercity')) {
-		return 'ic';
 	} else if (category.includes('intercity notte')) {
 		return 'icn';
+	} else if (category.includes('intercity')) {
+		return 'ic';
 	}
 
 	return null;
