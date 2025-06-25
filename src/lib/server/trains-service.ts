@@ -101,6 +101,8 @@ function categoryToIcon(category: string): string | null {
 		return 'ic';
 	} else if (category.includes('railjet')) {
 		return 'rj';
+	} else if (category.includes('regio express')) {
+		return 're';
 	}
 
 	return null;
