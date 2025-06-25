@@ -105,6 +105,8 @@ function categoryToIcon(category: string): string | null {
 		return 're';
 	} else if (category.includes('nightjet')) {
 		return 'nj';
+	} else if (category.includes('euronight')) {
+		return 'en';
 	}
 
 	return null;
