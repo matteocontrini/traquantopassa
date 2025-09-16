@@ -34,6 +34,7 @@ function mapTrains(apiTrains: api.ApiTrain[]): Train[] {
 			isDelayed = true;
 		}
 
+		const carrier = fixCarrier(train.carrier);
 		const category = fixCategory(train.category);
 
 		const icon = categoryToIcon(category);
@@ -47,7 +48,7 @@ function mapTrains(apiTrains: api.ApiTrain[]): Train[] {
 		const platform = (train.platform == 'PF' || isReplacedByBus) ? '' : train.platform;
 
 		return {
-			carrier: capitalize(train.carrier),
+			carrier: carrier,
 			category: category,
 			icon: icon,
 			number: train.number,
@@ -72,41 +73,40 @@ function capitalize(str: string): string {
 		.join(' ');
 }
 
+function fixCarrier(carrier: string): string {
+	if (carrier.toLowerCase() === 'tt') {
+		return 'Trentino Trasporti';
+	}
+
+	return capitalize(carrier);
+}
+
 function fixCategory(category: string): string {
 	category = category.replace('Categoria ', '');
-
-	// AV has "ITALO" as the alt text
-	category = category.replace(/italo/i, 'Alta Velocità');
-	// Regionale Veloce is called "Civitavecchia Express Regionale Veloce"
-	category = category.replace(/civitavecchia express/i, '').trim();
 
 	return capitalize(category);
 }
 
 function categoryToIcon(category: string): string | null {
+	const mapping = {
+		'bus': 'bus',
+		'rv': 'rv', // regionale veloce
+		'reg': 'r', // regionale
+		'ec': 'ec', // eurocity
+		'alta velocita\'': 'av',
+		'italo': 'av',
+		'intercity notte': 'icn', // TODO: check if this is correct
+		'intercity': 'ic',
+		'rj': 'rj', // railjet
+		're': 're', // regio express
+		'nightjet': 'nj', // TODO: check if this is correct
+		'en': 'en' // euronight
+	};
+
 	category = category.toLowerCase();
-	if (category.includes('autocorsa')) {
-		return 'bus';
-	} else if (category.includes('regionale veloce')) {
-		return 'rv';
-	} else if (category.includes('regionale')) {
-		return 'r';
-	} else if (category.includes('eurocity')) {
-		return 'ec';
-	} else if (category.includes('alta velocità')) {
-		return 'av';
-	} else if (category.includes('intercity notte')) {
-		return 'icn';
-	} else if (category.includes('intercity')) {
-		return 'ic';
-	} else if (category.includes('railjet')) {
-		return 'rj';
-	} else if (category.includes('regio express')) {
-		return 're';
-	} else if (category.includes('nightjet')) {
-		return 'nj';
-	} else if (category.includes('euronight')) {
-		return 'en';
+
+	if (category in mapping) {
+		return mapping[category as keyof typeof mapping];
 	}
 
 	return null;
