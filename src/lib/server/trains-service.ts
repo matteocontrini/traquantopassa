@@ -78,6 +78,10 @@ function fixCarrier(carrier: string): string {
 		return 'Trentino Trasporti';
 	}
 
+	if (carrier.length <= 3) {
+		return carrier.toUpperCase();
+	}
+
 	return capitalize(carrier);
 }
 
