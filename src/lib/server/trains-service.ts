@@ -36,8 +36,7 @@ function mapTrains(apiTrains: api.ApiTrain[]): Train[] {
 
 		const carrier = fixCarrier(train.carrier);
 		const category = fixCategory(train.category);
-
-		const icon = categoryToIcon(category);
+		const icon = categoryToIcon(train.category);
 
 		const isReplacedByBus = checkIsReplacedByBus(icon, delay, train.notes);
 
@@ -84,10 +83,33 @@ function fixCarrier(carrier: string): string {
 function fixCategory(category: string): string {
 	category = category.replace('Categoria ', '');
 
-	return capitalize(category);
+	const mapping = {
+		'bus': 'Bus',
+		'rv': 'Regionale Veloce',
+		'reg': 'Regionale',
+		'ec': 'Eurocity',
+		'alta velocita\'': 'Alta Velocità',
+		'italo': 'Alta Velocità Italo',
+		'intercity': 'Intercity',
+		'intercity notte': 'Intercity Notte',
+		'rj': 'Railjet',
+		're': 'RegioExpress',
+		'nj': 'Nightjet',
+		'en': 'Euronight'
+	};
+
+	category = category.toLowerCase();
+
+	if (category in mapping) {
+		return mapping[category as keyof typeof mapping];
+	}
+
+	return category.toUpperCase();
 }
 
 function categoryToIcon(category: string): string | null {
+	category = category.replace('Categoria ', '');
+
 	const mapping = {
 		'bus': 'bus',
 		'rv': 'rv', // regionale veloce
