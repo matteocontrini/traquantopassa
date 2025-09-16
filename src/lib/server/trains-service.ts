@@ -95,11 +95,11 @@ function categoryToIcon(category: string): string | null {
 		'ec': 'ec', // eurocity
 		'alta velocita\'': 'av',
 		'italo': 'av',
-		'intercity notte': 'icn', // TODO: check if this is correct
 		'intercity': 'ic',
+		'intercity notte': 'icn',
 		'rj': 'rj', // railjet
 		're': 're', // regio express
-		'nightjet': 'nj', // TODO: check if this is correct
+		'nj': 'nj', // nightjet
 		'en': 'en' // euronight
 	};
 
