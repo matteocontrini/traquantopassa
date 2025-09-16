@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-	Tra quanto passa
+	<title>Tra quanto passa</title>
 </svelte:head>
 
 <header>
