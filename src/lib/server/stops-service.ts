@@ -12,21 +12,43 @@ const cache = new NodeCache({
 
 const stopGroupsCacheKey = 'stop-groups';
 
+const stopNameMapping: Record<number, string> = {};
+
+export function stopIdToName(id: number){
+	return stopNameMapping[id] || "";
+}
+
+function updateStopNameMapping(apiStops: api.ApiStop[]) {
+	// Set stop mapping for 
+	for (const apiStop of apiStops ){
+		const code = getCode(apiStop);
+		const name = customStopNames[code] ?  customStopNames[code] : apiStop.stopName;
+		stopNameMapping[apiStop.stopId] = name;
+	}
+}
+
+
 export async function getStopGroups() {
 	// Return from cache if available
-	const stopGroups = cache.get<StopGroup[]>(stopGroupsCacheKey) ?? [];
-	if (stopGroups.length) {
-		return stopGroups;
+	const cached = cache.get<StopGroup[]> (stopGroupsCacheKey);
+	if (cached) {
+		return cached;
 	}
+
+	const stopGroups: StopGroup[] = [];
 
 	// Fetch stops from the API
 	const apiStops = await api.getStops();
 
+	// Update the name mapping while we have the data
+	updateStopNameMapping(apiStops);
+
 	// Group stops by name
-	for (const apiStop of apiStops) {
+	for (const apiStop of filterStops(apiStops)) {
+
 		// Find existing stop group with the same stop code
 		const existing = stopGroups.find(sg =>
-			sg.code === apiStop.stopCode.replace(/[^0-9]/g, '')
+			sg.code === getCode(apiStop)
 		);
 		if (existing) {
 			existing.stops.push(createStop(apiStop));
@@ -56,6 +78,18 @@ export async function getStopGroupBySlug(slug: string) {
 	return stopGroups.find(sg => sg.slugs.includes(slug));
 }
 
+function filterStops (apiStops: api.ApiStop[]){
+	return apiStops.filter( stop => 
+		(stop.town === null || stop.town == 'Trento' ||  stop.town == 'Lavis' ) &&
+		stop.stopLat > 46    && stop.stopLon > 11.04 &&
+		stop.stopLat < 46.16 && stop.stopLon < 11.2  &&
+		/^[0-9]+[a-z-]*$/.test(stop.stopCode));
+}
+
+function getCode (apiStop: api.ApiStop){
+	return apiStop.stopCode.replace(/[^0-9]/g, ''); // keep only digits
+}
+
 function createStop(apiStop: api.ApiStop): Stop {
 	return {
 		id: apiStop.stopId,
@@ -68,7 +102,7 @@ function createStop(apiStop: api.ApiStop): Stop {
 }
 
 function createStopGroup(apiStop: api.ApiStop): StopGroup {
-	const code = apiStop.stopCode.replace(/[^0-9]/g, ''); // keep only digits
+	const code = getCode(apiStop)
 
 	// Use slug override as default slug if available
 	const slugs = [code];

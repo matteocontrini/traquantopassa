@@ -9,4 +9,10 @@ export interface Trip {
 	currentStopSequenceNumber: number;
 	isOutdated: boolean;
 	isEndOfRouteForUser: boolean;
+	stopTimes: StopTime[];
+}
+
+export interface StopTime {
+	name: string;
+	time: string;
 }

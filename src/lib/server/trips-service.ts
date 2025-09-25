@@ -4,8 +4,9 @@ import * as api from '$lib/server/trentino-trasporti-api';
 import * as routesService from '$lib/server/routes-service';
 import type { Stop } from '$lib/Stop';
 import type { Route } from '$lib/Route';
-import type { Trip } from '$lib/Trip';
+import type { Trip, StopTime} from '$lib/Trip';
 import * as logger from '$lib/logger';
+import { stopIdToName } from '$lib/server/stops-service';
 import CachedItem from '$lib/server/CachedItem';
 
 const cache = new NodeCache();
@@ -44,7 +45,7 @@ export async function getTrips(stop: Stop): Promise<CachedItem<StopDirection>> {
 }
 
 async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId: number) {
-	return apiTrips.map(trip => {
+	return Promise.all(apiTrips.map(async trip => {
 		const route = routes.find(r => r.id === trip.routeId)!;
 
 		// Compute wait time in minutes
@@ -83,7 +84,7 @@ async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId:
 				distanceInStops = currentUserStop.stopSequence - currentBusStop!.stopSequence;
 			}
 		}
-			// If the bus hasn't still reached the first stop, but it's sending data,
+		// If the bus hasn't still reached the first stop, but it's sending data,
 		// it means it's about to depart
 		else if (currentStopSequenceNumber == 0 && delay != null) {
 			distanceInStops = -1;
@@ -111,6 +112,16 @@ async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId:
 		// Add timestamp to the trip ID since there could be multiple trips with the same ID (e.g. hourly trips)
 		const id = trip.tripId + '-' + new Date(trip.oraArrivoProgrammataAFermataSelezionata).getTime();
 
+		const stopTimes = trip.stopTimes.map((stopTime) => {
+			return {
+				name: stopTime.stopId === userStopId 
+							? "$current_stop" 
+							: stopIdToName(stopTime.stopId),
+				// Time is returned with seconds that are always 00 so we omit them
+				time: stopTime.arrivalTime.substring(0, 5),
+			} satisfies StopTime as StopTime;
+		})
+1
 		return {
 			id,
 			routeName: route.name,
@@ -121,9 +132,10 @@ async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId:
 			distanceInStops,
 			currentStopSequenceNumber,
 			isOutdated,
-			isEndOfRouteForUser
+			isEndOfRouteForUser,
+			stopTimes,
 		} satisfies Trip as Trip;
-	});
+	}));
 }
 
 function directionName(stop: Stop): string {

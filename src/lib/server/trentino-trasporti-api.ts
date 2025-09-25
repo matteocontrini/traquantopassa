@@ -64,9 +64,6 @@ export async function getStops() {
 
 	logger.info(`Fetched stops in ${elapsed(start)} ms`);
 
-	// Keep only stops in Trento and exclude "funivia" which has a different stop code pattern
-	data = data.filter(stop => stop.town == 'Trento' && /^[0-9]+[a-z-]*$/.test(stop.stopCode));
-
 	return data;
 }
 
