@@ -47,6 +47,22 @@ export interface ApiStopTime {
 	arrivalTime: string;
 }
 
+function filterStops (apiStops: ApiStop[]){
+	return apiStops.filter( stop =>
+		// Check the stopcode format to avoid stuff like Funivia Trento-Sardagna
+		/^[0-9]+[a-z-]*$/.test(stop.stopCode) &&
+		// Ensure the stop has routes and it's not disuesed
+		stop.routes &&
+		
+		(stop.town === 'Trento' || stop.town === 'Lavis' || (
+			// Some stops in Trento are not tagged with tow, so we use a 
+			// box check to ensure they are in Trento
+			stop.town === null  &&
+			stop.stopLat > 46      && stop.stopLon > 11.04 &&
+			stop.stopLat < 46.1815 && stop.stopLon < 11.2  ))
+		);
+}
+
 export async function getStops() {
 	const path = '/gtlservice/stops?type=U';
 
@@ -64,7 +80,7 @@ export async function getStops() {
 
 	logger.info(`Fetched stops in ${elapsed(start)} ms`);
 
-	return data;
+	return filterStops(data);
 }
 
 export async function getRoutes() {

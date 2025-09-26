@@ -12,21 +12,12 @@ const cache = new NodeCache({
 
 const stopGroupsCacheKey = 'stop-groups';
 
+// Gets auto-updated whenever the stopGrops cache expires
 const stopNameMapping: Record<number, string> = {};
 
 export function stopIdToName(id: number){
 	return stopNameMapping[id] || "";
 }
-
-function updateStopNameMapping(apiStops: api.ApiStop[]) {
-	// Set stop mapping for 
-	for (const apiStop of apiStops ){
-		const code = getCode(apiStop);
-		const name = customStopNames[code] ?  customStopNames[code] : apiStop.stopName;
-		stopNameMapping[apiStop.stopId] = name;
-	}
-}
-
 
 export async function getStopGroups() {
 	// Return from cache if available
@@ -40,23 +31,27 @@ export async function getStopGroups() {
 	// Fetch stops from the API
 	const apiStops = await api.getStops();
 
-	// Update the name mapping while we have the data
-	updateStopNameMapping(apiStops);
-
 	// Group stops by name
-	for (const apiStop of filterStops(apiStops)) {
+	for (const apiStop of apiStops) {
+
+		const code = getCode(apiStop)
+		const stop = createStop(apiStop);
+
+		// Set the id-> name mapping used for route position information
+		const name = customStopNames[code] ?  customStopNames[code] : apiStop.stopName;
+		stopNameMapping[apiStop.stopId] = name;
 
 		// Find existing stop group with the same stop code
 		const existing = stopGroups.find(sg =>
-			sg.code === getCode(apiStop)
+			sg.code === code
 		);
+
 		if (existing) {
-			existing.stops.push(createStop(apiStop));
+			existing.stops.push(stop);
 			apiStop.routes.forEach(r => existing.routeIds.add(r.routeId));
 			existing.coordinates = calculateCoordinates(existing.stops);
 		} else {
-			const stopGroup = createStopGroup(apiStop);
-			const stop = createStop(apiStop);
+			const stopGroup = createStopGroup(code, apiStop);
 			stopGroup.stops.push(stop);
 			apiStop.routes.forEach(r => stopGroup.routeIds.add(r.routeId));
 			stopGroup.coordinates = calculateCoordinates(stopGroup.stops);
@@ -78,14 +73,6 @@ export async function getStopGroupBySlug(slug: string) {
 	return stopGroups.find(sg => sg.slugs.includes(slug));
 }
 
-function filterStops (apiStops: api.ApiStop[]){
-	return apiStops.filter( stop => 
-		(stop.town === null || stop.town == 'Trento' ||  stop.town == 'Lavis' ) &&
-		stop.stopLat > 46    && stop.stopLon > 11.04 &&
-		stop.stopLat < 46.16 && stop.stopLon < 11.2  &&
-		/^[0-9]+[a-z-]*$/.test(stop.stopCode));
-}
-
 function getCode (apiStop: api.ApiStop){
 	return apiStop.stopCode.replace(/[^0-9]/g, ''); // keep only digits
 }
@@ -101,9 +88,7 @@ function createStop(apiStop: api.ApiStop): Stop {
 	};
 }
 
-function createStopGroup(apiStop: api.ApiStop): StopGroup {
-	const code = getCode(apiStop)
-
+function createStopGroup(code: string, apiStop: api.ApiStop): StopGroup {
 	// Use slug override as default slug if available
 	const slugs = [code];
 	const customSlug = customSlugs[code];

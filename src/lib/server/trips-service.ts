@@ -11,7 +11,10 @@ import CachedItem from '$lib/server/CachedItem';
 
 const cache = new NodeCache();
 
-const tripsCacheDurationSeconds = 30;
+// Cache is 1s less than refresh time to avoid an issue where the auto refresh
+// sometimes only happens every 1 minute instead of every 30s
+
+const tripsCacheDurationSeconds = 29;
 const defaultLimit = 15;
 const outdatedDataThresholdMillis = 1000 * 60 * 5;
 
@@ -112,11 +115,15 @@ async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId:
 		// Add timestamp to the trip ID since there could be multiple trips with the same ID (e.g. hourly trips)
 		const id = trip.tripId + '-' + new Date(trip.oraArrivoProgrammataAFermataSelezionata).getTime();
 
-		const stopTimes = trip.stopTimes.map((stopTime) => {
+		let userStopSequenceNumber = 0;
+
+		const stopTimes = trip.stopTimes.map((stopTime, i) => {
+			if (stopTime.stopId == userStopId){
+				userStopSequenceNumber = i;
+			}
+			
 			return {
-				name: stopTime.stopId === userStopId 
-							? "$current_stop" 
-							: stopIdToName(stopTime.stopId),
+				name: stopIdToName(stopTime.stopId),
 				// Time is returned with seconds that are always 00 so we omit them
 				time: stopTime.arrivalTime.substring(0, 5),
 			} satisfies StopTime as StopTime;
@@ -131,6 +138,7 @@ async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId:
 			delay,
 			distanceInStops,
 			currentStopSequenceNumber,
+			userStopSequenceNumber,
 			isOutdated,
 			isEndOfRouteForUser,
 			stopTimes,

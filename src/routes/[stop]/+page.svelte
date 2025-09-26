@@ -5,12 +5,12 @@
 	import { onMount } from 'svelte';
 	import { invalidateAll } from '$app/navigation';
 	import { flip } from 'svelte/animate';
-	import { fade } from 'svelte/transition';
+	import { fade, slide } from 'svelte/transition';
 	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
 	import LiveTripAnimation from './LiveTripAnimation.svelte';
 	import StopFavoriteButton from '$lib/components/StopFavoriteButton.svelte';
 	import { Flag } from 'lucide-svelte';
-	import BusRouteDetail from './BusRouteDetail.svelte';
+	import BusTripDetail from './BusTripDetail.svelte';
 
 	export let data;
 
@@ -83,7 +83,10 @@
 			{#if direction.trips.length > 0}
 				{#each direction.trips.slice(0, limit) as trip (trip.id)}
 					<div
-						animate:flip={{ delay: 100 }}
+						animate:flip={{
+							delay: 0,
+							duration: 300
+						}}
 						in:fade={{ delay: showMoreInProgress ? 0 : 800, duration: 300 }}
 						out:fade={{ duration: 300 }}
 					>
@@ -98,7 +101,13 @@
 						</button>
 
 						{#if expandedTripId === trip.id}
-							<BusRouteDetail {trip}/>
+							<div
+								transition:slide={{
+									duration: 300
+								}}
+							>
+								<BusTripDetail {trip} />
+							</div>
 						{/if}
 					</div>
 				{/each}
