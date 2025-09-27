@@ -5,7 +5,7 @@ import CachedItem from '$lib/server/CachedItem';
 
 const cache = new NodeCache();
 
-const cacheDurationSeconds = 30;
+const cacheDurationSeconds = 29;
 
 export async function getTrains(stationId: string): Promise<CachedItem<Train[]>> {
 	let cachedItem = cache.get<CachedItem<Train[]>>(`trains-${stationId}`);

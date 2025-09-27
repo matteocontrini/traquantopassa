@@ -55,8 +55,8 @@ function filterStops (apiStops: ApiStop[]){
 		stop.routes &&
 		
 		(stop.town === 'Trento' || stop.town === 'Lavis' || (
-			// Some stops in Trento are not tagged with tow, so we use a 
-			// box check to ensure they are in Trento
+			// Some stops in Trento are not tagged with a town, so we use a 
+			// box check to ensure they are in Trento or lavis
 			stop.town === null  &&
 			stop.stopLat > 46      && stop.stopLon > 11.04 &&
 			stop.stopLat < 46.1815 && stop.stopLon < 11.2  ))

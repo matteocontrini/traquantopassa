@@ -25,24 +25,26 @@
 			{/if}
 		</span>
 		<span class="block leading-none text-xs text-neutral-500">
-			{#if trip.distanceInStops != null}
-				{#if trip.distanceInStops === -2}
-					oltre la tua fermata
-				{:else if trip.distanceInStops === -1}
+			{#if trip.delay != null}
+				{@const distanceInStops = trip.userStopSequenceNumber - trip.currentStopSequenceNumber}
+				
+				{#if trip.currentStopSequenceNumber === 0}
 					non ancora partito
-				{:else if trip.distanceInStops === 0}
+				{:else if distanceInStops < 0}
+					oltre la tua fermata
+				{:else if distanceInStops === 0}
 					alla tua fermata
-				{:else if trip.distanceInStops === 1}
+				{:else if distanceInStops === 1}
 					a 1 fermata da te
 				{:else}
-					a {trip.distanceInStops} fermate da te
+					a {distanceInStops} fermate da te
 				{/if}
 				{#if trip.currentStopSequenceNumber <= 1}
 					(capolinea)
 				{/if}
-				{#if trip.delay != null} •{/if}
-			{/if}
-			{#if trip.delay != null}
+
+				•
+
 				{#if trip.delay === 0}
 					in orario
 				{:else if trip.delay > 0}

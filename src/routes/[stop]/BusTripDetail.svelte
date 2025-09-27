@@ -9,7 +9,7 @@
 	// on load show the last passed stop in the middle so it's easier to see
 	onMount(() => {
         // in case no live data is available, just have the current stop in the middle
-		const elementToScroll = stopElements[trip.delay ? trip.currentStopSequenceNumber - 1 : trip.userStopSequenceNumber];
+		const elementToScroll = stopElements[(trip.delay === null ? trip.userStopSequenceNumber : trip.currentStopSequenceNumber) - 1 ];
 		if (elementToScroll) {
 			elementToScroll.scrollIntoView({ block: 'center' });
 		}
@@ -20,7 +20,7 @@
 	<div class="rounded-xl px-4 py-2" style="background-color: #5d5d5d">
 		<div class="h-40 overflow-y-scroll">
 			{#each trip.stopTimes as stopTime, i}
-				{@const wasPassed = i < trip.currentStopSequenceNumber}
+				{@const wasPassed = i < trip.currentStopSequenceNumber }
 				<div bind:this={stopElements[i]} class="mb-2 flex items-center gap-x-4">
                     
 					<span class="text-white-500 block w-10 text-center leading-none">
@@ -41,7 +41,7 @@
 					</div>
 
 					<span class="text-white-1000 block whitespace-nowrap leading-none">
-						{#if i === trip.userStopSequenceNumber}
+						{#if i === trip.userStopSequenceNumber - 1 }
 							<strong>La tua fermata 📍</strong>
 						{:else}
 							{stopTime.name}

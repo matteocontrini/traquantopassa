@@ -58,49 +58,19 @@ async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId:
 			minutes = 0;
 		}
 
-		// Check if the trip is at the last stop and don't use the delay in that case
-		// (the delay is always 0 in that case)
-		// Note: use stopNext because sometimes the last stop is never reached
-		const endOfRoute = trip.stopTimes.at(-1)!;
-		const nextStopId = trip.stopNext;
-		const delay = endOfRoute.stopId != nextStopId ? trip.delay : null;
-
-		// *** Compute how many stops away the bus is
-		let distanceInStops = null;
+		const delay = trip.delay;
+		
 		const currentStopSequenceNumber = trip.lastSequenceDetection;
-
-		// If the bus is detected to be already at the first stop
-		if (currentStopSequenceNumber > 0) {
-			// Find the stop where the bus is
-			const currentBusStop = trip.stopTimes.find(
-				(stop) => stop.stopSequence == currentStopSequenceNumber
-			);
-			// Find the stop where the user is, but only after the current bus stop
-			const currentUserStop = trip.stopTimes.find(
-				(stop) => stop.stopId == userStopId && stop.stopSequence >= currentStopSequenceNumber
-			);
-			// If it's null, it means the bus is already beyond the user stop
-			if (currentUserStop == null) {
-				distanceInStops = -2;
-			} else {
-				// Compute how many stops away the bus is
-				distanceInStops = currentUserStop.stopSequence - currentBusStop!.stopSequence;
-			}
-		}
-		// If the bus hasn't still reached the first stop, but it's sending data,
-		// it means it's about to depart
-		else if (currentStopSequenceNumber == 0 && delay != null) {
-			distanceInStops = -1;
-		}
-
+		
 		// Check if the last update of real-time data isn't recent enough
 		let isOutdated = false;
 		if (delay != null) {
 			const lastEventDate = new Date(trip.lastEventRecivedAt);
 			isOutdated = (Date.now() - lastEventDate.getTime()) > outdatedDataThresholdMillis;
 		}
-
+		
 		// Check if the trip will end at the current user stop
+		const endOfRoute = trip.stopTimes.at(-1)!;
 		let isEndOfRouteForUser = endOfRoute.stopId == userStopId;
 		// If this route is a circular route, also make sure that this trip is
 		// for an arrival at the current user stop and not a departure from the stop.
@@ -112,16 +82,15 @@ async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId:
 				|| formatTime(expectedTime) == endOfRoute.arrivalTime;
 		}
 
+
+		const userStopSequenceNumber = isEndOfRouteForUser ?
+										trip.stopTimes.length :
+										trip.stopTimes.find((stop) => stop.stopId == userStopId)!.stopSequence;
+
 		// Add timestamp to the trip ID since there could be multiple trips with the same ID (e.g. hourly trips)
 		const id = trip.tripId + '-' + new Date(trip.oraArrivoProgrammataAFermataSelezionata).getTime();
 
-		let userStopSequenceNumber = 0;
-
-		const stopTimes = trip.stopTimes.map((stopTime, i) => {
-			if (stopTime.stopId == userStopId){
-				userStopSequenceNumber = i;
-			}
-			
+		const stopTimes = trip.stopTimes.map((stopTime) => {
 			return {
 				name: stopIdToName(stopTime.stopId),
 				// Time is returned with seconds that are always 00 so we omit them
@@ -136,7 +105,6 @@ async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId:
 			destination: trip.tripHeadsign,
 			minutes,
 			delay,
-			distanceInStops,
 			currentStopSequenceNumber,
 			userStopSequenceNumber,
 			isOutdated,
