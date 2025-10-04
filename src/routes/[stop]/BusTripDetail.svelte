@@ -18,7 +18,7 @@
 </script>
 
 <!-- This wrapper is needed to be able to add a bottom padding and avoid the slide transition jerkiness -->
-<div class="pb-2">
+<div class="pt-1 pb-3">
 	<div class="rounded-lg bg-neutral-800 border border-neutral-700">
 		<div class="h-40 py-3 overflow-y-auto px-4 flex flex-col gap-y-2.5">
 			{#each trip.stopTimes as stopTime, i}
