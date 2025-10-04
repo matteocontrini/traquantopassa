@@ -55,7 +55,7 @@
 					a {distanceInStops} fermate da te
 				{/if}
 				{#if trip.currentStopSequenceNumber <= 1}
-					(capolinea)
+					(1ª fermata)
 				{/if}
 
 				•
