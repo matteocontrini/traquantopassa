@@ -6,7 +6,7 @@ import type { Stop } from '$lib/Stop';
 import type { Route } from '$lib/Route';
 import type { Trip, StopTime } from '$lib/Trip';
 import * as logger from '$lib/logger';
-import { stopIdToName } from '$lib/server/stops-service';
+import { getStopName } from '$lib/server/stops-service';
 import CachedItem from '$lib/server/CachedItem';
 
 const cache = new NodeCache();
@@ -91,7 +91,7 @@ async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId:
 
 		const stopTimes = trip.stopTimes.map((stopTime) => {
 			return {
-				name: stopIdToName(stopTime.stopId),
+				name: getStopName(stopTime.stopId),
 				// Time is returned with seconds that are always 00 so we omit them
 				time: stopTime.arrivalTime.substring(0, 5)
 			} satisfies StopTime as StopTime;

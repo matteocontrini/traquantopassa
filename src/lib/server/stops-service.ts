@@ -13,10 +13,10 @@ const cache = new NodeCache({
 const stopGroupsCacheKey = 'stop-groups';
 
 // Gets auto-updated whenever the stopGroups cache expires
-const stopNameMapping: Record<number, string> = {};
+let stopNamesCache: Record<number, string> = {};
 
-export function stopIdToName(id: number) {
-	return stopNameMapping[id] || '';
+export function getStopName(id: number) {
+	return stopNamesCache[id] || '';
 }
 
 export async function getStopGroups() {
@@ -31,14 +31,15 @@ export async function getStopGroups() {
 	// Fetch stops from the API
 	const apiStops = await api.getStops();
 
+	const newStopNamesCache: Record<number, string> = {};
+
 	// Group stops by name
 	for (const apiStop of apiStops) {
 		const code = getCode(apiStop);
 		const stop = createStop(apiStop);
 
-		// Set the id-> name mapping used for route position information
-		const name = customStopNames[code] ? customStopNames[code] : apiStop.stopName;
-		stopNameMapping[apiStop.stopId] = name;
+		// Populate stop names cache
+		newStopNamesCache[apiStop.stopId] = customStopNames[code] ?? apiStop.stopName;
 
 		// Find existing stop group with the same stop code
 		const existing = stopGroups.find(sg =>
@@ -63,6 +64,7 @@ export async function getStopGroups() {
 
 	// Save to cache
 	cache.set(stopGroupsCacheKey, stopGroups);
+	stopNamesCache = newStopNamesCache;
 
 	return stopGroups;
 }
