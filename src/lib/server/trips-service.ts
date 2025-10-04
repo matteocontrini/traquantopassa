@@ -4,7 +4,7 @@ import * as api from '$lib/server/trentino-trasporti-api';
 import * as routesService from '$lib/server/routes-service';
 import type { Stop } from '$lib/Stop';
 import type { Route } from '$lib/Route';
-import type { Trip, StopTime} from '$lib/Trip';
+import type { Trip, StopTime } from '$lib/Trip';
 import * as logger from '$lib/logger';
 import { stopIdToName } from '$lib/server/stops-service';
 import CachedItem from '$lib/server/CachedItem';
@@ -13,8 +13,8 @@ const cache = new NodeCache();
 
 // Cache is 1s less than refresh time to avoid an issue where the auto refresh
 // sometimes only happens every 1 minute instead of every 30s
-
 const tripsCacheDurationSeconds = 29;
+
 const defaultLimit = 15;
 const outdatedDataThresholdMillis = 1000 * 60 * 5;
 
@@ -59,16 +59,16 @@ async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId:
 		}
 
 		const delay = trip.delay;
-		
+
 		const currentStopSequenceNumber = trip.lastSequenceDetection;
-		
+
 		// Check if the last update of real-time data isn't recent enough
 		let isOutdated = false;
 		if (delay != null) {
 			const lastEventDate = new Date(trip.lastEventRecivedAt);
 			isOutdated = (Date.now() - lastEventDate.getTime()) > outdatedDataThresholdMillis;
 		}
-		
+
 		// Check if the trip will end at the current user stop
 		const endOfRoute = trip.stopTimes.at(-1)!;
 		let isEndOfRouteForUser = endOfRoute.stopId == userStopId;
@@ -82,10 +82,9 @@ async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId:
 				|| formatTime(expectedTime) == endOfRoute.arrivalTime;
 		}
 
-
 		const userStopSequenceNumber = isEndOfRouteForUser ?
-										trip.stopTimes.length :
-										trip.stopTimes.find((stop) => stop.stopId == userStopId)!.stopSequence;
+			trip.stopTimes.length :
+			trip.stopTimes.find((stop) => stop.stopId == userStopId)!.stopSequence;
 
 		// Add timestamp to the trip ID since there could be multiple trips with the same ID (e.g. hourly trips)
 		const id = trip.tripId + '-' + new Date(trip.oraArrivoProgrammataAFermataSelezionata).getTime();
@@ -94,10 +93,10 @@ async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId:
 			return {
 				name: stopIdToName(stopTime.stopId),
 				// Time is returned with seconds that are always 00 so we omit them
-				time: stopTime.arrivalTime.substring(0, 5),
+				time: stopTime.arrivalTime.substring(0, 5)
 			} satisfies StopTime as StopTime;
-		})
-1
+		});
+
 		return {
 			id,
 			routeName: route.name,
@@ -109,7 +108,7 @@ async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId:
 			userStopSequenceNumber,
 			isOutdated,
 			isEndOfRouteForUser,
-			stopTimes,
+			stopTimes
 		} satisfies Trip as Trip;
 	}));
 }

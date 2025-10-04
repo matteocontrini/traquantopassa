@@ -12,16 +12,16 @@ const cache = new NodeCache({
 
 const stopGroupsCacheKey = 'stop-groups';
 
-// Gets auto-updated whenever the stopGrops cache expires
+// Gets auto-updated whenever the stopGroups cache expires
 const stopNameMapping: Record<number, string> = {};
 
-export function stopIdToName(id: number){
-	return stopNameMapping[id] || "";
+export function stopIdToName(id: number) {
+	return stopNameMapping[id] || '';
 }
 
 export async function getStopGroups() {
 	// Return from cache if available
-	const cached = cache.get<StopGroup[]> (stopGroupsCacheKey);
+	const cached = cache.get<StopGroup[]>(stopGroupsCacheKey);
 	if (cached) {
 		return cached;
 	}
@@ -33,12 +33,11 @@ export async function getStopGroups() {
 
 	// Group stops by name
 	for (const apiStop of apiStops) {
-
-		const code = getCode(apiStop)
+		const code = getCode(apiStop);
 		const stop = createStop(apiStop);
 
 		// Set the id-> name mapping used for route position information
-		const name = customStopNames[code] ?  customStopNames[code] : apiStop.stopName;
+		const name = customStopNames[code] ? customStopNames[code] : apiStop.stopName;
 		stopNameMapping[apiStop.stopId] = name;
 
 		// Find existing stop group with the same stop code
@@ -73,8 +72,9 @@ export async function getStopGroupBySlug(slug: string) {
 	return stopGroups.find(sg => sg.slugs.includes(slug));
 }
 
-function getCode (apiStop: api.ApiStop){
-	return apiStop.stopCode.replace(/[^0-9]/g, ''); // keep only digits
+function getCode(apiStop: api.ApiStop) {
+	// Keep only digits prefix
+	return apiStop.stopCode.replace(/[^0-9]/g, '');
 }
 
 function createStop(apiStop: api.ApiStop): Stop {
