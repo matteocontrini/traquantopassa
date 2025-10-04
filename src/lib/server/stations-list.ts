@@ -188,5 +188,12 @@ export default [
 		'Bassano del Grappa',
 		[45.7666368664187, 11.741322752385827],
 		railwayValsugana
+	),
+	station(
+		1852,
+		"mori",
+		"Mori",
+		[45.861248430026514, 11.002382579148355],
+		railwayBrennero
 	)
 ] satisfies Station[] as Station[];

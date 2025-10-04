@@ -12,29 +12,46 @@ const cache = new NodeCache({
 
 const stopGroupsCacheKey = 'stop-groups';
 
+// Gets auto-updated whenever the stopGroups cache expires
+let stopNamesCache: Record<number, string> = {};
+
+export function getStopName(id: number) {
+	return stopNamesCache[id] || '';
+}
+
 export async function getStopGroups() {
 	// Return from cache if available
-	const stopGroups = cache.get<StopGroup[]>(stopGroupsCacheKey) ?? [];
-	if (stopGroups.length) {
-		return stopGroups;
+	const cached = cache.get<StopGroup[]>(stopGroupsCacheKey);
+	if (cached) {
+		return cached;
 	}
+
+	const stopGroups: StopGroup[] = [];
 
 	// Fetch stops from the API
 	const apiStops = await api.getStops();
 
+	const newStopNamesCache: Record<number, string> = {};
+
 	// Group stops by name
 	for (const apiStop of apiStops) {
+		const code = getCode(apiStop);
+		const stop = createStop(apiStop);
+
+		// Populate stop names cache
+		newStopNamesCache[apiStop.stopId] = customStopNames[code] ?? apiStop.stopName;
+
 		// Find existing stop group with the same stop code
 		const existing = stopGroups.find(sg =>
-			sg.code === apiStop.stopCode.replace(/[^0-9]/g, '')
+			sg.code === code
 		);
+
 		if (existing) {
-			existing.stops.push(createStop(apiStop));
+			existing.stops.push(stop);
 			apiStop.routes.forEach(r => existing.routeIds.add(r.routeId));
 			existing.coordinates = calculateCoordinates(existing.stops);
 		} else {
-			const stopGroup = createStopGroup(apiStop);
-			const stop = createStop(apiStop);
+			const stopGroup = createStopGroup(code, apiStop);
 			stopGroup.stops.push(stop);
 			apiStop.routes.forEach(r => stopGroup.routeIds.add(r.routeId));
 			stopGroup.coordinates = calculateCoordinates(stopGroup.stops);
@@ -47,6 +64,7 @@ export async function getStopGroups() {
 
 	// Save to cache
 	cache.set(stopGroupsCacheKey, stopGroups);
+	stopNamesCache = newStopNamesCache;
 
 	return stopGroups;
 }
@@ -54,6 +72,11 @@ export async function getStopGroups() {
 export async function getStopGroupBySlug(slug: string) {
 	const stopGroups = await getStopGroups();
 	return stopGroups.find(sg => sg.slugs.includes(slug));
+}
+
+function getCode(apiStop: api.ApiStop) {
+	// Keep only digits prefix
+	return apiStop.stopCode.replace(/[^0-9]/g, '');
 }
 
 function createStop(apiStop: api.ApiStop): Stop {
@@ -67,9 +90,7 @@ function createStop(apiStop: api.ApiStop): Stop {
 	};
 }
 
-function createStopGroup(apiStop: api.ApiStop): StopGroup {
-	const code = apiStop.stopCode.replace(/[^0-9]/g, ''); // keep only digits
-
+function createStopGroup(code: string, apiStop: api.ApiStop): StopGroup {
 	// Use slug override as default slug if available
 	const slugs = [code];
 	const customSlug = customSlugs[code];

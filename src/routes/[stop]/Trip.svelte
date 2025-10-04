@@ -3,11 +3,26 @@
 	import LiveTripAnimation from './LiveTripAnimation.svelte';
 	import PulsingMinutes from './PulsingMinutes.svelte';
 	import { Flag } from 'lucide-svelte';
+	import BusTripDetail from './BusTripDetail.svelte';
+	import { slide } from 'svelte/transition';
+	import { getContext } from 'svelte';
+	import type { Writable } from 'svelte/store';
 
 	export let trip: Trip;
+
+	const expandedTripId = getContext<Writable<string | null>>('expandedTripId');
+	$: expanded = $expandedTripId === trip.id;
+
+	function toggle() {
+		$expandedTripId = expanded ? null : trip.id;
+	}
 </script>
 
-<div class="flex items-center gap-x-4 mb-2">
+<div class="flex items-center gap-x-4 mb-2 cursor-pointer"
+		 role="button" aria-expanded={expanded}
+		 on:click={() => toggle()} tabindex="0"
+		 on:keypress={(e) => (e.key === 'Enter' || e.key === ' ' ? toggle() : null)}
+>
 	<div
 		class="w-10 h-10 flex-shrink-0 flex justify-center items-center font-bold text-xl rounded-md select-none"
 		style="background-color: {trip.routeColor}"
@@ -25,24 +40,26 @@
 			{/if}
 		</span>
 		<span class="block leading-none text-xs text-neutral-500">
-			{#if trip.distanceInStops != null}
-				{#if trip.distanceInStops === -2}
-					oltre la tua fermata
-				{:else if trip.distanceInStops === -1}
+			{#if trip.delay != null}
+				{@const distanceInStops = trip.userStopSequenceNumber - trip.currentStopSequenceNumber}
+
+				{#if trip.currentStopSequenceNumber === 0}
 					non ancora partito
-				{:else if trip.distanceInStops === 0}
+				{:else if distanceInStops < 0}
+					oltre la tua fermata
+				{:else if distanceInStops === 0}
 					alla tua fermata
-				{:else if trip.distanceInStops === 1}
+				{:else if distanceInStops === 1}
 					a 1 fermata da te
 				{:else}
-					a {trip.distanceInStops} fermate da te
+					a {distanceInStops} fermate da te
 				{/if}
 				{#if trip.currentStopSequenceNumber <= 1}
 					(1ª fermata)
 				{/if}
-				{#if trip.delay != null} •{/if}
-			{/if}
-			{#if trip.delay != null}
+
+				•
+
 				{#if trip.delay === 0}
 					in orario
 				{:else if trip.delay > 0}
@@ -56,3 +73,9 @@
 	<PulsingMinutes minutes={trip.minutes} dimmed={trip.isEndOfRouteForUser} />
 	<LiveTripAnimation live={trip.delay != null ? (trip.isOutdated ? 'yellow' : 'green') : null} />
 </div>
+
+{#if expanded}
+	<div transition:slide={{ duration: 300}}>
+		<BusTripDetail {trip} />
+	</div>
+{/if}

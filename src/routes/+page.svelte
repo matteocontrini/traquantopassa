@@ -23,6 +23,7 @@
 	$: escapedSearchTerm = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 	let showGeolocationButton = false;
+	let loadingGeolocationData = false;
 	let distances = computeDistances(data.stops);
 
 	const favorites: FavoritesStore = getContext('favorites');
@@ -57,13 +58,18 @@
 	});
 
 	async function updatePosition() {
+		showGeolocationButton = false;
+		loadingGeolocationData = true;
+
 		try {
 			const position = await getCurrentPosition();
 			distances = computeDistances(data.stops, position.coords);
-			showGeolocationButton = false;
 		} catch (err) {
 			handleGeolocationError(err);
+			showGeolocationButton = true;
 		}
+
+		loadingGeolocationData = false;
 	}
 
 	function switchTab(tab: Tab) {
@@ -106,14 +112,19 @@
 	</div>
 
 	{#if activeTab === 'all' || activeTab === 'filter'}
-		<div class="{activeTab === 'all' && showGeolocationButton ? 'mt-4' : 'mt-8'}">
+		<div class="{activeTab === 'all' && (showGeolocationButton || loadingGeolocationData) ? 'mt-4' : 'mt-8'}">
 			{#if activeTab === 'all' && showGeolocationButton}
 				<button on:click={updatePosition}
 								in:slide
 								class="px-3.5 py-2 w-full text-center">
 					⚠️ Consenti accesso alla posizione
 				</button>
+			{:else if activeTab === 'all' && loadingGeolocationData}
+				<div class="px-3.5 py-2 w-full text-center">
+					⏳ Caricamento posizione...
+				</div>
 			{/if}
+
 
 			{#if activeTab === 'filter'}
 				<div class="mt-4 flex max-sm:flex-col gap-x-4 gap-y-3">
