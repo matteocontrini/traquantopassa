@@ -20,35 +20,35 @@
 <!-- This wrapper is needed to be able to add a bottom padding and avoid the slide transition jerkiness -->
 <div class="pb-2">
 	<div class="rounded-lg bg-neutral-800 border border-neutral-700">
-		<div class="h-40 py-3 overflow-y-auto px-4">
+		<div class="h-40 py-3 overflow-y-auto px-4 flex flex-col gap-y-2.5">
 			{#each trip.stopTimes as stopTime, i}
 				{@const wasPassed = i < trip.currentStopSequenceNumber }
-				<div bind:this={stopElements[i]} class="mb-2 flex items-center gap-x-4">
-                    
-					<span class="text-white-500 block w-10 text-center leading-none">
-						<b>{stopTime.time}</b>
-					</span>
+				<div bind:this={stopElements[i]} class="flex items-center gap-x-4">
+					<div class="w-10 leading-none font-semibold">
+						{stopTime.time}
+					</div>
 
 					<div class="relative flex flex-col items-center">
-						<div
-							class="relative z-10 h-4 w-4 rounded-full border-black"
-							class:border-2={wasPassed}
-							style:background-color={wasPassed ? trip.routeColor : '#f1f1f1'}
+						<span
+							class="relative z-10 size-4 rounded-full {wasPassed ? 'border-[1.5px] border-neutral-100': 'bg-neutral-100'}"
+							style:background-color={wasPassed ? trip.routeColor : ''}
 						/>
 
-						<!-- The trip is eliminated once it reaches the end of route so there is no need to skip this if it's the last one -->
+						<!-- Show the vertical line connecting to the next stop.
+								 Since the trip is removed from the list once the bus reaches the end of route,
+								 there is no need to hide the connecting element if it's the last one. -->
 						{#if wasPassed}
 							<div class="absolute top-3 h-4 w-1.5" style:background-color={trip.routeColor} />
 						{/if}
 					</div>
 
-					<span class="text-white-1000 block whitespace-nowrap leading-none">
+					<div class="whitespace-nowrap leading-none">
 						{#if i === trip.userStopSequenceNumber - 1 }
-							<strong>La tua fermata 📍</strong>
+							<span class="font-semibold">La tua fermata 📍</span>
 						{:else}
 							{stopTime.name}
 						{/if}
-					</span>
+					</div>
 				</div>
 			{/each}
 		</div>
