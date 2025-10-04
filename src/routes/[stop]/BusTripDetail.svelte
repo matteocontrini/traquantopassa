@@ -6,19 +6,21 @@
 
 	const stopElements: (HTMLDivElement | undefined)[] = [];
 
-	// on load show the last passed stop in the middle so it's easier to see
 	onMount(() => {
-        // in case no live data is available, just have the current stop in the middle
-		const elementToScroll = stopElements[(trip.delay === null ? trip.userStopSequenceNumber : trip.currentStopSequenceNumber) - 1 ];
+		// On load, show the last passed stop in the middle so it's easier to see.
+		// In case no live data is available, just have the current stop in the middle.
+		const stopNumber = trip.delay === null ? trip.userStopSequenceNumber : trip.currentStopSequenceNumber;
+		const elementToScroll = stopElements[stopNumber - 1];
 		if (elementToScroll) {
 			elementToScroll.scrollIntoView({ block: 'center' });
 		}
 	});
 </script>
 
-<div class="mb-2 flex-auto items-center gap-x-4">
-	<div class="rounded-xl px-4 py-2" style="background-color: #5d5d5d">
-		<div class="h-40 overflow-y-scroll">
+<!-- This wrapper is needed to be able to add a bottom padding and avoid the slide transition jerkiness -->
+<div class="pb-2">
+	<div class="rounded-lg bg-neutral-800 border border-neutral-700">
+		<div class="h-40 py-3 overflow-y-auto px-4">
 			{#each trip.stopTimes as stopTime, i}
 				{@const wasPassed = i < trip.currentStopSequenceNumber }
 				<div bind:this={stopElements[i]} class="mb-2 flex items-center gap-x-4">

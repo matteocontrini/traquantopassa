@@ -5,12 +5,11 @@
 	import { onMount } from 'svelte';
 	import { invalidateAll } from '$app/navigation';
 	import { flip } from 'svelte/animate';
-	import { fade, slide } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
 	import LiveTripAnimation from './LiveTripAnimation.svelte';
 	import StopFavoriteButton from '$lib/components/StopFavoriteButton.svelte';
 	import { Flag } from 'lucide-svelte';
-	import BusTripDetail from './BusTripDetail.svelte';
 
 	export let data;
 
@@ -18,7 +17,6 @@
 	let showMore = data.details.directions.length < 2;
 	$: limit = showMore ? 15 : 5;
 	let showMoreInProgress = false;
-	let expandedTripId: string | null = null;
 
 	const REFRESH_INTERVAL = 30 * 1000;
 	let timer: ReturnType<typeof setInterval>;
@@ -90,25 +88,7 @@
 						in:fade={{ delay: showMoreInProgress ? 0 : 800, duration: 300 }}
 						out:fade={{ duration: 300 }}
 					>
-						<button
-							type="button"
-							class="w-full text-left focus:outline-none"
-							on:click={() => {
-								expandedTripId = expandedTripId === trip.id ? null : trip.id;
-							}}
-						>
-							<Trip {trip} />
-						</button>
-
-						{#if expandedTripId === trip.id}
-							<div
-								transition:slide={{
-									duration: 300
-								}}
-							>
-								<BusTripDetail {trip} />
-							</div>
-						{/if}
+						<Trip {trip} />
 					</div>
 				{/each}
 

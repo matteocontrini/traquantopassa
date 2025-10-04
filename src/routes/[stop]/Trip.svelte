@@ -3,11 +3,19 @@
 	import LiveTripAnimation from './LiveTripAnimation.svelte';
 	import PulsingMinutes from './PulsingMinutes.svelte';
 	import { Flag } from 'lucide-svelte';
+	import BusTripDetail from './BusTripDetail.svelte';
+	import { slide } from 'svelte/transition';
 
 	export let trip: Trip;
+
+	let expanded = false;
 </script>
 
-<div class="flex items-center gap-x-4 mb-2">
+<div class="flex items-center gap-x-4 mb-2 cursor-pointer"
+		 role="button" aria-expanded={expanded}
+		 on:click={() => (expanded = !expanded)} tabindex="0"
+		 on:keypress={(e) => (e.key === 'Enter' ? (expanded = !expanded) : null)}
+>
 	<div
 		class="w-10 h-10 flex-shrink-0 flex justify-center items-center font-bold text-xl rounded-md select-none"
 		style="background-color: {trip.routeColor}"
@@ -27,7 +35,7 @@
 		<span class="block leading-none text-xs text-neutral-500">
 			{#if trip.delay != null}
 				{@const distanceInStops = trip.userStopSequenceNumber - trip.currentStopSequenceNumber}
-				
+
 				{#if trip.currentStopSequenceNumber === 0}
 					non ancora partito
 				{:else if distanceInStops < 0}
@@ -58,3 +66,9 @@
 	<PulsingMinutes minutes={trip.minutes} dimmed={trip.isEndOfRouteForUser} />
 	<LiveTripAnimation live={trip.delay != null ? (trip.isOutdated ? 'yellow' : 'green') : null} />
 </div>
+
+{#if expanded}
+	<div transition:slide={{ duration: 300}}>
+		<BusTripDetail {trip} />
+	</div>
+{/if}
