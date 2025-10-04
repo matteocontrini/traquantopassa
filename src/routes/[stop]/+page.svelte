@@ -2,7 +2,7 @@
 	import { PUBLIC_BASE_URL } from '$env/static/public';
 	import Trip from './Trip.svelte';
 	import FooterNavigation from '$lib/components/FooterNavigation.svelte';
-	import { onMount } from 'svelte';
+	import { onMount, setContext } from 'svelte';
 	import { invalidateAll } from '$app/navigation';
 	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
@@ -10,6 +10,7 @@
 	import LiveTripAnimation from './LiveTripAnimation.svelte';
 	import StopFavoriteButton from '$lib/components/StopFavoriteButton.svelte';
 	import { Flag } from 'lucide-svelte';
+	import { writable } from 'svelte/store';
 
 	export let data;
 
@@ -17,6 +18,9 @@
 	let showMore = data.details.directions.length < 2;
 	$: limit = showMore ? 15 : 5;
 	let showMoreInProgress = false;
+
+	const expandedTripId = writable<string | null>(null);
+	setContext('expandedTripId', expandedTripId);
 
 	const REFRESH_INTERVAL = 30 * 1000;
 	let timer: ReturnType<typeof setInterval>;
