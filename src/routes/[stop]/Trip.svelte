@@ -12,12 +12,16 @@
 
 	const expandedTripId = getContext<Writable<string | null>>('expandedTripId');
 	$: expanded = $expandedTripId === trip.id;
+
+	function toggle() {
+		$expandedTripId = expanded ? null : trip.id;
+	}
 </script>
 
 <div class="flex items-center gap-x-4 mb-2 cursor-pointer"
 		 role="button" aria-expanded={expanded}
-		 on:click={() => $expandedTripId = trip.id} tabindex="0"
-		 on:keypress={(e) => (e.key === 'Enter' || e.key === ' ' ? ($expandedTripId = trip.id) : null)}
+		 on:click={() => toggle()} tabindex="0"
+		 on:keypress={(e) => (e.key === 'Enter' || e.key === ' ' ? toggle() : null)}
 >
 	<div
 		class="w-10 h-10 flex-shrink-0 flex justify-center items-center font-bold text-xl rounded-md select-none"
