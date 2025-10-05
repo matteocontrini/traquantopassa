@@ -2,7 +2,11 @@
 	import type { Station } from '$lib/Station';
 	import StationFavoriteButton from '$lib/components/StationFavoriteButton.svelte';
 
-	export let station: Station;
+	interface Props {
+		station: Station;
+	}
+
+	let { station }: Props = $props();
 </script>
 
 <a href="/treni/{station.slug}"

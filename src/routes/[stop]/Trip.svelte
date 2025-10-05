@@ -8,10 +8,14 @@
 	import { getContext } from 'svelte';
 	import type { Writable } from 'svelte/store';
 
-	export let trip: Trip;
+	interface Props {
+		trip: Trip;
+	}
+
+	let { trip }: Props = $props();
 
 	const expandedTripId = getContext<Writable<string | null>>('expandedTripId');
-	$: expanded = $expandedTripId === trip.id;
+	let expanded = $derived($expandedTripId === trip.id);
 
 	function toggle() {
 		$expandedTripId = expanded ? null : trip.id;
@@ -20,8 +24,8 @@
 
 <div class="flex items-center gap-x-4 mb-2 cursor-pointer"
 		 role="button" aria-expanded={expanded}
-		 on:click={() => toggle()} tabindex="0"
-		 on:keypress={(e) => (e.key === 'Enter' || e.key === ' ' ? toggle() : null)}
+		 onclick={() => toggle()} tabindex="0"
+		 onkeydown={(e) => (e.key === 'Enter' || e.key === ' ' ? toggle() : null)}
 >
 	<div
 		class="w-10 h-10 flex-shrink-0 flex justify-center items-center font-bold text-xl rounded-md select-none"

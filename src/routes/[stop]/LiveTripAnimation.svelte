@@ -1,8 +1,10 @@
 <script lang="ts">
-	import { afterUpdate } from 'svelte';
+	interface Props {
+		live: 'green' | 'yellow' | null;
+		className?: string;
+	}
 
-	export let live: 'green' | 'yellow' | null;
-	export let className: string = '';
+	let { live, className = '' }: Props = $props();
 
 	let el: HTMLSpanElement;
 
@@ -25,7 +27,7 @@
 		}
 	}
 
-	afterUpdate(() => {
+	$effect(() => {
 		syncAnimation();
 	});
 </script>

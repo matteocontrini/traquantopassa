@@ -1,6 +1,10 @@
 <script lang="ts">
-	export let className: string;
-	export let isBus: boolean = true;
+	interface Props {
+		className: string;
+		isBus?: boolean;
+	}
+
+	let { className, isBus = true }: Props = $props();
 </script>
 
 <div class="flex gap-2 flex-wrap {className}">

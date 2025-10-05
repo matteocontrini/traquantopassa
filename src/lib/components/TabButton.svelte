@@ -1,7 +1,11 @@
 <script lang="ts">
-	export let text: string;
-	export let isSelected: boolean;
-	export let onClick: () => void;
+	interface Props {
+		text: string;
+		isSelected: boolean;
+		onClick: () => void;
+	}
+
+	let { text, isSelected, onClick }: Props = $props();
 </script>
 
 <button
@@ -12,7 +16,7 @@
 	class:font-semibold={isSelected}
 	class:bg-neutral-800={!isSelected}
 	class:hover:bg-neutral-700={!isSelected}
-	on:click={onClick}
+	onclick={onClick}
 >
 	{text}
 </button>

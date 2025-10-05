@@ -2,9 +2,13 @@
 	import { onMount } from 'svelte';
 	import type { Trip } from '$lib/Trip';
 
-	export let trip: Trip;
+	interface Props {
+		trip: Trip;
+	}
 
-	const stopElements: (HTMLDivElement | undefined)[] = [];
+	let { trip }: Props = $props();
+
+	const stopElements: (HTMLDivElement | undefined)[] = $state([]);
 
 	onMount(() => {
 		// On load, show the last passed stop in the middle so it's easier to see.
@@ -22,7 +26,7 @@
 	<div class="rounded-lg bg-neutral-800 border border-neutral-700">
 		<div class="h-40 py-3 overflow-y-auto px-4 flex flex-col gap-y-2.5">
 			{#each trip.stopTimes as stopTime, i}
-				{@const wasPassed = i < trip.currentStopSequenceNumber }
+				{@const wasPassed = i < trip.currentStopSequenceNumber}
 				<div bind:this={stopElements[i]} class="flex items-center gap-x-4">
 					<div class="w-10 leading-none font-semibold">
 						{stopTime.time}
@@ -32,18 +36,18 @@
 						<span
 							class="relative z-10 size-4 rounded-full {wasPassed ? 'border-[1.5px] border-neutral-100': 'bg-neutral-100'}"
 							style:background-color={wasPassed ? trip.routeColor : ''}
-						/>
+						></span>
 
 						<!-- Show the vertical line connecting to the next stop.
 								 Since the trip is removed from the list once the bus reaches the end of route,
 								 there is no need to hide the connecting element if it's the last one. -->
 						{#if wasPassed}
-							<div class="absolute top-3 h-4 w-1.5" style:background-color={trip.routeColor} />
+							<div class="absolute top-3 h-4 w-1.5" style:background-color={trip.routeColor}></div>
 						{/if}
 					</div>
 
 					<div class="whitespace-nowrap leading-none">
-						{#if i === trip.userStopSequenceNumber - 1 }
+						{#if i === trip.userStopSequenceNumber - 1}
 							<span class="font-semibold">La tua fermata 📍</span>
 						{:else}
 							{stopTime.name}

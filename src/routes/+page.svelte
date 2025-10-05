@@ -14,25 +14,25 @@
 	import { type FavoritesStore } from '$lib/stores/stops-favorites';
 	import { getDefaultTab, setDefaultTab, type Tab } from '$lib/storage/stops-default-tab';
 
-	export let data;
+	let { data } = $props();
 
-	let activeTab = getDefaultTab();
+	let activeTab = $state(getDefaultTab());
 
-	let searchTerm = '';
-	let selectedRoute = '';
-	$: escapedSearchTerm = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+	let searchTerm = $state('');
+	let selectedRoute = $state('');
+	let escapedSearchTerm = $derived(searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
 
-	let showGeolocationButton = false;
-	let loadingGeolocationData = false;
-	let distances = computeDistances(data.stops);
+	let showGeolocationButton = $state(false);
+	let loadingGeolocationData = $state(false);
+	let distances = $state(computeDistances(data.stops));
 
 	const favorites: FavoritesStore = getContext('favorites');
 
-	$: sortedStops = data.stops
+	let sortedStops = $derived(data.stops
 		// Sort by distance
-		.sort((a, b) => (distances.get(a.code) ?? Infinity) - (distances.get(b.code) ?? Infinity));
+		.sort((a, b) => (distances.get(a.code) ?? Infinity) - (distances.get(b.code) ?? Infinity)));
 
-	$: filteredStops = data.stops
+	let filteredStops = $derived(data.stops
 		.filter((stop) =>
 			// Filter by route. Evaluates to true if no route is selected
 			(selectedRoute == '' || stop.routeIds.has(data.routes.find(x => x.name == selectedRoute)!.id)) &&
@@ -41,13 +41,13 @@
 				new RegExp(`\\b${escapedSearchTerm}`, 'i').test(stop.name) ||
 				stop.slugs.some(slug => slug.includes(searchTerm))
 			)
-		);
+		));
 
-	$: rankedStops = data.stops
+	let rankedStops = $derived(data.stops
 		.filter(x => data.rankings[x.code])
-		.sort((x, y) => data.rankings[y.code] - data.rankings[x.code]);
+		.sort((x, y) => data.rankings[y.code] - data.rankings[x.code]));
 
-	$: favoriteStops = data.stops.filter(x => $favorites.has(x.code));
+	let favoriteStops = $derived(data.stops.filter(x => $favorites.has(x.code)));
 
 	onMount(async () => {
 		if (await isGeolocationGranted()) {
@@ -114,9 +114,9 @@
 	{#if activeTab === 'all' || activeTab === 'filter'}
 		<div class="{activeTab === 'all' && (showGeolocationButton || loadingGeolocationData) ? 'mt-4' : 'mt-8'}">
 			{#if activeTab === 'all' && showGeolocationButton}
-				<button on:click={updatePosition}
+				<button onclick={updatePosition}
 								in:slide
-								class="px-3.5 py-2 w-full text-center">
+								class="block px-3.5 py-2 w-full text-center">
 					⚠️ Consenti accesso alla posizione
 				</button>
 			{:else if activeTab === 'all' && loadingGeolocationData}
@@ -145,7 +145,7 @@
 						bind:value={selectedRoute}
 						class="w-full basis-1/2 py-2 px-3.5 rounded-md bg-neutral-800 text-neutral-100 focus:outline focus:outline-2 focus:outline-neutral-700">
 						<option value="">🚏 Filtra per linea</option>
-						{#each data.routes as route}
+						{#each data.routes as route (route.name)}
 							<option value={route.name}>{route.name} - {route.longName}</option>
 						{/each}
 					</select>
@@ -153,7 +153,7 @@
 
 				{#if searchTerm || selectedRoute}
 					<button class="w-full mt-4 px-3.5 py-2 rounded-md bg-neutral-800 hover:bg-neutral-700"
-									on:click={() => { searchTerm = ''; selectedRoute = ''; }}>
+									onclick={() => { searchTerm = ''; selectedRoute = ''; }}>
 						❌ Rimuovi filtri
 					</button>
 				{/if}

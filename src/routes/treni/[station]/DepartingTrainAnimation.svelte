@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	let el: HTMLSpanElement;
+	let el: HTMLSpanElement | undefined = $state();
 
 	onMount(() => {
 		// Get the first train animation that is already in progress

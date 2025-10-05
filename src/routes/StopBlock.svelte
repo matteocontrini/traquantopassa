@@ -4,8 +4,12 @@
 	import type { Route } from '$lib/Route';
 	import StopFavoriteButton from '$lib/components/StopFavoriteButton.svelte';
 
-	export let stop: StopGroup;
-	export let routes: Route[];
+	interface Props {
+		stop: StopGroup;
+		routes: Route[];
+	}
+
+	let { stop, routes }: Props = $props();
 </script>
 
 <a href="/{stop.slugs[0]}"

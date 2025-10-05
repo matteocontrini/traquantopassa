@@ -1,7 +1,11 @@
 <script lang="ts">
-	export let isBus = false;
-	export let stopSlug = '';
-	export let stationSlug = '';
+	interface Props {
+		isBus?: boolean;
+		stopSlug?: string;
+		stationSlug?: string;
+	}
+
+	let { isBus = false, stopSlug = '', stationSlug = '' }: Props = $props();
 </script>
 
 <div class="flex gap-2">

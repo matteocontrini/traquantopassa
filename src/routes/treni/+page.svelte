@@ -9,24 +9,24 @@
 	import { type FavoritesStore } from '$lib/stores/stations-favorites';
 	import { getDefaultTab, setDefaultTab, type Tab } from '$lib/storage/stations-default-tab';
 
-	export let data;
+	let { data } = $props();
 
-	let activeTab = getDefaultTab();
+	let activeTab = $state(getDefaultTab());
 
-	let searchTerm = '';
-	let selectedRailway = '';
+	let searchTerm = $state('');
+	let selectedRailway = $state('');
 
-	let showGeolocationButton = false;
-	let loadingGeolocationData = false;
-	let distances = new Map<string, number>();
+	let showGeolocationButton = $state(false);
+	let loadingGeolocationData = $state(false);
+	let distances = $state(new Map<string, number>());
 
 	const favorites: FavoritesStore = getContext('favorites');
 
-	$: sortedStations = data.stations
+	let sortedStations = $derived(data.stations
 		// Sort by distance
-		.sort((a, b) => (distances.get(a.id) ?? Infinity) - (distances.get(b.id) ?? Infinity));
+		.sort((a, b) => (distances.get(a.id) ?? Infinity) - (distances.get(b.id) ?? Infinity)));
 
-	$: filteredStations = data.stations
+	let filteredStations = $derived(data.stations
 		.filter((station) =>
 			// Filter by railway. Evaluates to true if no route is selected
 			(selectedRailway == '' || station.railways.includes(selectedRailway)) &&
@@ -34,9 +34,9 @@
 			(searchTerm == '' ||
 				station.name.toLowerCase().includes(searchTerm.toLowerCase())
 			)
-		);
+		));
 
-	$: favoriteStations = data.stations.filter(x => $favorites.has(x.id));
+	let favoriteStations = $derived(data.stations.filter(x => $favorites.has(x.id)));
 
 	onMount(async () => {
 		if (await isGeolocationGranted()) {
@@ -108,9 +108,9 @@
 	{#if activeTab === 'all' || activeTab === 'filter'}
 		<div class="{activeTab === 'all' && (showGeolocationButton || loadingGeolocationData) ? 'mt-4' : 'mt-8'}">
 			{#if activeTab === 'all' && showGeolocationButton}
-				<button on:click={updatePosition}
+				<button onclick={updatePosition}
 								in:slide
-								class="px-3.5 py-2 w-full text-center">
+								class="block px-3.5 py-2 w-full text-center">
 					⚠️ Consenti accesso alla posizione
 				</button>
 			{:else if activeTab === 'all' && loadingGeolocationData}
@@ -140,7 +140,7 @@
 
 				{#if searchTerm || selectedRailway}
 					<button class="w-full mt-4 px-3.5 py-2 rounded-md bg-neutral-800 hover:bg-neutral-700"
-									on:click={() => { searchTerm = ''; selectedRailway = ''; }}>
+									onclick={() => { searchTerm = ''; selectedRailway = ''; }}>
 						❌ Rimuovi filtri
 					</button>
 				{/if}

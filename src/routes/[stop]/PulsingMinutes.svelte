@@ -1,8 +1,10 @@
 <script lang="ts">
-	import { afterUpdate } from 'svelte';
+	interface Props {
+		minutes: number;
+		dimmed: boolean;
+	}
 
-	export let minutes: number;
-	export let dimmed: boolean;
+	let { minutes, dimmed }: Props = $props();
 
 	let el: HTMLDivElement;
 
@@ -37,7 +39,7 @@
 		}
 	}
 
-	afterUpdate(() => {
+	$effect(() => {
 		syncAnimation();
 	});
 </script>

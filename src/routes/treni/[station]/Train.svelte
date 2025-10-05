@@ -2,7 +2,11 @@
 	import type { Train } from '$lib/Train';
 	import DepartingTrainAnimation from './DepartingTrainAnimation.svelte';
 
-	export let train: Train;
+	interface Props {
+		train: Train;
+	}
+
+	let { train }: Props = $props();
 </script>
 
 <div class="flex items-center gap-x-3 sm:gap-x-4 mb-2">

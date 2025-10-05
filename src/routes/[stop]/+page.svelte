@@ -12,12 +12,12 @@
 	import { Flag } from 'lucide-svelte';
 	import { writable } from 'svelte/store';
 
-	export let data;
+	let { data } = $props();
 
-	$: details = data.details;
-	let showMore = data.details.directions.length < 2;
-	$: limit = showMore ? 15 : 5;
-	let showMoreInProgress = false;
+	let details = $derived(data.details);
+	let showMore = $state(data.details.directions.length < 2);
+	let limit = $derived(showMore ? 15 : 5);
+	let showMoreInProgress = $state(false);
 
 	const expandedTripId = writable<string | null>(null);
 	setContext('expandedTripId', expandedTripId);
@@ -99,7 +99,7 @@
 				{#if !showMore && direction.trips.length > limit}
 					<button
 						class="mt-2 rounded-md bg-neutral-800 px-3 py-1 text-mid no-underline hover:bg-neutral-700"
-						on:click={() => {
+						onclick={() => {
 							showMore = true;
 							showMoreInProgress = true;
 							setTimeout(() => {

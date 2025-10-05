@@ -1,12 +1,19 @@
 <script lang="ts">
 	import '@fontsource-variable/inter';
 	import '../app.css';
-	import { navigating } from '$app/stores';
-	import { onMount, setContext } from 'svelte';
+	import { navigating } from '$app/state';
+	import { onMount, setContext, type Snippet } from 'svelte';
 	import type { Topbar } from 'topbar';
 	import { createFavoritesStore } from '$lib/stores/stops-favorites';
 
-	let topbar: Topbar;
+	interface Props {
+		children?: Snippet;
+	}
+
+	let { children }: Props = $props();
+
+	let topbar: Topbar | undefined = $state();
+
 	onMount(async () => {
 		topbar = await import('topbar') as unknown as Topbar;
 		topbar.config({
@@ -16,17 +23,17 @@
 		});
 	});
 
-	$: {
-		if ($navigating) {
+	$effect(() => {
+		if (navigating.to) {
 			topbar?.show(150);
 		} else {
 			topbar?.hide();
 		}
-	}
+	});
 
 	setContext('favorites', createFavoritesStore());
 </script>
 
 <div class="max-w-[600px] mx-auto mt-10 px-5">
-	<slot></slot>
+	{@render children?.()}
 </div>

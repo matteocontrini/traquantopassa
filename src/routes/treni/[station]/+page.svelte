@@ -10,12 +10,12 @@
 	import DepartingTrainAnimation from './DepartingTrainAnimation.svelte';
 	import StationFavoriteButton from '$lib/components/StationFavoriteButton.svelte';
 
-	export let data;
+	let { data } = $props();
 
-	$: details = data.details;
-	let showMore = false;
-	let showMoreInProgress = false;
-	$: limit = showMore ? Infinity : 5;
+	let details = $derived(data.details);
+	let showMore = $state(false);
+	let showMoreInProgress = $state(false);
+	let limit = $derived(showMore ? Infinity : 5);
 
 	const REFRESH_INTERVAL = 30 * 1000;
 	let timer: ReturnType<typeof setInterval>;
@@ -78,7 +78,7 @@
 
 			{#if !showMore && details.trains.length > limit}
 				<button class="mt-2 px-3 py-1 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700 text-mid"
-								on:click={() => {
+								onclick={() => {
 									showMore = true;
 									showMoreInProgress = true;
 									setTimeout(() => {
