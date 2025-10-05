@@ -28,12 +28,12 @@
 		 onkeydown={(e) => (e.key === 'Enter' || e.key === ' ' ? toggle() : null)}
 >
 	<div
-		class="w-10 h-10 flex-shrink-0 flex justify-center items-center font-bold text-xl rounded-md select-none"
+		class="w-10 h-10 shrink-0 flex justify-center items-center font-bold text-xl rounded-md select-none"
 		style="background-color: {trip.routeColor}"
 	>
 		{trip.routeName}
 	</div>
-	<div class="flex-grow whitespace-nowrap overflow-hidden">
+	<div class="grow whitespace-nowrap overflow-hidden">
 		<span
 			class="flex gap-x-2 items-center leading-tight text-lg text-ellipsis overflow-hidden whitespace-nowrap"
 			class:text-neutral-500={trip.isEndOfRouteForUser}

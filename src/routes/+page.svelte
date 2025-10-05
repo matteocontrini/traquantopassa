@@ -132,7 +132,7 @@
 						<input
 							type="search"
 							placeholder="🔍 Cerca fermata..."
-							class="w-full px-3.5 py-2 rounded-md bg-neutral-800 text-neutral-100 focus:outline focus:outline-2 focus:outline-neutral-700"
+							class="w-full px-3.5 py-2 rounded-md bg-neutral-800 text-neutral-100 focus:outline-2 focus:outline-neutral-700"
 							bind:value={searchTerm}
 						/>
 						<a href="/aiuto"
@@ -143,7 +143,7 @@
 
 					<select
 						bind:value={selectedRoute}
-						class="w-full basis-1/2 py-2 px-3.5 rounded-md bg-neutral-800 text-neutral-100 focus:outline focus:outline-2 focus:outline-neutral-700">
+						class="w-full basis-1/2 py-2 px-3.5 rounded-md bg-neutral-800 text-neutral-100 focus:outline-2 focus:outline-neutral-700">
 						<option value="">🚏 Filtra per linea</option>
 						{#each data.routes as route (route.name)}
 							<option value={route.name}>{route.name} - {route.longName}</option>
