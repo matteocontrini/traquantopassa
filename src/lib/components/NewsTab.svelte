@@ -3,7 +3,8 @@
 
 	interface Props {
 		newsList: News[];
-		today: Date;
+		today?: Date;
+		ignoreDate?: boolean;
 	}
 
 	let showNews = $state(false);
@@ -13,7 +14,7 @@
 		showNews = !showNews;
 	};
 
-	let { newsList, today }: Props = $props();
+	let { newsList, today = new Date(), ignoreDate = false }: Props = $props();
 </script>
 
 <div class="flex gap-2">
@@ -34,23 +35,25 @@
 {#if showNews}
 	<div class="flex flex-col gap-2">
 		{#each newsList as news}
-			{#if today >= news.startDate && today <= news.endDate}
+			{#if (today >= news.startDate && today <= news.endDate) || ignoreDate}
 				<div class="rounded-lg bg-neutral-800 px-4 pt-3 pb-4 no-underline">
 					<h2 class="mb-2 text-base leading-tight font-medium">⚠️ {news.title}</h2>
 					<p class="mt-0 text-sm text-neutral-400">{news.details}</p>
 
-					<div class="flex flex-wrap gap-2 pt-1">
-						<p class="mt-0 size-full text-sm text-neutral-400">Linee interessate:</p>
+					{#if news.routes.length}
+						<div class="flex flex-wrap gap-2 pt-1">
+							<p class="mt-0 size-full text-sm text-neutral-400">Linee interessate:</p>
 
-						{#each news.routes as route}
-							<div
-								class="text-s flex h-5 w-5 shrink-0 items-center justify-center rounded-sm font-medium select-none"
-								style="background-color: {route.color}"
-							>
-								{route.name}
-							</div>
-						{/each}
-					</div>
+							{#each news.routes as route}
+								<div
+									class="text-s flex h-5 w-5 shrink-0 items-center justify-center rounded-sm font-medium select-none"
+									style="background-color: {route.color}"
+								>
+									{route.name}
+								</div>
+							{/each}
+						</div>
+					{/if}
 				</div>
 			{/if}
 		{/each}

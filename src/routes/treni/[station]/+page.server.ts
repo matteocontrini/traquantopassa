@@ -4,6 +4,7 @@ import { error } from '@sveltejs/kit';
 import type StationDetails from '$lib/StationDetails';
 import { getStopForStation } from '$lib/server/stops-stations-mapping';
 import * as logger from '$lib/logger';
+import type { News } from '$lib/RouteNews';
 
 export async function load({ params }) {
 	const slug = params.station;
@@ -13,12 +14,29 @@ export async function load({ params }) {
 		error(404);
 	}
 
-	let trains;
+	let trains, news;
 	try {
 		trains = await trainsService.getTrains(station.id);
+		news = await trainsService.getTrainNews(station.id);
 	} catch (e) {
 		logger.error(`Error while fetching trains for station ${station.slug}:`, e);
 		error(503);
+	}
+
+	let trainNews: News[] = [];
+
+	if (news !== '') {
+		trainNews = news.split(' / ').map((alert, ind) => {
+			return {
+				id: ind,
+				title: 'Avviso',
+				details: alert,
+				startDate: new Date(),
+				endDate: new Date(),
+				url: '',
+				routes: []
+			};
+		});
 	}
 
 	return {
@@ -28,6 +46,7 @@ export async function load({ params }) {
 			canonicalSlug: station.slug,
 			lastUpdatedAt: trains.cachedAt,
 			trains: trains.value,
+			trainNews,
 			stopSlug: getStopForStation(station.slug)
 		} satisfies StationDetails as StationDetails
 	};
