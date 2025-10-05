@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:1
 
-ARG NODE_VERSION=22.3.0
+ARG NODE_VERSION=22.20.0
 FROM node:${NODE_VERSION}-slim as base
 
 # SvelteKit app lives here
