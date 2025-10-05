@@ -15,13 +15,13 @@
 
 		// Get the first ping animation that is already in progress
 		const animations = document.getAnimations();
-		const anim = animations.find(x => x.animationName == 'ping' && x.currentTime != 0);
+		const anim = animations.find(x => x instanceof CSSAnimation && x.animationName == 'ping' && x.currentTime != 0);
 		if (!anim) {
 			return;
 		}
 
 		// Sync the current animation
-		const elAnimation = animations.find(x => x.effect?.target == el);
+		const elAnimation = animations.find(x => x.effect instanceof KeyframeEffect && x.effect.target == el);
 		if (elAnimation) {
 			elAnimation.currentTime = anim.currentTime;
 		}
