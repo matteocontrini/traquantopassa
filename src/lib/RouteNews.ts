@@ -1,3 +1,8 @@
+export interface RouteFe {
+	name: string;
+	color: string;
+}
+
 export interface News {
 	id: number;
 	title: string;
@@ -5,6 +10,7 @@ export interface News {
 	startDate: Date;
 	endDate: Date;
 	url: string;
+	routes: RouteFe[]
 }
 
 export interface RouteNews {

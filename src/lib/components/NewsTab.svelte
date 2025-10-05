@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { News } from "$lib/RouteNews";
+	import type { News } from '$lib/RouteNews';
 
 	interface Props {
 		newsList: News[];
@@ -38,6 +38,19 @@
 				<div class="rounded-lg bg-neutral-800 px-4 pt-3 pb-4 no-underline">
 					<h2 class="mb-2 text-base leading-tight font-medium">⚠️ {news.title}</h2>
 					<p class="mt-0 text-sm text-neutral-400">{news.details}</p>
+
+					<div class="flex flex-wrap gap-2 pt-1">
+						<p class="mt-0 size-full text-sm text-neutral-400">Linee interessate:</p>
+
+						{#each news.routes as route}
+							<div
+								class="text-s flex h-5 w-5 shrink-0 items-center justify-center rounded-sm font-medium select-none"
+								style="background-color: {route.color}"
+							>
+								{route.name}
+							</div>
+						{/each}
+					</div>
 				</div>
 			{/if}
 		{/each}

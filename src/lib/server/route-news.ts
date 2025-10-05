@@ -1,6 +1,6 @@
 import * as api from '$lib/server/trentino-trasporti-api';
 import NodeCache from 'node-cache';
-import type { RouteNews, News } from '$lib/RouteNews';
+import type { RouteNews, News, RouteFe } from '$lib/RouteNews';
 
 const cache = new NodeCache({
 	stdTTL: 24 * 60 * 60 // 24 hours
@@ -27,7 +27,7 @@ export async function routeNews() {
 
 		apiStop.news.forEach((news) => {
 			const newsId = news.idFeed;
-			const newsInfo = newsCreate(news);
+			const newsInfo = newsCreate(news, apiStops);
 
 			news.routeIds.split(',').forEach((routeId: string) => {
 				const routeIdInt = parseInt(routeId, 10);
@@ -77,13 +77,23 @@ export async function getRouteNews(routes: Set<number>) {
 	return Array.from(uniqueNews.values());
 }
 
-function newsCreate(data: any): News {
+function newsCreate(data: api.ApiNews, apiStop: api.ApiRoute[]): News {
+	const routes: RouteFe[] = data.routeIds.split(',').map((el) => {
+		const routeInfo = apiStop.find((apiEl) => apiEl.routeId === parseInt(el, 10)) as api.ApiRoute;
+
+		return {
+			name: routeInfo.routeShortName,
+			color: `#${routeInfo.routeColor}`
+		};
+	});
+
 	return {
 		title: data.header,
 		details: data.details,
 		id: data.idFeed,
 		startDate: new Date(data.startDate),
 		endDate: new Date(data.endDate),
-		url: data.url
+		url: data.url,
+		routes
 	};
 }
