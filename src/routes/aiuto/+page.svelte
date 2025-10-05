@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import stopInstructionsImage from '$lib/assets/stop-instructions.png';
 </script>
 
@@ -25,7 +26,7 @@
 	</p>
 
 	<p class="text-center">
-		<a href="/20125">
+		<a href={resolve('/[stop]', { stop: '20125' })}>
 			<code>traquantopassa.in/20125</code>
 		</a>
 	</p>
@@ -39,19 +40,19 @@
 	</p>
 
 	<p class="mt-10">
-		<a class="px-3 py-2 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" href="/">
+		<a class="px-3 py-2 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" href={resolve('/')}>
 			🚍 Lista fermate autobus
 		</a>
 	</p>
 
 	<p class="mt-6">
-		<a class="px-3 py-2 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" href="/treni">
+		<a class="px-3 py-2 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" href={resolve('/treni')}>
 			🚆 Lista stazioni treni
 		</a>
 	</p>
 
 	<p class="mt-6">
-		<a class="px-3 py-2 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" href="/info">
+		<a class="px-3 py-2 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" href={resolve('/info')}>
 			ℹ️ Informazioni
 		</a>
 	</p>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { slide, fade } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 	import StopBlock from './StopBlock.svelte';
@@ -135,7 +136,7 @@
 							class="w-full px-3.5 py-2 rounded-md bg-neutral-800 text-neutral-100 focus:outline-2 focus:outline-neutral-700"
 							bind:value={searchTerm}
 						/>
-						<a href="/aiuto"
+						<a href={resolve('/aiuto')}
 							 class="w-fit flex items-center justify-center px-3 rounded-md bg-neutral-800 hover:bg-neutral-700 no-underline">
 							❓
 						</a>
@@ -193,7 +194,7 @@
 </main>
 
 <footer class="mb-12 mt-14 text-center">
-	<a class="px-3 py-2 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" href="/info">
+	<a class="px-3 py-2 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" href={resolve('/info')}>
 		ℹ️ Informazioni
 	</a>
 </footer>

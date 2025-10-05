@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { slide, fade } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
@@ -174,7 +175,7 @@
 </main>
 
 <footer class="mb-12 mt-14 text-center">
-	<a class="px-3 py-2 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" href="/info">
+	<a class="px-3 py-2 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" href={resolve('/info')}>
 		ℹ️ Informazioni
 	</a>
 </footer>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import type { Station } from '$lib/Station';
 	import StationFavoriteButton from '$lib/components/StationFavoriteButton.svelte';
 
@@ -9,7 +10,7 @@
 	let { station }: Props = $props();
 </script>
 
-<a href="/treni/{station.slug}"
+<a href={resolve('/treni/[station]', { station: station.slug })}
 	 class="w-full flex flex-col justify-between bg-neutral-800 rounded-lg px-4 pt-3 pb-4 no-underline"
 >
 	<div class="flex gap-2 justify-between items-start">

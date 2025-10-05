@@ -1,3 +1,7 @@
+<script lang="ts">
+	import { resolve } from '$app/paths';
+</script>
+
 <svelte:head>
 	<title>Tra quanto passa</title>
 </svelte:head>
@@ -39,19 +43,19 @@
 	</p>
 
 	<p class="mt-10">
-		<a class="px-3 py-2 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" href="/">
+		<a class="px-3 py-2 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" href={resolve('/')}>
 			🚍 Lista fermate autobus
 		</a>
 	</p>
 
 	<p class="mt-6">
-		<a class="px-3 py-2 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" href="/treni">
+		<a class="px-3 py-2 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" href={resolve('/treni')}>
 			🚆 Lista stazioni treni
 		</a>
 	</p>
 
 	<p class="mt-6">
-		<a class="px-3 py-2 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" href="/aiuto">
+		<a class="px-3 py-2 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" href={resolve('/aiuto')}>
 			❓ Istruzioni per trovare le fermate
 		</a>
 	</p>

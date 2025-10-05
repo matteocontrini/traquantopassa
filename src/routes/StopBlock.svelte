@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { mapRouteIdsToRoutes } from '$lib/routes-helper';
 	import type { StopGroup } from '$lib/StopGroup';
 	import type { Route } from '$lib/Route';
@@ -12,7 +13,7 @@
 	let { stop, routes }: Props = $props();
 </script>
 
-<a href="/{stop.slugs[0]}"
+<a href={resolve('/[stop]', { stop: stop.slugs[0] })}
 	 class="w-full h-full bg-neutral-800 rounded-lg px-4 pt-3 pb-4 no-underline"
 >
 	<div class="flex gap-2 justify-between items-start">
