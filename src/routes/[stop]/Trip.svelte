@@ -58,7 +58,7 @@
 				{:else}
 					a {distanceInStops} fermate da te
 				{/if}
-				{#if trip.currentStopSequenceNumber <= 1}
+				{#if trip.currentStopSequenceNumber === 1}
 					(1ª fermata)
 				{/if}
 
