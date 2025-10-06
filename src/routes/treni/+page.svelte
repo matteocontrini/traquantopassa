@@ -6,9 +6,8 @@
 	import TabButton from '$lib/components/TabButton.svelte';
 	import StationBlock from './StationBlock.svelte';
 	import { getContext, onMount } from 'svelte';
-	import { distance, getCurrentPosition, handleGeolocationError, isGeolocationGranted } from '$lib/location-helpers';
 	import type { FavoriteStations } from '$lib/storage/favorites.svelte';
-  	import {
+	import {
 		computeStationsDistances,
 		distance,
 		getCurrentPosition,
