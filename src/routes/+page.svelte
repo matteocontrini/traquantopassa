@@ -12,7 +12,7 @@
 		handleGeolocationError,
 		isGeolocationGranted
 	} from '$lib/location-helpers';
-	import { type FavoritesStore } from '$lib/stores/stops-favorites';
+	import type { FavoriteStops } from '$lib/storage/favorites.svelte';
 	import { getDefaultTab, setDefaultTab, type Tab } from '$lib/storage/stops-default-tab';
 
 	let { data } = $props();
@@ -27,7 +27,7 @@
 	let loadingGeolocationData = $state(false);
 	let distances = $state(computeDistances(data.stops));
 
-	const favorites: FavoritesStore = getContext('favorites');
+	const favorites: FavoriteStops = getContext('favorites');
 
 	let sortedStops = $derived(data.stops
 		// Sort by distance
@@ -50,7 +50,7 @@
 		.toSorted((x, y) => data.rankings[y.code] - data.rankings[x.code])
 	);
 
-	let favoriteStops = $derived(data.stops.filter(x => $favorites.has(x.code)));
+	let favoriteStops = $derived(data.stops.filter(x => favorites.value.includes(x.code)));
 
 	onMount(async () => {
 		if (await isGeolocationGranted()) {

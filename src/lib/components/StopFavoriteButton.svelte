@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { FavoritesStore } from '$lib/stores/stops-favorites';
+	import type { FavoriteStops } from '$lib/storage/favorites.svelte';
 	import { getContext } from 'svelte';
 	import starFilled from '$lib/assets/star-filled.svg';
 	import star from '$lib/assets/star.svg';
@@ -11,15 +11,15 @@
 
 	let { stopCode, className = '' }: Props = $props();
 
-	const favorites: FavoritesStore = getContext('favorites');
+	const favorites: FavoriteStops = getContext('favorites');
 
-	let isFavorite = $state($favorites.has(stopCode));
+	let isFavorite = $derived(favorites.value.includes(stopCode));
 	let starElement: HTMLImageElement | undefined = $state();
 
+	console.log( favorites )
 	function toggleFavorite(event: Event) {
 		event.preventDefault();
-		isFavorite = !isFavorite;
-		if (isFavorite) {
+		if (!isFavorite) {
 			favorites.addFavorite(stopCode);
 			starElement?.classList.add('animate-spin-forward');
 		} else {
@@ -28,6 +28,8 @@
 		}
 		starElement?.addEventListener('animationend', () => {
 			starElement?.classList.remove('animate-spin-forward', 'animate-spin-backward');
+		}, {
+			once: true, // prevent memory leaks
 		});
 	}
 </script>
