@@ -25,7 +25,8 @@
 
 	let sortedStations = $derived(data.stations
 		// Sort by distance
-		.sort((a, b) => (distances.get(a.id) ?? Infinity) - (distances.get(b.id) ?? Infinity)));
+		.toSorted((a, b) => (distances.get(a.id) ?? Infinity) - (distances.get(b.id) ?? Infinity))
+	);
 
 	let filteredStations = $derived(data.stations
 		.filter((station) =>

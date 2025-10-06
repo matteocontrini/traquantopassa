@@ -31,7 +31,8 @@
 
 	let sortedStops = $derived(data.stops
 		// Sort by distance
-		.sort((a, b) => (distances.get(a.code) ?? Infinity) - (distances.get(b.code) ?? Infinity)));
+		.toSorted((a, b) => (distances.get(a.code) ?? Infinity) - (distances.get(b.code) ?? Infinity))
+	);
 
 	let filteredStops = $derived(data.stops
 		.filter((stop) =>
@@ -46,7 +47,8 @@
 
 	let rankedStops = $derived(data.stops
 		.filter(x => data.rankings[x.code])
-		.sort((x, y) => data.rankings[y.code] - data.rankings[x.code]));
+		.toSorted((x, y) => data.rankings[y.code] - data.rankings[x.code])
+	);
 
 	let favoriteStops = $derived(data.stops.filter(x => $favorites.has(x.code)));
 
@@ -125,7 +127,6 @@
 					⏳ Caricamento posizione...
 				</div>
 			{/if}
-
 
 			{#if activeTab === 'filter'}
 				<div class="mt-4 flex max-sm:flex-col gap-x-4 gap-y-3">
