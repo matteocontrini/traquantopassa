@@ -16,7 +16,6 @@
 	let isFavorite = $derived(favorites.value.includes(stopCode));
 	let starElement: HTMLImageElement | undefined = $state();
 
-	console.log( favorites )
 	function toggleFavorite(event: Event) {
 		event.preventDefault();
 		if (!isFavorite) {
