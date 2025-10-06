@@ -7,7 +7,7 @@
 	import TabButton from '$lib/components/TabButton.svelte';
 	import { getContext, onMount } from 'svelte';
 	import {
-		computeDistances,
+		computeStopsDistances,
 		getCurrentPosition,
 		handleGeolocationError,
 		isGeolocationGranted
@@ -25,7 +25,7 @@
 
 	let showGeolocationButton = $state(false);
 	let loadingGeolocationData = $state(false);
-	let distances = $state(computeDistances(data.stops));
+	let distances = $state(computeStopsDistances(data.stops));
 
 	const favorites: FavoriteStops = getContext('favorites');
 
@@ -64,15 +64,18 @@
 		showGeolocationButton = false;
 		loadingGeolocationData = true;
 
+		let position;
 		try {
-			const position = await getCurrentPosition();
-			distances = computeDistances(data.stops, position.coords);
+			position = await getCurrentPosition();
 		} catch (err) {
 			handleGeolocationError(err);
 			showGeolocationButton = true;
+			return;
+		} finally {
+			loadingGeolocationData = false;
 		}
 
-		loadingGeolocationData = false;
+		distances = computeStopsDistances(data.stops, position.coords);
 	}
 
 	function switchTab(tab: Tab) {

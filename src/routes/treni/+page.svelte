@@ -8,6 +8,13 @@
 	import { getContext, onMount } from 'svelte';
 	import { distance, getCurrentPosition, handleGeolocationError, isGeolocationGranted } from '$lib/location-helpers';
 	import type { FavoriteStations } from '$lib/storage/favorites.svelte';
+  	import {
+		computeStationsDistances,
+		distance,
+		getCurrentPosition,
+		handleGeolocationError,
+		isGeolocationGranted
+	} from '$lib/location-helpers';
 	import { getDefaultTab, setDefaultTab, type Tab } from '$lib/storage/stations-default-tab';
 
 	let { data } = $props();
@@ -52,21 +59,18 @@
 		showGeolocationButton = false;
 		loadingGeolocationData = true;
 
+		let position;
 		try {
-			const position = await getCurrentPosition();
-
-			// Recalculate distances
-			for (let station of data.stations) {
-				distances.set(station.id, distance(position.coords, station.coordinates));
-			}
-
-			distances = distances; // trigger re-render
+			position = await getCurrentPosition();
 		} catch (err) {
 			handleGeolocationError(err);
 			showGeolocationButton = true;
+			return;
+		} finally {
+			loadingGeolocationData = false;
 		}
 
-		loadingGeolocationData = false;
+		distances = computeStationsDistances(data.stations, position.coords);
 	}
 
 	function switchTab(tab: Tab) {
