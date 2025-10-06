@@ -10,7 +10,7 @@
 	import LiveTripAnimation from './LiveTripAnimation.svelte';
 	import StopFavoriteButton from '$lib/components/StopFavoriteButton.svelte';
 	import { Flag } from 'lucide-svelte';
-	import { writable } from 'svelte/store';
+	import type { TripFe } from '$lib/Trip';
 
 	let { data } = $props();
 
@@ -19,7 +19,10 @@
 	let limit = $derived(showMore ? 15 : 5);
 	let showMoreInProgress = $state(false);
 
-	const expandedTripId = writable<string | null>(null);
+	const tripState: TripFe = {
+		trip: null
+	};
+	const expandedTripId = $state(tripState);
 	setContext('expandedTripId', expandedTripId);
 
 	const REFRESH_INTERVAL = 30 * 1000;
