@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { News } from '$lib/RouteNews';
+	import StopBox from './StopBox.svelte';
 
 	interface Props {
 		newsList: News[];
@@ -45,12 +46,12 @@
 							<p class="mt-0 size-full text-sm text-neutral-400">Linee interessate:</p>
 
 							{#each news.routes as route}
-								<div
-									class="w-7 h-7 shrink-0 flex justify-center items-center font-semibold text-base rounded-sm select-none"
-									style="background-color: {route.colorBG}; ""
-								>
-									{route.name}
-								</div>
+								<StopBox 
+									name={route.name}
+									colorBG={route.colorBG}
+									colorTxt={route.colorTxt}
+									size="small"
+								/>
 							{/each}
 						</div>
 					{/if}

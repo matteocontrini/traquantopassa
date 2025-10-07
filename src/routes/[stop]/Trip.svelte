@@ -7,6 +7,7 @@
 	import { slide } from 'svelte/transition';
 	import { getContext } from 'svelte';
 	import type { Writable } from 'svelte/store';
+	import StopBox from '$lib/components/StopBox.svelte';
 
 	interface Props {
 		trip: Trip;
@@ -27,12 +28,12 @@
 		 onclick={() => toggle()} tabindex="0"
 		 onkeydown={(e) => (e.key === 'Enter' || e.key === ' ' ? toggle() : null)}
 >
-	<div
-		class="w-10 h-10 shrink-0 flex justify-center items-center font-bold text-xl rounded-md select-none {trip.colorTxt}"
-		style="background-color: {trip.routeColor}"
-	>
-		{trip.routeName}
-	</div>
+	<StopBox 
+		name={trip.routeName}
+		colorBG={trip.routeColor}
+		colorTxt={trip.colorTxt}
+		size="big"
+	/>
 	<div class="grow whitespace-nowrap overflow-hidden">
 		<span
 			class="flex gap-x-2 items-center leading-tight text-lg text-ellipsis overflow-hidden whitespace-nowrap"
