@@ -3,6 +3,7 @@
 	import { getContext } from 'svelte';
 	import starFilled from '$lib/assets/star-filled.svg';
 	import star from '$lib/assets/star.svg';
+	import { onMount } from 'svelte';
 
 	interface Props {
 		stopCode: string;
@@ -15,6 +16,13 @@
 
 	let isFavorite = $derived(favorites.value.includes(stopCode));
 	let starElement: HTMLImageElement | undefined = $state();
+
+	// On first page load (with ssr) the star is always empty
+	// this forces an update to fix the UI
+	onMount(() => {
+		isFavorite = !isFavorite;
+		isFavorite = !isFavorite;
+	});
 
 	function toggleFavorite(event: Event) {
 		event.preventDefault();
