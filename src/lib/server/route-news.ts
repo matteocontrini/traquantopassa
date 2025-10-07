@@ -1,6 +1,7 @@
 import * as api from '$lib/server/trentino-trasporti-api';
 import NodeCache from 'node-cache';
 import type { RouteNews, News, RouteFe } from '$lib/RouteNews';
+import { mapRouteColor } from './routes-service';
 
 const cache = new NodeCache({
 	stdTTL: 24 * 60 * 60 // 24 hours
@@ -83,7 +84,7 @@ function newsCreate(data: api.ApiNews, apiStop: api.ApiRoute[]): News {
 
 		return {
 			name: routeInfo.routeShortName,
-			color: `#${routeInfo.routeColor}`
+			color: mapRouteColor( routeInfo ),
 		};
 	});
 

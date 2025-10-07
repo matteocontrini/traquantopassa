@@ -31,7 +31,7 @@ export async function getRoutes() {
 	return routes;
 }
 
-function mapRouteColor(apiRoute: ApiRoute) {
+export function mapRouteColor(apiRoute: ApiRoute) {
 	if (apiRoute.routeShortName == '5/' || apiRoute.routeShortName == 'CM') {
 		return '#F5C500';
 	} else if (apiRoute.routeShortName == 'P') {

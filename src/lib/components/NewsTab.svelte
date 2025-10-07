@@ -46,7 +46,7 @@
 
 							{#each news.routes as route}
 								<div
-									class="text-s flex h-5 w-5 shrink-0 items-center justify-center rounded-sm font-medium select-none"
+									class="w-7 h-7 shrink-0 flex justify-center items-center font-semibold text-base rounded-sm select-none"
 									style="background-color: {route.color}"
 								>
 									{route.name}
