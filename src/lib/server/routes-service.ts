@@ -49,11 +49,29 @@ export function mapRouteColor(apiRoute: ApiRoute) {
 	return '#' + apiRoute.routeColor;
 }
 
+export function mapRouteLightBG(name: string) {
+	const darkText = [
+		'A',
+		'5',
+		'5/',
+		'6',
+		'14',
+		'15',
+		'CM'
+	];
+
+	if ( darkText.indexOf( name ) !== -1 )
+		return ' text-neutral-900 ';
+	else
+		return '';
+}
+
 function apiRouteToRoute(apiRoute: api.ApiRoute): Route {
 	return {
 		id: apiRoute.routeId,
 		name: apiRoute.routeShortName,
 		longName: apiRoute.routeLongName,
-		color: mapRouteColor(apiRoute)
+		colorBG: mapRouteColor(apiRoute),
+		colorTxt: mapRouteLightBG(apiRoute.routeShortName)
 	};
 }

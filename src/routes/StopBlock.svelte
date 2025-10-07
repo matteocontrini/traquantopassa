@@ -29,8 +29,8 @@
 	<div class="mt-4 flex gap-2 flex-wrap">
 		{#each mapRouteIdsToRoutes(stop.routeIds, routes) as route (route.id)}
 			<div
-				class="w-7 h-7 shrink-0 flex justify-center items-center font-semibold text-base rounded-sm select-none"
-				style="background-color: {route.color}"
+				class="w-7 h-7 shrink-0 flex justify-center items-center font-semibold text-base rounded-sm select-none {route.colorTxt}"
+				style="background-color: {route.colorBG}"
 			>
 				{route.name}
 			</div>

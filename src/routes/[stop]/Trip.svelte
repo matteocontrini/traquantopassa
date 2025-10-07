@@ -28,7 +28,7 @@
 		 onkeydown={(e) => (e.key === 'Enter' || e.key === ' ' ? toggle() : null)}
 >
 	<div
-		class="w-10 h-10 shrink-0 flex justify-center items-center font-bold text-xl rounded-md select-none"
+		class="w-10 h-10 shrink-0 flex justify-center items-center font-bold text-xl rounded-md select-none {trip.colorTxt}"
 		style="background-color: {trip.routeColor}"
 	>
 		{trip.routeName}

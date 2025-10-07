@@ -1,6 +1,7 @@
 export interface RouteFe {
 	name: string;
-	color: string;
+	colorBG: string;
+	colorTxt: string;
 }
 
 export interface News {
