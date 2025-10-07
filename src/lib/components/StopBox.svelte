@@ -8,6 +8,7 @@
 
 	let { name, colorBG, colorTxt, size }: Props = $props();
 
+	// svelte-ignore non_reactive_update
 	let classes: string = `shrink-0 flex justify-center items-center select-none ${colorTxt}`;
 
 	if (size === 'small') {
