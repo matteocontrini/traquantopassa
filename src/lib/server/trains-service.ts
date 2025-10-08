@@ -25,6 +25,24 @@ export async function getTrains(stationId: string): Promise<CachedItem<Train[]>>
 	return cachedItem;
 }
 
+export async function getTrainNews(stationId: string) {
+
+	let cachedItem = cache.get<string>(`trains-news-${stationId}`);
+	if (cachedItem) {
+		return cachedItem;
+	}
+
+	// Fetch from API
+	const apiTrains = await api.getTrainNews(stationId);
+	cachedItem = apiTrains;
+
+	// Save to cache
+	cache.set(`trains-news-${stationId}`, cachedItem, cacheDurationSeconds);
+
+	return cachedItem;
+
+}
+
 function mapTrains(apiTrains: api.ApiTrain[]): Train[] {
 	return apiTrains.map((train) => {
 		let isDelayed = false;

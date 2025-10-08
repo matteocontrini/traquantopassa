@@ -2,6 +2,7 @@ export interface Trip {
 	id: string;
 	routeName: string;
 	routeColor: string;
+	colorTxt: string;
 	destination: string;
 	minutes: number;
 	delay: number | null;
