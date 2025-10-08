@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { News } from '$lib/RouteNews';
 	import StopBox from './StopBox.svelte';
+	import { fade } from 'svelte/transition';
 
 	interface Props {
 		newsList: News[];
@@ -34,7 +35,7 @@
 </div>
 
 {#if showNews}
-	<div class="flex flex-col gap-2">
+	<div class="flex flex-col gap-2" transition:fade={{duration: 200}}>
 		{#each newsList as news}
 			{#if (today >= news.startDate && today <= news.endDate) || ignoreDate}
 				<div class="rounded-lg bg-neutral-800 px-4 pt-3 pb-4 no-underline">
