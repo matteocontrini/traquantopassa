@@ -6,19 +6,29 @@ const STATIONS_KEY = 'tqp_stations_favorites';
 export class LocalStore<T> {
 	value = $state<T>() as T;
 	key = '';
+	#initialized = $state(false);
 
 	constructor(key: string, value: T) {
 		this.key = key;
 		this.value = value;
 
 		if (browser) {
-			const item = localStorage.getItem(key);
-			if (item) this.value = this.deserialize(item);
-		}
+			// Load from localStorage after hydration completes
+			$effect(() => {
+				if (!this.#initialized) {
+					const item = localStorage.getItem(key);
+					if (item) this.value = this.deserialize(item);
+					this.#initialized = true;
+				}
+			});
 
-		$effect(() => {
-			localStorage.setItem(this.key, this.serialize(this.value));
-		});
+			// Save to localStorage on changes (but not during initial load)
+			$effect(() => {
+				if (this.#initialized) {
+					localStorage.setItem(this.key, this.serialize(this.value));
+				}
+			});
+		}
 	}
 
 	serialize(value: T): string {
