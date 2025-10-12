@@ -17,6 +17,6 @@ export interface StopTime {
 	time: string;
 }
 
-export interface TripFe {
-	trip: string|null;
+export interface ExpandedTripState {
+	id: string | null;
 }

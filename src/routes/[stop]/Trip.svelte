@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Trip, TripFe } from '$lib/Trip';
+	import type { Trip, ExpandedTripState } from '$lib/Trip';
 	import LiveTripAnimation from './LiveTripAnimation.svelte';
 	import PulsingMinutes from './PulsingMinutes.svelte';
 	import { Flag } from 'lucide-svelte';
@@ -13,11 +13,11 @@
 
 	let { trip }: Props = $props();
 
-	let expandedTripId = getContext('expandedTripId') as TripFe;
-	let expanded = $derived(expandedTripId.trip === trip.id);
+	let expandedTrip = getContext<ExpandedTripState>('expandedTrip');
+	let expanded = $derived(expandedTrip.id === trip.id);
 
 	function toggle() {
-		expandedTripId.trip = expanded ? null : trip.id;
+		expandedTrip.id = expanded ? null : trip.id;
 	}
 </script>
 
