@@ -14,7 +14,7 @@ export interface ApiTrain {
 	notes: string;
 }
 
-export async function getTrains(stationId: string): Promise<ApiTrain[]> {
+async function fetchTrainsScreen(stationId: string) {
 	const params = new URLSearchParams();
 	params.append('placeId', stationId);
 	params.append('arrivals', 'false');
@@ -31,8 +31,18 @@ export async function getTrains(stationId: string): Promise<ApiTrain[]> {
 	const text = await res.text();
 
 	logger.info(`Fetched trains for station ${stationId} in ${elapsed(start)} ms`);
+	return text;
+}
 
+export async function getTrains(stationId: string): Promise<ApiTrain[]> {
+	const text = await fetchTrainsScreen(stationId);
 	return parseTrains(text);
+}
+
+export async function getTrainNews(stationId: string): Promise<string> {
+	const text = await fetchTrainsScreen(stationId);
+	const $ = cheerio.load(text);
+	return $('.marqueeinfosupp div').text() ?? '';
 }
 
 function parseTrains(html: string): ApiTrain[] {

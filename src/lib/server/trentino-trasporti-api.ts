@@ -11,6 +11,19 @@ if (!building && !BASE_URL) {
 
 const BASIC_AUTH = Buffer.from(env.API_USERNAME + ':' + env.API_PASSWORD).toString('base64');
 
+export interface ApiNews {
+	idFeed: number;
+	agencyId: string;
+	serviceType: string;
+	startDate: string;
+	endDate: string;
+	header: string;
+	details: string;
+	stopId: string;
+	url: string; // this seems to be mainly used for internal purposes
+	routeIds: string;
+}
+
 export interface ApiStop {
 	stopId: number;
 	stopName: string;
@@ -26,6 +39,7 @@ export interface ApiRoute {
 	routeShortName: string;
 	routeLongName: string;
 	routeColor: string | null;
+	news: ApiNews[],
 }
 
 export interface ApiTrip {

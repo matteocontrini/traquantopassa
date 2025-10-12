@@ -9,6 +9,7 @@
 	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
 	import DepartingTrainAnimation from './DepartingTrainAnimation.svelte';
 	import StationFavoriteButton from '$lib/components/StationFavoriteButton.svelte';
+	import NewsTab from '$lib/components/NewsTab.svelte';
 
 	let { data } = $props();
 
@@ -61,6 +62,15 @@
 	{#if details.stopSlug}
 		<div class="mt-6 flex justify-center">
 			<ModesSwitch isBus={false} stopSlug={details.stopSlug} stationSlug={details.canonicalSlug} />
+		</div>
+	{/if}
+
+	{#if details.trainNews.length}
+		<div class="mt-6 flex justify-center flex-wrap gap-3">
+			<NewsTab 
+				newsList={details.trainNews} 
+				ignoreDate={true}
+			/>
 		</div>
 	{/if}
 </header>

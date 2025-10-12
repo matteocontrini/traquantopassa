@@ -100,7 +100,8 @@ async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId:
 		return {
 			id,
 			routeName: route.name,
-			routeColor: route.color,
+			routeColor: route.colorBG,
+			colorTxt: routesService.mapRouteLightBG(route.name),
 			destination: trip.tripHeadsign,
 			minutes,
 			delay,
