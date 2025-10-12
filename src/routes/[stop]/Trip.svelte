@@ -1,12 +1,11 @@
 <script lang="ts">
-	import type { Trip } from '$lib/Trip';
+	import type { Trip, ExpandedTripState } from '$lib/Trip';
 	import LiveTripAnimation from './LiveTripAnimation.svelte';
 	import PulsingMinutes from './PulsingMinutes.svelte';
 	import { Flag } from 'lucide-svelte';
 	import BusTripDetail from './BusTripDetail.svelte';
 	import { slide } from 'svelte/transition';
 	import { getContext } from 'svelte';
-	import type { Writable } from 'svelte/store';
 
 	interface Props {
 		trip: Trip;
@@ -14,11 +13,11 @@
 
 	let { trip }: Props = $props();
 
-	const expandedTripId = getContext<Writable<string | null>>('expandedTripId');
-	let expanded = $derived($expandedTripId === trip.id);
+	let expandedTrip = getContext<ExpandedTripState>('expandedTrip');
+	let expanded = $derived(expandedTrip.id === trip.id);
 
 	function toggle() {
-		$expandedTripId = expanded ? null : trip.id;
+		expandedTrip.id = expanded ? null : trip.id;
 	}
 </script>
 
