@@ -10,8 +10,8 @@
 	import LiveTripAnimation from './LiveTripAnimation.svelte';
 	import StopFavoriteButton from '$lib/components/StopFavoriteButton.svelte';
 	import { Flag } from 'lucide-svelte';
-	import { writable } from 'svelte/store';
 	import NewsTab from '$lib/components/NewsTab.svelte';
+	import type { ExpandedTripState } from '$lib/Trip';
 
 	let { data } = $props();
 
@@ -21,8 +21,11 @@
 	let showMoreInProgress = $state(false);
 	let today = new Date();
 
-	const expandedTripId = writable<string | null>(null);
-	setContext('expandedTripId', expandedTripId);
+	const tripState: ExpandedTripState = {
+		id: null
+	};
+	const expandedTrip = $state(tripState);
+	setContext('expandedTrip', expandedTrip);
 
 	const REFRESH_INTERVAL = 30 * 1000;
 	let timer: ReturnType<typeof setInterval>;

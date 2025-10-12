@@ -4,7 +4,7 @@
 	import { navigating } from '$app/state';
 	import { onMount, setContext, type Snippet } from 'svelte';
 	import type { Topbar } from 'topbar';
-	import { createFavoritesStore } from '$lib/stores/stops-favorites';
+	import { favoriteStopsStore } from '$lib/storage/favorites.svelte';
 
 	interface Props {
 		children?: Snippet;
@@ -31,7 +31,7 @@
 		}
 	});
 
-	setContext('favorites', createFavoritesStore());
+	setContext('favorites', favoriteStopsStore());
 </script>
 
 <div class="max-w-[600px] mx-auto mt-10 px-5">

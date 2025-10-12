@@ -6,8 +6,14 @@
 	import TabButton from '$lib/components/TabButton.svelte';
 	import StationBlock from './StationBlock.svelte';
 	import { getContext, onMount } from 'svelte';
-	import { distance, getCurrentPosition, handleGeolocationError, isGeolocationGranted } from '$lib/location-helpers';
-	import { type FavoritesStore } from '$lib/stores/stations-favorites';
+	import type { FavoriteStations } from '$lib/storage/favorites.svelte';
+	import {
+		computeStationsDistances,
+		distance,
+		getCurrentPosition,
+		handleGeolocationError,
+		isGeolocationGranted
+	} from '$lib/location-helpers';
 	import { getDefaultTab, setDefaultTab, type Tab } from '$lib/storage/stations-default-tab';
 
 	let { data } = $props();
@@ -21,11 +27,12 @@
 	let loadingGeolocationData = $state(false);
 	let distances = $state(new Map<string, number>());
 
-	const favorites: FavoritesStore = getContext('favorites');
+	const favorites: FavoriteStations = getContext('favorites');
 
 	let sortedStations = $derived(data.stations
 		// Sort by distance
-		.sort((a, b) => (distances.get(a.id) ?? Infinity) - (distances.get(b.id) ?? Infinity)));
+		.toSorted((a, b) => (distances.get(a.id) ?? Infinity) - (distances.get(b.id) ?? Infinity))
+	);
 
 	let filteredStations = $derived(data.stations
 		.filter((station) =>
@@ -37,7 +44,7 @@
 			)
 		));
 
-	let favoriteStations = $derived(data.stations.filter(x => $favorites.has(x.id)));
+	let favoriteStations = $derived(data.stations.filter(x => favorites.value.includes(x.id)));
 
 	onMount(async () => {
 		if (await isGeolocationGranted()) {
@@ -51,21 +58,18 @@
 		showGeolocationButton = false;
 		loadingGeolocationData = true;
 
+		let position;
 		try {
-			const position = await getCurrentPosition();
-
-			// Recalculate distances
-			for (let station of data.stations) {
-				distances.set(station.id, distance(position.coords, station.coordinates));
-			}
-
-			distances = distances; // trigger re-render
+			position = await getCurrentPosition();
 		} catch (err) {
 			handleGeolocationError(err);
 			showGeolocationButton = true;
+			return;
+		} finally {
+			loadingGeolocationData = false;
 		}
 
-		loadingGeolocationData = false;
+		distances = computeStationsDistances(data.stations, position.coords);
 	}
 
 	function switchTab(tab: Tab) {

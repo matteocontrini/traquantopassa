@@ -7,12 +7,12 @@
 	import TabButton from '$lib/components/TabButton.svelte';
 	import { getContext, onMount } from 'svelte';
 	import {
-		computeDistances,
+		computeStopsDistances,
 		getCurrentPosition,
 		handleGeolocationError,
 		isGeolocationGranted
 	} from '$lib/location-helpers';
-	import { type FavoritesStore } from '$lib/stores/stops-favorites';
+	import type { FavoriteStops } from '$lib/storage/favorites.svelte';
 	import { getDefaultTab, setDefaultTab, type Tab } from '$lib/storage/stops-default-tab';
 
 	let { data } = $props();
@@ -25,13 +25,14 @@
 
 	let showGeolocationButton = $state(false);
 	let loadingGeolocationData = $state(false);
-	let distances = $state(computeDistances(data.stops));
+	let distances = $state(computeStopsDistances(data.stops));
 
-	const favorites: FavoritesStore = getContext('favorites');
+	const favorites: FavoriteStops = getContext('favorites');
 
 	let sortedStops = $derived(data.stops
 		// Sort by distance
-		.sort((a, b) => (distances.get(a.code) ?? Infinity) - (distances.get(b.code) ?? Infinity)));
+		.toSorted((a, b) => (distances.get(a.code) ?? Infinity) - (distances.get(b.code) ?? Infinity))
+	);
 
 	let filteredStops = $derived(data.stops
 		.filter((stop) =>
@@ -46,9 +47,10 @@
 
 	let rankedStops = $derived(data.stops
 		.filter(x => data.rankings[x.code])
-		.sort((x, y) => data.rankings[y.code] - data.rankings[x.code]));
+		.toSorted((x, y) => data.rankings[y.code] - data.rankings[x.code])
+	);
 
-	let favoriteStops = $derived(data.stops.filter(x => $favorites.has(x.code)));
+	let favoriteStops = $derived(data.stops.filter(x => favorites.value.includes(x.code)));
 
 	onMount(async () => {
 		if (await isGeolocationGranted()) {
@@ -62,15 +64,18 @@
 		showGeolocationButton = false;
 		loadingGeolocationData = true;
 
+		let position;
 		try {
-			const position = await getCurrentPosition();
-			distances = computeDistances(data.stops, position.coords);
+			position = await getCurrentPosition();
 		} catch (err) {
 			handleGeolocationError(err);
 			showGeolocationButton = true;
+			return;
+		} finally {
+			loadingGeolocationData = false;
 		}
 
-		loadingGeolocationData = false;
+		distances = computeStopsDistances(data.stops, position.coords);
 	}
 
 	function switchTab(tab: Tab) {
@@ -125,7 +130,6 @@
 					⏳ Caricamento posizione...
 				</div>
 			{/if}
-
 
 			{#if activeTab === 'filter'}
 				<div class="mt-4 flex max-sm:flex-col gap-x-4 gap-y-3">

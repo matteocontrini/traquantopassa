@@ -1,7 +1,8 @@
 import type { Coordinates } from '$lib/Coordinates';
 import type { StopGroup } from '$lib/StopGroup';
+import type { Station } from '$lib/Station';
 
-export function computeDistances(stops: StopGroup[], userCoordinates: GeolocationCoordinates | null = null) {
+export function computeStopsDistances(stops: StopGroup[], userCoordinates: GeolocationCoordinates | null = null) {
 	const distances = new Map<string, number>();
 
 	// Default to Piazza Dante Trento
@@ -11,6 +12,16 @@ export function computeDistances(stops: StopGroup[], userCoordinates: Geolocatio
 
 	for (const stop of stops) {
 		distances.set(stop.code, distance(userCoordinates, stop.coordinates));
+	}
+
+	return distances;
+}
+
+export function computeStationsDistances(stations: Station[], userCoordinates: GeolocationCoordinates) {
+	const distances = new Map<string, number>();
+
+	for (const station of stations) {
+		distances.set(station.id, distance(userCoordinates, station.coordinates));
 	}
 
 	return distances;

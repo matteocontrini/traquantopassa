@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { setContext, type Snippet } from 'svelte';
-	import { createFavoritesStore } from '$lib/stores/stations-favorites';
+	import { favoriteStationsStore } from '$lib/storage/favorites.svelte';
 
 	interface Props {
 		children?: Snippet;
@@ -8,7 +8,7 @@
 
 	let { children }: Props = $props();
 
-	setContext('favorites', createFavoritesStore());
+	setContext('favorites', favoriteStationsStore());
 </script>
 
 {@render children?.()}
