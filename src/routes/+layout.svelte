@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '$lib/polyfills';
 	import '@fontsource-variable/inter';
 	import '../app.css';
 	import { navigating } from '$app/state';
