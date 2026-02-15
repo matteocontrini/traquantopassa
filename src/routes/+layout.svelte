@@ -6,6 +6,7 @@
 	import { onMount, setContext, type Snippet } from 'svelte';
 	import type { Topbar } from 'topbar';
 	import { favoriteStopsStore } from '$lib/storage/favorites.svelte';
+	import Banner from './Banner.svelte';
 
 	interface Props {
 		children?: Snippet;
@@ -34,6 +35,8 @@
 
 	setContext('favorites', favoriteStopsStore());
 </script>
+
+<Banner />
 
 <div class="max-w-[600px] mx-auto mt-10 px-5">
 	{@render children?.()}
