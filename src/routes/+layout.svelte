@@ -36,7 +36,7 @@
 	setContext('favorites', favoriteStopsStore());
 </script>
 
-<Banner />
+<!--<Banner />-->
 
 <div class="max-w-[600px] mx-auto mt-10 px-5">
 	{@render children?.()}
