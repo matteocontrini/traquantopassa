@@ -1,4 +1,5 @@
 import type { StopDirection } from '$lib/StopDirection';
+import type { News } from '$lib/RouteNews';
 
 export default interface StopGroupDetails {
 	name: string;
@@ -7,4 +8,5 @@ export default interface StopGroupDetails {
 	lastUpdatedAt: Date;
 	directions: StopDirection[];
 	trainStationSlug: string | null;
+	news: News[];
 }

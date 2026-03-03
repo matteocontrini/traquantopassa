@@ -1,4 +1,5 @@
 import type { Train } from '$lib/Train';
+import type { News } from '$lib/RouteNews';
 
 export default interface StationDetails {
 	id: string;
@@ -6,5 +7,6 @@ export default interface StationDetails {
 	canonicalSlug: string;
 	lastUpdatedAt: Date;
 	trains: Train[];
+	trainNews: News[];
 	stopSlug: string | null;
 }

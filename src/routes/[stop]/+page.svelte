@@ -10,6 +10,7 @@
 	import LiveTripAnimation from './LiveTripAnimation.svelte';
 	import StopFavoriteButton from '$lib/components/StopFavoriteButton.svelte';
 	import { Flag } from 'lucide-svelte';
+	import NewsTab from '$lib/components/NewsTab.svelte';
 	import type { ExpandedTripState } from '$lib/Trip';
 
 	let { data } = $props();
@@ -18,6 +19,7 @@
 	let showMore = $state(data.details.directions.length < 2);
 	let limit = $derived(showMore ? 15 : 5);
 	let showMoreInProgress = $state(false);
+	let today = new Date();
 
 	const tripState: ExpandedTripState = {
 		id: null
@@ -72,6 +74,15 @@
 				isBus={true}
 				stopSlug={details.canonicalSlug}
 				stationSlug={details.trainStationSlug}
+			/>
+		</div>
+	{/if}
+
+	{#if details.news.length}
+		<div class="mt-6 flex justify-center flex-wrap gap-3">
+			<NewsTab 
+				newsList={details.news} 
+				today={today}
 			/>
 		</div>
 	{/if}
