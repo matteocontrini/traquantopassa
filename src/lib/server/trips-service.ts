@@ -119,13 +119,13 @@ function directionName(stop: Stop): string {
 	} else if (stop.code.endsWith('x')) {
 		return `» Centro`;
 	} else if (stop.code.endsWith('s')) {
-		return `» Sud`;
+		return `Sud`;
 	} else if (stop.code.endsWith('n')) {
-		return `» Nord`;
+		return `Nord`;
 	} else if (stop.code.endsWith('o')) {
-		return `» Ovest`;
+		return `Ovest`;
 	} else if (stop.code.endsWith('e')) {
-		return `» Est`;
+		return `Est`;
 	} else {
 		return '';
 	}

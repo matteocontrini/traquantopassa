@@ -1,3 +1,95 @@
 export default {
-	'25055': 'Povo Polo Scientifico' // removes est/ovest suffix
+	'25055': 'Povo Polo Scientifico', // removes est/ovest suffix
+	'22055': 'Gardolo Piazzale Neufahrn', // removes nord/sud suffix
+
+	'21045': '3 Novembre Centro Santa Chiara', // expands 3 and 4 nov. for easier search
+	'21050': '3 Novembre Ponte Dei Cavalleggeri',
+	'22022': 'Gardolo 4 Novembre - 2 Giugno',
+	'22030': 'Gardolo 4 Novembre Canova',
+	'22025': 'Gardolo 4 Novembre Piscina',
+	'22035': 'Gardolo 4 Novembre Soprasasso',
+
+	'21120': 'Bettini Nido Madonna Bianca', // expands "Mad." for consistenct with other Madonna Bianca stops
+	'22815': 'Gardolo Di Mezzo Dos Della Luna', // expands "Gardolo Di Mezzo" and "D.Lla"
+	'22820': 'Gardolo Di Mezzo Maso Garbini',
+
+	'41022': 'Pressano Via Claudia Augusta', // exapands other ambiguous abbreviations
+	'22555': 'Spini Palazzo Giano',
+	'21300': 'Fratelli Fontana Generale Cantore',
+	'24810': 'Villamontagna Piazza Predaroi',
+
+	'22650': 'Ghiaie Zona Industriale FTM', // capitalizes FTM 
+	'20150': 'Dogana Stazione FTM',
+	'22020': 'Gardolo Stazione FTM',
+	'22205': 'Lamar Stazione FTM',
+	'29045': 'Lavis Stazione FTM',
+	'42042': 'Nave San Felice Stazione FTM',
+	'22625': 'Spini Zona Industriale FTM',
+
+	'22230': 'SS 12 Zona Industriale FTM',// makes SS and SP capitalized and without dots for consistency
+	'22075': 'Gardolo Svincolo SS 12',
+	'43052': 'Sorni SS 12',
+	'22715': 'SS 12 Bivio Meano',
+	'22720': 'SS 12 Canova',
+	'26040': 'SS 12 Casteller',
+	'26045': 'SS 12 Le Caverne',
+	'22705': 'SS 12 Paludi',
+	'22710': 'SS 12 Pioppeto',
+	'22730': 'SS 12 Sant\'Anna',
+	'22725': 'SS 12 Talvera',
+	'25815': 'SS 349 Pozzata',
+	'28055': 'SS 45 Montevideo',
+	'21687': 'SS 45 San Giorgio',
+	'21685': 'SS 45 Scala',
+	'21680': 'SS 47 Muralta',
+	'24355': 'SP 131 Al Maso Specchio',
+	'24040': 'SP 131 Maso Pradiscola',
+	'24520': 'SP 131 Paganin',
+	'24350': 'SP 131 Residenza Silvana',
+	'23050': 'SP 76 Bivio San Lazzaro',
+	'22080': 'SP 76 Carpenedi',
+	'23055': 'SP 76 Dos di Lamar',
+	'23035': 'SP 76 Maregioli',
+	'23040': 'SP 76 Piac',
+	'23045': 'SP 76 Via Rossa',
+	'28060': 'SP 85 Bivio Sopramonte',
+	'28045': 'SP 85 Soraval',
+	'27050': 'SP 90 Maso Prudenza',
+	'44042': 'SP 131 Bivio Laste',
+
+	'21080': 'Apuleio Ponte San Giorgio', // Exapands S. to the correct version of Sant for better search
+	'21105': 'Asiago San Bartolameo',
+	'21130': 'Bolghera Sant\'Antonio',
+	'20105': 'Cavalcavia San Lorenzo',
+	'24035': 'Cognola San Vito',
+	'22065': 'Gardolo Sant\'Anna',
+	'22070': 'Gardolo Sant\'Anna Carpenedi',
+	'21335': 'Gerola Ospedale Santa Chiara',
+	'21350': 'Giovanelli Ospedale San Camillo',
+	'21465': 'Madonna Bianca San Gaetano',
+	'26025': 'Mattarello San Leonardo',
+	'23020': 'Meano Bivio San Lazzaro',
+	'42002': 'Nave San Felice',
+	'42032': 'Nave San Felice Case Tenaia',
+	'42012': 'Nave San Felice Maso Rover',
+	'42022': 'Nave San Felice Zona Stuadri',
+	'22680': 'Palazzine Maso Sant\'Antonio',
+	'21535': 'Piave Parco Santa Chiara',
+	'21030': 'Ponte San Giorgio',
+	'25035': 'Povo Sant\'Agata',
+	'21590': 'Rosmini Santa Maria Maggiore',
+	'24935': 'RSA San Bartolomeo',
+	'21595': 'San Francesco Porta Nuova',
+	'21600': 'San Lorenzo Funivia',
+	'21605': 'San Pio X Benevoli',
+	'21610': 'San Pio X Largo Prati',
+	'21615': 'San Pio X Matteotti',
+	'21635': 'Sanseverino San Nicolò',
+	'25510': 'Spré Santa Lucia',
+	'21690': 'Stella San Gaetano',
+	'28315': 'Vela San Giorgio',
+	'28320': 'Vela Scuole San Vigilio',
+	'21765': 'Verona San Bartolameo',
+	'23425': 'Vigo Meano San Pietro',
+	'21790': 'Vittorio Veneto San Giuseppe',
 } as Record<string, string>;
