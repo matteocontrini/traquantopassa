@@ -48,11 +48,12 @@ function mapTrains(apiTrains: api.ApiTrain[]): Train[] {
 		const platform = (train.platform == 'PF' || isReplacedByBus) ? '' : train.platform;
 
 		const stopTimes: StopTime[] = train.callingAt.split(') - ').map(stop => {
-			const result = /^(.+) \((\d\d?.\d\d)/.exec(stop)
+			const result = /^(.+) \((\d\d?.\d\d)\)?$/.exec(stop)
 
 			return {
-				name: capitalize(result?.[1] || stop),
-				time: result?.[2].replace('.', ':') || '', 
+				// if regex fails, return the whole row in the name field as a fallback
+				name: result ? capitalize(result[1]) : stop,
+				time: result ? result[2].replace('.', ':') : '',
 			} satisfies StopTime;
 		})
 
@@ -71,7 +72,7 @@ function mapTrains(apiTrains: api.ApiTrain[]): Train[] {
 			isIncomplete: isIncomplete,
 			notes: train.notes,
 			// if empty string return empty array, split creates an array with 1 emtpy entry
-			stopTimes: train.callingAt ? stopTimes: [],
+			stopTimes: train.callingAt ? stopTimes : [],
 		};
 	});
 }
@@ -79,8 +80,9 @@ function mapTrains(apiTrains: api.ApiTrain[]): Train[] {
 function capitalize(str: string): string {
 	return str
 		.toLowerCase()
-		.replace(/\.(\w)/g, '. $1') // e.g. "VENEZIA S.LUCIA" -> "VENEZIA S. LUCIA"
-		.replace(/(\w)\/(\w)/g, '$1 / $2') // e.g. "MERANO/MERAN" -> "MERANO / MERAN"
+		.replaceAll(/\.(\w)/g, '. $1') // e.g. "VENEZIA S.LUCIA" -> "VENEZIA S. LUCIA"
+		.replaceAll(/(\w)\/(\w)/g, '$1 / $2') // e.g. "MERANO/MERAN" -> "MERANO / MERAN"
+		.replaceAll(/'+/g, "'") // fix "PONTE D''''ADIGE / SIGMUNDSKRON" -> "PONTE D'ADIGE / SIGMUNDSKRON"
 		.split(' ')
 		.map((word) => word.charAt(0).toUpperCase() + word.substring(1))
 		.join(' ');
