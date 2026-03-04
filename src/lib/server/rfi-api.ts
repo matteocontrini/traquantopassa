@@ -15,10 +15,10 @@ export interface ApiTrain {
 	callingAt: string;
 }
 
-export async function getTrains(stationId: string): Promise<ApiTrain[]> {
+export async function getTrains(stationId: string, arrivals: boolean = false): Promise<ApiTrain[]> {
 	const params = new URLSearchParams();
 	params.append('placeId', stationId);
-	params.append('arrivals', 'false');
+	params.append('arrivals', arrivals.toString());
 
 	logger.info(`Fetching trains for station ${stationId}`);
 	const start = performance.now();

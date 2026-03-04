@@ -8,20 +8,20 @@ const cache = new NodeCache();
 
 const cacheDurationSeconds = 30;
 
-export async function getTrains(stationId: string): Promise<CachedItem<Train[]>> {
-	let cachedItem = cache.get<CachedItem<Train[]>>(`trains-${stationId}`);
+export async function getTrains(stationId: string, isDeparture = false): Promise<CachedItem<Train[]>> {
+	let cachedItem = cache.get<CachedItem<Train[]>>(`trains-${stationId}-${isDeparture}`);
 	if (cachedItem) {
 		return cachedItem;
 	}
 
 	// Fetch from API
-	const apiTrains = await api.getTrains(stationId);
+	const apiTrains = await api.getTrains(stationId, !isDeparture);
 
 	const trains = mapTrains(apiTrains);
 	cachedItem = new CachedItem(trains);
 
 	// Save to cache
-	cache.set(`trains-${stationId}`, cachedItem, cacheDurationSeconds);
+	cache.set(`trains-${stationId}-${isDeparture}`, cachedItem, cacheDurationSeconds);
 
 	return cachedItem;
 }
@@ -47,7 +47,7 @@ function mapTrains(apiTrains: api.ApiTrain[]): Train[] {
 		// Hide platform if it's "punto fermata" (bus) or if the train is replaced by bus (platform doesn't matter anymore)
 		const platform = (train.platform == 'PF' || isReplacedByBus) ? '' : train.platform;
 
-		const stopTimes: StopTime[] = train.callingAt.split(') - ').map(stop => {
+		const stopTimes = train.callingAt.split(') - ').map(stop => {
 			const result = /^(.+) \((\d\d?.\d\d)\)?$/.exec(stop)
 
 			return {
