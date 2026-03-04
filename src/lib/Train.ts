@@ -1,3 +1,5 @@
+import type { StopTime } from "./Trip";
+
 export interface Train {
 	carrier: string;
 	category: string;
@@ -11,4 +13,6 @@ export interface Train {
 	isBlinking: boolean;
 	isReplacedByBus: boolean;
 	isIncomplete: boolean;
+	notes: string;
+	stopTimes: StopTime[];
 }

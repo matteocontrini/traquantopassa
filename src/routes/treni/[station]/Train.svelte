@@ -1,15 +1,30 @@
 <script lang="ts">
 	import type { Train } from '$lib/Train';
+	import type { ExpandedTripState } from '$lib/Trip';
+	import { getContext } from 'svelte';
 	import DepartingTrainAnimation from './DepartingTrainAnimation.svelte';
+	import { slide } from 'svelte/transition';
+	import TrainDetail from './TrainDetail.svelte';
 
 	interface Props {
 		train: Train;
 	}
 
 	let { train }: Props = $props();
+
+	let expandedTrain = getContext<ExpandedTripState>('expandedTrain');
+	let expanded = $derived(expandedTrain.id === train.number);
+
+	function toggle() {
+		expandedTrain.id = expanded ? null : train.number;
+	}
+
 </script>
 
-<div class="flex items-center gap-x-3 sm:gap-x-4 mb-2">
+<div class="flex items-center gap-x-3 sm:gap-x-4 mb-2"
+		 role="button" aria-expanded={expanded}
+		 onclick={() => toggle()} tabindex="0"
+		 onkeydown={(e) => (e.key === 'Enter' || e.key === ' ' ? toggle() : null)}>
 	<div
 		class="h-10 w-16 sm:w-20 bg-neutral-600 shrink-0 flex justify-center items-center font-semibold text-lg rounded-md"
 	>
@@ -54,3 +69,9 @@
 		{ train.delay }
 	</div>
 </div>
+
+{#if expanded}
+	<div transition:slide={{ duration: 300}}>
+		<TrainDetail {train} />
+	</div>
+{/if}

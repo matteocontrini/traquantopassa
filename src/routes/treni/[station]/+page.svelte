@@ -2,13 +2,14 @@
 	import { PUBLIC_BASE_URL } from '$env/static/public';
 	import Train from './Train.svelte';
 	import FooterNavigation from '$lib/components/FooterNavigation.svelte';
-	import { onMount } from 'svelte';
+	import { onMount, setContext } from 'svelte';
 	import { invalidateAll } from '$app/navigation';
 	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
 	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
 	import DepartingTrainAnimation from './DepartingTrainAnimation.svelte';
 	import StationFavoriteButton from '$lib/components/StationFavoriteButton.svelte';
+	import type { ExpandedTripState } from '$lib/Trip';
 
 	let { data } = $props();
 
@@ -19,6 +20,13 @@
 
 	const REFRESH_INTERVAL = 30 * 1000;
 	let timer: ReturnType<typeof setInterval>;
+
+
+	const trainState: ExpandedTripState = {
+		id: null
+	};
+	const expandedTrain = $state(trainState);
+	setContext('expandedTrain', expandedTrain);
 
 	function onVisibilityChange() {
 		clearInterval(timer);

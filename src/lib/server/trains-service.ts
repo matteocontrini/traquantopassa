@@ -2,10 +2,11 @@ import NodeCache from 'node-cache';
 import * as api from './rfi-api';
 import type { Train } from '$lib/Train';
 import CachedItem from '$lib/server/CachedItem';
+import type { StopTime } from '$lib/Trip';
 
 const cache = new NodeCache();
 
-const cacheDurationSeconds = 29;
+const cacheDurationSeconds = 30;
 
 export async function getTrains(stationId: string): Promise<CachedItem<Train[]>> {
 	let cachedItem = cache.get<CachedItem<Train[]>>(`trains-${stationId}`);
@@ -41,10 +42,19 @@ function mapTrains(apiTrains: api.ApiTrain[]): Train[] {
 		const isReplacedByBus = checkIsReplacedByBus(icon, delay, train.notes);
 
 		// Train is cancelled but sometimes notes are missing for a while, so we don't know if it's replaced by bus or what
-		const isIncomplete = delay == 'Cancellato' && train.notes == '';
+		const isIncomplete = delay == 'Cancellato' && train.notes == '' && train.callingAt == '';
 
 		// Hide platform if it's "punto fermata" (bus) or if the train is replaced by bus (platform doesn't matter anymore)
 		const platform = (train.platform == 'PF' || isReplacedByBus) ? '' : train.platform;
+
+		const stopTimes: StopTime[] = train.callingAt.split(') - ').map(stop => {
+			const result = /^(.+) \((\d\d?.\d\d)/.exec(stop)
+
+			return {
+				name: capitalize(result?.[1] || stop),
+				time: result?.[2].replace('.', ':') || '', 
+			} satisfies StopTime;
+		})
 
 		return {
 			carrier: carrier,
@@ -58,7 +68,10 @@ function mapTrains(apiTrains: api.ApiTrain[]): Train[] {
 			isDelayed: isDelayed,
 			isBlinking: train.isBlinking,
 			isReplacedByBus,
-			isIncomplete: isIncomplete
+			isIncomplete: isIncomplete,
+			notes: train.notes,
+			// if empty string return empty array, split creates an array with 1 emtpy entry
+			stopTimes: train.callingAt ? stopTimes: [],
 		};
 	});
 }

@@ -12,6 +12,7 @@ export interface ApiTrain {
 	delay: string;
 	isBlinking: boolean;
 	notes: string;
+	callingAt: string;
 }
 
 export async function getTrains(stationId: string): Promise<ApiTrain[]> {
@@ -55,7 +56,14 @@ function parseTrains(html: string): ApiTrain[] {
 		const delay = cells.eq(5).text().trim();
 		const platform = cells.eq(6).text().trim();
 		const isBlinking = cells.eq(7).find('img').length > 0;
-		const notes = cells.eq(8).text().trim();
+
+		const stopsAndNotes = cells.eq(8).find('div');
+		// if "Fermate successive" is not provided, "Informazioni" can be present in its place
+		// so it's not reliable to use .eq() to find it
+		const callingAt = stopsAndNotes.find('div:contains("Fermate successive")')
+			.next('div').text().trim().replace('FERMA A: ', '');
+		const notes = stopsAndNotes.find('div:contains("Informazioni")')
+			.next('div').text().trim();
 
 		trains.push({
 			carrier,
@@ -66,7 +74,8 @@ function parseTrains(html: string): ApiTrain[] {
 			platform,
 			delay,
 			isBlinking,
-			notes
+			notes,
+			callingAt,
 		});
 	});
 
