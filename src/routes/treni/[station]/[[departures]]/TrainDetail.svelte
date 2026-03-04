@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Train from './Train.svelte';
+	import type { Train } from '$lib/Train';
 
 	interface Props {
 		train: Train;

@@ -14,6 +14,10 @@ export async function load({ params }) {
 		error(404);
 	}
 
+	if (params.departures && params.departures != 'arrivi'){
+		error(404);
+	}
+
 	let trains;
 	try {
 		trains = await trainsService.getTrains(station.id, isDeparture);

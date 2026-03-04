@@ -26,7 +26,7 @@ export async function getTrains(stationId: string, arrivals: boolean = false): P
 	const res = await fetch(
 		'https://iechub.rfi.it/ArriviPartenze/ArrivalsDepartures/Monitor?' + params.toString(),
 		{
-			signal: AbortSignal.timeout(6 * 1000)
+			signal: AbortSignal.timeout(10 * 1000)
 		}
 	);
 	const text = await res.text();

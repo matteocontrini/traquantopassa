@@ -8,7 +8,7 @@ const cache = new NodeCache();
 
 const cacheDurationSeconds = 30;
 
-export async function getTrains(stationId: string, isDeparture = false): Promise<CachedItem<Train[]>> {
+export async function getTrains(stationId: string, isDeparture = true): Promise<CachedItem<Train[]>> {
 	let cachedItem = cache.get<CachedItem<Train[]>>(`trains-${stationId}-${isDeparture}`);
 	if (cachedItem) {
 		return cachedItem;
@@ -82,10 +82,12 @@ function capitalize(str: string): string {
 		.toLowerCase()
 		.replaceAll(/\.(\w)/g, '. $1') // e.g. "VENEZIA S.LUCIA" -> "VENEZIA S. LUCIA"
 		.replaceAll(/(\w)\/(\w)/g, '$1 / $2') // e.g. "MERANO/MERAN" -> "MERANO / MERAN"
-		.replaceAll(/'+/g, "'") // fix "PONTE D''''ADIGE / SIGMUNDSKRON" -> "PONTE D'ADIGE / SIGMUNDSKRON"
-		.split(' ')
+		.replaceAll(/'+/g, "'") // For some reason apostrophes are repated 4 times in RFI monitor"
+		// split along spaces, dashes and apostrophes before re-capitalizing
+		//  e.g. "PONTE D'ADIGE" -> "Ponte D'Adige" 
+		.split(/(?<=[ \-'])/g)
 		.map((word) => word.charAt(0).toUpperCase() + word.substring(1))
-		.join(' ');
+		.join('');
 }
 
 function fixCarrier(carrier: string): string {
