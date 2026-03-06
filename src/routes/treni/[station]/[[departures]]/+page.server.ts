@@ -9,7 +9,7 @@ export async function load({ params }) {
 	const slug = params.station;
 	const isDeparture = params.departures != 'arrivi'
 
-	const station = stationsService.getStationBySlug(slug);
+	const station = await stationsService.getStationBySlug(slug);
 	if (!station) {
 		error(404);
 	}

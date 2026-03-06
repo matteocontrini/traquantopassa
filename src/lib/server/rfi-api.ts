@@ -1,6 +1,7 @@
 import * as cheerio from 'cheerio';
 import * as logger from '$lib/logger';
 import { elapsed } from '$lib/server/time-helpers';
+import type { Coordinates } from '$lib/Coordinates';
 
 export interface ApiTrain {
 	carrier: string;
@@ -15,6 +16,106 @@ export interface ApiTrain {
 	callingAt: string;
 }
 
+export interface ApiStationCode {
+	id: string;
+	name: string;
+}
+
+export interface RfiStation {
+	name: string;
+	coordinates: Coordinates;
+	province: string;
+	region: string;
+	city: string;
+	slug: string;
+}
+
+const TIMEOUT = 10 * 1000;
+
+
+export async function getStations(): Promise<RfiStation[]> {
+	logger.info(`Fetching stations from RFI map`);
+	const start = performance.now();
+
+	const res = await fetch(
+		'https://www.rfi.it/it/stazioni.html',
+		{
+			signal: AbortSignal.timeout(TIMEOUT)
+		}
+	);
+
+	const $ = cheerio.load(await res.text());
+
+	const stationsJSON = $('input#stationsJSON').prop("value");
+
+	const rfiStations: RfiStation[] = JSON.parse(stationsJSON).map((station: any) => {
+		return {
+			name: station.name,
+			coordinates: {
+				latitude: +station.loc.lat,
+				longitude: +station.loc.lng
+			},
+			province: station.pr,
+			region: station.rg,
+			city: station.ct,
+			slug: station.lk.replace('.html', '')
+		} satisfies RfiStation;
+	})
+
+	logger.info(`Fetched ${rfiStations.length} stations in ${elapsed(start)} ms`);
+	return rfiStations;
+}
+
+export async function getIdFromSlug(slug: string): Promise<string | null> {
+	logger.info(`Fetching station ID from RFI for "${slug}"`);
+	const res = await fetch(
+		`https://www.rfi.it/it/stazioni/${slug}.html`,
+		{
+			signal: AbortSignal.timeout(TIMEOUT)
+		}
+	);
+
+	const $ = cheerio.load(await res.text());
+	const iechubLink = $('iframe').prop('src');
+
+	if (!iechubLink){
+		return null;
+	}
+
+	const matches = /\?.*placeId=(\d+)/.exec(iechubLink);
+	if (!matches){
+		return null;
+	}
+
+	return matches[1];
+}
+
+export async function getStationCodes(): Promise<ApiStationCode[]> {
+	logger.info(`Fetching stations from RFI monitor`);
+	const start = performance.now();
+
+	const res = await fetch(
+		'https://iechub.rfi.it/ArriviPartenze/',
+		{
+			signal: AbortSignal.timeout(TIMEOUT)
+		}
+	);
+
+	const $ = cheerio.load(await res.text());
+
+	const stationsList: ApiStationCode[] = [];
+	$('select option').each((i, elem) => {
+		const $elem = $(elem);
+		stationsList.push({
+			id: $elem.attr("value") || "",
+			name: $elem.text(),
+		})
+	})
+
+	logger.info(`Fetched ${stationsList.length} stations in ${elapsed(start)} ms`);
+	return stationsList;
+}
+
 export async function getTrains(stationId: string, arrivals: boolean = false): Promise<ApiTrain[]> {
 	const params = new URLSearchParams();
 	params.append('placeId', stationId);
@@ -26,7 +127,7 @@ export async function getTrains(stationId: string, arrivals: boolean = false): P
 	const res = await fetch(
 		'https://iechub.rfi.it/ArriviPartenze/ArrivalsDepartures/Monitor?' + params.toString(),
 		{
-			signal: AbortSignal.timeout(10 * 1000)
+			signal: AbortSignal.timeout(TIMEOUT)
 		}
 	);
 	const text = await res.text();
