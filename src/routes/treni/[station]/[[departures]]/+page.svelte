@@ -78,7 +78,7 @@
 <main>
 	<div class="mt-10 flex flex-col">
 		{#if details.trains.length > 0}
-			{#each details.trains.slice(0, limit) as train (train.number)}
+			{#each details.trains.slice(0, limit) as train (train.uid)}
 				<div
 					animate:flip={{ delay: 300 }}
 					in:fade={{ delay: showMoreInProgress ? 0 : 800, duration: 300 }}

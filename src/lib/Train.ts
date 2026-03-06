@@ -14,5 +14,6 @@ export interface Train {
 	isReplacedByBus: boolean;
 	isIncomplete: boolean;
 	notes: string;
+	uid: string;
 	stopTimes: StopTime[];
 }

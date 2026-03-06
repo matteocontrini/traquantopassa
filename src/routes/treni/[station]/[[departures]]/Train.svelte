@@ -13,10 +13,10 @@
 	let { train }: Props = $props();
 
 	let expandedTrain = getContext<ExpandedTripState>('expandedTrain');
-	let expanded = $derived(expandedTrain.id === train.number);
+	let expanded = $derived(expandedTrain.id === train.uid);
 
 	function toggle() {
-		expandedTrain.id = expanded ? null : train.number;
+		expandedTrain.id = expanded ? null : train.uid;
 	}
 
 </script>

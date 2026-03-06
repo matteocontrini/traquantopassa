@@ -59,6 +59,7 @@ function mapTrains(apiTrains: api.ApiTrain[]): Train[] {
 
 		return {
 			carrier: carrier,
+			uid: carrier + train.number,
 			category: category,
 			icon: icon,
 			number: train.number,
@@ -130,8 +131,6 @@ function fixCategory(category: string): string {
 }
 
 function categoryToIcon(category: string): string | null {
-	category = category.replace('Categoria ', '');
-
 	const mapping = {
 		'bus': 'bus',
 		'rv': 'rv', // regionale veloce
@@ -142,12 +141,12 @@ function categoryToIcon(category: string): string | null {
 		'intercity': 'ic',
 		'intercity notte': 'icn',
 		'rj': 'rj', // railjet
-		're': 're', // regio express
 		'nj': 'nj', // nightjet
-		'en': 'en' // euronight
+		'en': 'en', // euronight
+		're': 're', // regio express
 	};
 
-	category = category.toLowerCase();
+	category = category.replace('Categoria ', '').toLowerCase();
 
 	if (category in mapping) {
 		return mapping[category as keyof typeof mapping];
@@ -161,9 +160,10 @@ function checkIsReplacedByBus(icon: string | null, delay: string, notes: string)
 	// If the train is marked as cancelled, look if it's replaced by a bus.
 	// Note: sometimes the train is marked as replaced by bus even if it's actually not at the current station
 	// (it could be in previous stations), hence the "cancelled" check, which tells us if it's actually a train.
+	notes = notes.toLocaleLowerCase();
 	if (icon != 'bus' && delay == 'Cancellato') {
 		isReplacedByBus =
-			notes.toLowerCase().includes('autosostituito') || notes.toLowerCase().includes('bus sostitutivo');
+			notes.includes('autosostituito') || notes.includes('bus sostitutivo');
 	}
 
 	return isReplacedByBus;
