@@ -3,7 +3,7 @@
 @theme {
   --font-sans: Inter Variable, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
-  --animate-train: 1s train infinite step-end; /* train departing */
+  --animate-train: 2s train infinite step-end; /* train departing */
   --animate-spin-forward: 1s spin-forward 1;
   --animate-spin-backward: 1s spin-backward 1;
 
