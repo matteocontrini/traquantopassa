@@ -47,7 +47,9 @@ function mapTrains(apiTrains: api.ApiTrain[]): Train[] {
 		// Hide platform if it's "punto fermata" (bus) or if the train is replaced by bus (platform doesn't matter anymore)
 		const platform = (train.platform == 'PF' || isReplacedByBus) ? '' : train.platform;
 
-		const stopTimes = train.callingAt.split(') - ').map(stop => {
+		// If callingAt is an empty string, it will just be split into 1 empty array
+		// an empty array is retruned instead
+		const stopTimes: StopTime[] = train.callingAt ? train.callingAt.split(') - ').map(stop => {
 			const result = /^(.+) \((\d\d?.\d\d)\)?$/.exec(stop)
 
 			return {
@@ -55,7 +57,7 @@ function mapTrains(apiTrains: api.ApiTrain[]): Train[] {
 				name: result ? capitalize(result[1]) : stop,
 				time: result ? result[2].replace('.', ':') : '',
 			} satisfies StopTime;
-		})
+		}) : [];
 
 		return {
 			carrier: carrier,
@@ -72,8 +74,7 @@ function mapTrains(apiTrains: api.ApiTrain[]): Train[] {
 			isReplacedByBus,
 			isIncomplete: isIncomplete,
 			notes: train.notes,
-			// if empty string return empty array, split creates an array with 1 emtpy entry
-			stopTimes: train.callingAt ? stopTimes : [],
+			stopTimes
 		};
 	});
 }
