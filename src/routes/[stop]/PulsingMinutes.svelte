@@ -23,21 +23,7 @@
 	}
 
 	function syncAnimation() {
-		if (minutes != 0) {
-			return;
-		}
-		// Get the first pulse animation that is already in progress
-		const animations = document.getAnimations();
-		const anim = animations.find(x => x instanceof CSSAnimation && x.animationName == 'pulse' && x.currentTime != 0);
-		if (!anim) {
-			return;
-		}
-
-		// Sync the current animation
-		const elAnimation = animations.find(x => x.effect instanceof KeyframeEffect && x.effect.target == el);
-		if (elAnimation) {
-			elAnimation.currentTime = anim.currentTime;
-		}
+		el.getAnimations().forEach((a) => (a.startTime = 0));
 	}
 
 	$effect(() => {
@@ -47,10 +33,11 @@
 
 <div
 	bind:this={el}
+	onanimationstart={syncAnimation}
 	class="text-right text-xl {dimmed ? 'font-medium' : 'font-semibold'} whitespace-nowrap"
 	class:text-neutral-500={dimmed}
 	class:animate-pulse={minutes === 0}
 	class:text-red-600={!dimmed && minutes === 0}
 >
-	{ formatMinutes(minutes) }
+	{formatMinutes(minutes)}
 </div>
