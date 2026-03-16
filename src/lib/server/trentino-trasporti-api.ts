@@ -122,3 +122,23 @@ export async function getTrips(stopId: number, limit: number) {
 
 	return data;
 }
+
+export async function getTripsForRoute(routeId: string, limit: number) {
+	const path = `/gtlservice/trips_new?limit=${limit}&routeId=${routeId}&type=E`;
+
+	logger.info(`Fetching trips for route ${routeId}`);
+	const start = performance.now();
+
+	const res = await fetch(BASE_URL + path, {
+		headers: {
+			'Authorization': 'Basic ' + BASIC_AUTH
+		},
+		signal: AbortSignal.timeout(6 * 1000)
+	});
+
+	const data: ApiTrip[] = await res.json();
+
+	logger.info(`Fetched trips for route ${routeId} in ${elapsed(start)} ms`);
+
+	return data;
+}

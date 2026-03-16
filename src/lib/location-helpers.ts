@@ -1,6 +1,7 @@
 import type { Coordinates } from '$lib/Coordinates';
 import type { StopGroup } from '$lib/StopGroup';
 import type { Station } from '$lib/Station';
+import type { FtmStation } from './server/ftm/FtmStation';
 
 export function computeStopsDistances(stops: StopGroup[], userCoordinates: GeolocationCoordinates | null = null) {
 	const distances = new Map<string, number>();
@@ -26,6 +27,17 @@ export function computeStationsDistances(stations: Station[], userCoordinates: G
 
 	return distances;
 }
+
+export function computeFtmStationsDistances(stations: FtmStation[], userCoordinates: GeolocationCoordinates) {
+	const distances = new Map<string, number>();
+
+	for (const station of stations) {
+		distances.set(station.stopId, distance(userCoordinates, station.coordinates));
+	}
+
+	return distances;
+}
+
 
 export function distance(userCoordinates: GeolocationCoordinates | null, stopCoordinates: Coordinates) {
 	if (userCoordinates == null) {
