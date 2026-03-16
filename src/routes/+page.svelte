@@ -107,7 +107,7 @@
 
 <main>
 	<div class="mt-8 flex justify-center">
-		<ModesSwitch isBus={true} />
+		<ModesSwitch selectedTab={'bus'}/>
 	</div>
 
 	<div class="mt-8 flex max-sm:flex-wrap gap-2 xs:gap-3" style="scrollbar-width: none">

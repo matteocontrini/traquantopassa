@@ -6,7 +6,7 @@
 	import { Flag } from 'lucide-svelte';
 	import type { ExpandedTripState } from '$lib/Trip';
 	import { getContext } from 'svelte';
-	import DepartingTrainAnimation from '../../treni/[station]/DepartingTrainAnimation.svelte';
+	import DepartingTrainAnimation from '../../treni/[station]/[[departures]]/DepartingTrainAnimation.svelte';
 
 	interface Props {
 		train: FtmTrain;

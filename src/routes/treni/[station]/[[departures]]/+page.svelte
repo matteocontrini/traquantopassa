@@ -64,14 +64,17 @@
 		})}
 	</div>
 
-	{#if details.stopSlug}
+	{#if details.connections}
 		<div class="mt-6 flex justify-center">
-			<ModesSwitch isBus={false} stopSlug={details.stopSlug} stationSlug={details.canonicalSlug} />
+			<ModesSwitch selectedTab={'train'} connections={details.connections} />
 		</div>
 	{/if}
 
 	<div class="mt-6 flex justify-center">
-		<ArrivalsDeparturesSwitch isDeparture={details.isDeparture} stationSlug={details.canonicalSlug} />
+		<ArrivalsDeparturesSwitch
+			isDeparture={details.isDeparture}
+			stationSlug={details.canonicalSlug}
+		/>
 	</div>
 </header>
 
@@ -111,8 +114,9 @@
 <footer class="my-12">
 	<div class="text-sm text-neutral-500">
 		<div>
-			Dati RFI. I dati si riferiscono {details.isDeparture ?  "alle partenze" : "agli arrivi"}. La granularità dei ritardi è di 5 minuti. I
-			dati sugli autobus sostitutivi non sono sempre affidabili, verifica sugli orari.
+			Dati RFI. I dati si riferiscono {details.isDeparture ? 'alle partenze' : 'agli arrivi'}. La
+			granularità dei ritardi è di 5 minuti. I dati sugli autobus sostitutivi non sono sempre
+			affidabili, verifica sugli orari.
 		</div>
 
 		<div class="mt-2">

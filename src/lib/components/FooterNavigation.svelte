@@ -11,11 +11,15 @@
 
 <div class="flex gap-2 flex-wrap {className}">
 	<a class="px-3 py-1 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" href={resolve('/')}>
-		🚍 Lista fermate autobus
+		🚍 Fermate autobus
 	</a>
 
 	<a class="px-3 py-1 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" href={resolve('/treni')}>
-		🚆 Lista stazioni treni
+		🚆 Stazioni treni
+	</a>
+
+	<a class="px-3 py-1 rounded-md no-underline bg-neutral-800 hover:bg-neutral-700" href={resolve('/ftm')}>
+		🚉 Stazioni FTM
 	</a>
 
 	{#if isBus}

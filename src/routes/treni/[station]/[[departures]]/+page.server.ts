@@ -2,7 +2,7 @@ import * as stationsService from '$lib/server/stations-service';
 import * as trainsService from '$lib/server/trains-service';
 import { error } from '@sveltejs/kit';
 import type StationDetails from '$lib/StationDetails';
-import { getStopForStation } from '$lib/server/stops-stations-mapping';
+import { getConnectionsForStation } from '$lib/server/stops-stations-mapping';
 import * as logger from '$lib/logger';
 
 export async function load({ params }) {
@@ -34,7 +34,7 @@ export async function load({ params }) {
 			lastUpdatedAt: trains.cachedAt,
 			trains: trains.value,
 			isDeparture,
-			stopSlug: getStopForStation(station.slug)
-		} satisfies StationDetails as StationDetails
+			connections: getConnectionsForStation(station.slug)
+		} satisfies StationDetails
 	};
 }

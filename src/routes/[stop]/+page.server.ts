@@ -2,7 +2,7 @@ import * as stopsService from '$lib/server/stops-service';
 import * as tripsService from '$lib/server/trips-service';
 import { error } from '@sveltejs/kit';
 import type StopGroupDetails from '$lib/StopGroupDetails';
-import { getStationForStop } from '$lib/server/stops-stations-mapping';
+import { getConnectionsForStop } from '$lib/server/stops-stations-mapping';
 import type { StopDirection } from '$lib/StopDirection';
 import * as logger from '$lib/logger';
 
@@ -40,7 +40,7 @@ export async function load({ params }) {
 			canonicalSlug: stopGroup.slugs[0],
 			lastUpdatedAt: cacheTime,
 			directions,
-			trainStationSlug: getStationForStop(stopGroup.slugs[0])
-		} satisfies StopGroupDetails as StopGroupDetails // TODO: ???
+			connections: getConnectionsForStop(stopGroup.slugs[0])
+		} satisfies StopGroupDetails
 	};
 }

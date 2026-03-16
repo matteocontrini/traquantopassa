@@ -29,7 +29,7 @@ export async function load({ params }) {
 			canonicalSlug: station.slug,
 			lastUpdatedAt: trains.cachedAt,
 			trains: trains.value,
-			stopMapping: getConnectionsForFtm(station.slug)
+			connections: getConnectionsForFtm(station.slug)
 		} satisfies FtmStationDetails
 	};
 }

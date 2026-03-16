@@ -64,12 +64,9 @@
 		})}
 	</div>
 
-	{#if details.stopMapping}
+	{#if details.connections}
 		<div class="mt-6 flex justify-center">
-			<ModesSwitch
-				selectedTab={'ftm'}
-				stopMapping={details.stopMapping}
-			/>
+			<ModesSwitch selectedTab={'ftm'} connections={details.connections} />
 		</div>
 	{/if}
 </header>
@@ -83,7 +80,7 @@
 					in:fade={{ delay: showMoreInProgress ? 0 : 800, duration: 300 }}
 					out:fade={{ duration: 300 }}
 				>
-					<Train {train} userPosition={details.position}/>
+					<Train {train} userPosition={details.position} />
 				</div>
 			{/each}
 
@@ -110,8 +107,9 @@
 <footer class="my-12">
 	<div class="space-y-2 text-sm text-neutral-500">
 		<p>
-			Dati in tempo reale Algorab. Gli orari si riferiscono agli orari programmati di arrivo dei treni.
-			I dati sugli autobus sostitutivi non sono presenti, verifica sul sito di Trentino Trasporti.
+			Dati in tempo reale Algorab. Gli orari si riferiscono agli orari programmati di arrivo dei
+			treni. I dati sugli autobus sostitutivi non sono presenti, verifica sul sito di Trentino
+			Trasporti.
 		</p>
 
 		<p class="mt-2">

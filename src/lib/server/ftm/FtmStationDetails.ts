@@ -8,5 +8,5 @@ export default interface FtmStationDetails {
 	position: number;
 	lastUpdatedAt: Date;
 	trains: FtmTrain[];
-	stopMapping?: StopConnections;
+	connections?: StopConnections;
 }
