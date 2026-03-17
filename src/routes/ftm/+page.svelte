@@ -128,7 +128,7 @@
 					<input
 						type="search"
 						placeholder="🔍 Cerca stazione..."
-						class="w-full basis-1/2 px-3.5 py-2 rounded-md bg-neutral-800 text-neutral-100 focus:outline-2 focus:outline-neutral-700"
+						class="w-full px-3.5 py-2 rounded-md bg-neutral-800 text-neutral-100 focus:outline-2 focus:outline-neutral-700"
 						bind:value={searchTerm}
 					/>
 				</div>
