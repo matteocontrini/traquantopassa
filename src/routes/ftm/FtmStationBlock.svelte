@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import type { FtmStation } from '$lib/server/ftm/FtmStation';
-	import StationFavoriteButton from '$lib/components/StationFavoriteButton.svelte';
+	import FtmFavoriteButton from '$lib/components/FtmFavoriteButton.svelte';
 
 	interface Props {
 		station: FtmStation;
@@ -25,6 +25,6 @@
 			</span>
 		</div>
 
-		<StationFavoriteButton stationId={station.algorabId} className="pl-2 shrink-0" />
+		<FtmFavoriteButton stationId={station.stopId} className="pl-2 shrink-0" />
 	</div>
 </a>

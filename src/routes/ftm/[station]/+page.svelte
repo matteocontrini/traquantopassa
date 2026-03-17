@@ -7,10 +7,10 @@
 	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
 	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
-	import StationFavoriteButton from '$lib/components/StationFavoriteButton.svelte';
 	import type { ExpandedTripState } from '$lib/Trip';
 	import LiveTripAnimation from '../../[stop]/LiveTripAnimation.svelte';
 	import { Flag } from 'lucide-svelte';
+	import FtmFavoriteButton from '$lib/components/FtmFavoriteButton.svelte';
 
 	let { data } = $props();
 
@@ -54,7 +54,7 @@
 <header>
 	<h1 class="text-center text-4xl font-semibold">
 		Stazione di {details.name}
-		<StationFavoriteButton stationId={details.id} className="pl-1" />
+		<FtmFavoriteButton stationId={details.id} className="pl-1" />
 	</h1>
 	<div class="mt-1 text-center text-sm">
 		aggiornato alle

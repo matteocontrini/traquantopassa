@@ -6,7 +6,7 @@
 	import TabButton from '$lib/components/TabButton.svelte';
 	import StationBlock from './FtmStationBlock.svelte';
 	import { getContext, onMount } from 'svelte';
-	import type { FavoriteStations } from '$lib/storage/favorites.svelte';
+	import type { FavoriteFtmStations } from '$lib/storage/favorites.svelte';
 	import {
 		computeFtmStationsDistances,
 		getCurrentPosition,
@@ -26,7 +26,7 @@
 	let loadingGeolocationData = $state(false);
 	let distances = $state(new Map<string, number>());
 
-	const favorites: FavoriteStations = getContext('favorites');
+	const favorites: FavoriteFtmStations = getContext('favorites');
 
 	let sortedStations = $derived(data.stations
 		// Sort by distance
