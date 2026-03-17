@@ -8,9 +8,10 @@
 	import { fade } from 'svelte/transition';
 	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
 	import type { ExpandedTripState } from '$lib/Trip';
-	import LiveTripAnimation from '../../[stop]/LiveTripAnimation.svelte';
+	import LiveTripAnimation from '$lib/components/LiveTripAnimation.svelte';
 	import { Flag } from 'lucide-svelte';
 	import FtmFavoriteButton from '$lib/components/FtmFavoriteButton.svelte';
+	import DepartingTrainAnimation from '$lib/components/DepartingTrainAnimation.svelte';
 
 	let { data } = $props();
 
@@ -123,6 +124,13 @@
 			<Flag class="inline size-4" />
 			indica che la corsa terminerà in questa stazione.
 		</p>
+
+		<div class="mt-2">
+			<span class="inline-block w-5">
+				<DepartingTrainAnimation />
+			</span>
+			indica che il treno è in arrivo.
+		</div>
 
 		<p>La pagina si aggiorna automaticamente ogni 30 secondi.</p>
 	</div>

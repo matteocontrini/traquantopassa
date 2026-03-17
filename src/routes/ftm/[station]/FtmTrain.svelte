@@ -2,11 +2,11 @@
 	import type { FtmTrain } from '$lib/server/ftm/FtmTrain';
 	import { slide } from 'svelte/transition';
 	import FtmTripDetail from './FtmTripDetail.svelte';
-	import LiveTripAnimation from '../../[stop]/LiveTripAnimation.svelte';
+	import LiveTripAnimation from '$lib/components/LiveTripAnimation.svelte';
 	import { Flag } from 'lucide-svelte';
 	import type { ExpandedTripState } from '$lib/Trip';
 	import { getContext } from 'svelte';
-	import DepartingTrainAnimation from '../../treni/[station]/[[departures]]/DepartingTrainAnimation.svelte';
+	import DepartingTrainAnimation from '$lib/components/DepartingTrainAnimation.svelte';
 
 	interface Props {
 		train: FtmTrain;

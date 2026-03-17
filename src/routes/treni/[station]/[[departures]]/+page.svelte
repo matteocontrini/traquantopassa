@@ -7,7 +7,7 @@
 	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
 	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
-	import DepartingTrainAnimation from './DepartingTrainAnimation.svelte';
+	import DepartingTrainAnimation from '$lib/components/DepartingTrainAnimation.svelte';
 	import StationFavoriteButton from '$lib/components/StationFavoriteButton.svelte';
 	import type { ExpandedTripState } from '$lib/Trip';
 	import ArrivalsDeparturesSwitch from '$lib/components/ArrivalsDeparturesSwitch.svelte';

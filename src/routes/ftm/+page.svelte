@@ -14,7 +14,7 @@
 		isGeolocationGranted
 	} from '$lib/location-helpers';
 	import { getDefaultTab, setDefaultTab, type Tab } from '$lib/storage/stations-default-tab';
-	import LiveTripAnimation from '../[stop]/LiveTripAnimation.svelte';
+	import LiveTripAnimation from '$lib/components/LiveTripAnimation.svelte';
 
 	let { data } = $props();
 
