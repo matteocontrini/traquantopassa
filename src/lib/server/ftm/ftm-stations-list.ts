@@ -245,7 +245,7 @@ export default [
 		34,
 		2601,
 		'Croviana',
-		'Croviana',
+		'croviana',
 		[46.34382397249123, 10.907315195919749],
 		true
 	),
