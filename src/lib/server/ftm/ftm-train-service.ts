@@ -33,6 +33,20 @@ const stationsCahe = new NodeCache({
 });
 
 
+// Sometimes trains are are stuck at .1km from the final station and accumulate delay until it's turned around.
+function isNotStuck(train: CachedTrain) {
+    if (train.delay == null || train.position == null || train.stopTimes.length > 1) {
+        return true;
+    }
+
+    const finalStation = train.stopTimes[0].station;
+
+    // The delay check is needed so the train is not deleted before its scheduled arrival time
+    return !(train.delay > 2 &&
+        finalStation?.position &&
+        Math.abs(finalStation.position - train.position) < 500);
+}
+
 export async function getFtmTrains(): Promise<CachedItem<CachedTrain[]>> {
     let trains: CachedItem<CachedTrain[]> | undefined = cache.get(TRAINS_CACHE_KEY);
     if (trains) {
@@ -40,13 +54,7 @@ export async function getFtmTrains(): Promise<CachedItem<CachedTrain[]>> {
     }
 
     const rtTrains = mapRealTimeTrains(await getTrains(), await getTrainTimes())
-        .filter(train =>
-            // Sometimes trains are are stuck at .1km from the final station and accumulate delay until it's turned around.
-            // This removes trains once they are within 500m of their destination.
-            // The delay check is needed so the train is not deleted before its scheduled arrival time
-            !(train.stopTimes.length <= 1 && train.delay! > 2 && train.stopTimes[0].station &&
-                Math.abs(train.stopTimes[0].station.position - train.position!) < 500)
-        );
+        .filter(isNotStuck);
 
     let scheduledTrains = await getScheduledTrains();
     // remove scheduled trains that have actually departed 
