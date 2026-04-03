@@ -8,7 +8,7 @@
 		{#if page.status === 404}
 			<p>Stazione ferroviaria non trovata</p>
 			<p>
-				Puoi chiedere che venga aggiunta
+				Se pensi sia un errore, contattaci
 				<a href="mailto:ciao@traquantopassa.in?subject=Richiesta stazione /{page.params.station}">via email</a>.
 			</p>
 		{:else if page.status === 503}
