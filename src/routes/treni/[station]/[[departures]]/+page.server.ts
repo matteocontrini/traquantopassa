@@ -7,15 +7,20 @@ import * as logger from '$lib/logger';
 
 export async function load({ params }) {
 	const slug = params.station;
+	const isDeparture = params.departures != 'arrivi'
 
-	const station = stationsService.getStationBySlug(slug);
+	const station = await stationsService.getStationBySlug(slug);
 	if (!station) {
+		error(404);
+	}
+
+	if (params.departures && params.departures != 'arrivi'){
 		error(404);
 	}
 
 	let trains;
 	try {
-		trains = await trainsService.getTrains(station.id);
+		trains = await trainsService.getTrains(station.id, isDeparture);
 	} catch (e) {
 		logger.error(`Error while fetching trains for station ${station.slug}:`, e);
 		error(503);
@@ -28,6 +33,7 @@ export async function load({ params }) {
 			canonicalSlug: station.slug,
 			lastUpdatedAt: trains.cachedAt,
 			trains: trains.value,
+			isDeparture,
 			stopSlug: getStopForStation(station.slug)
 		} satisfies StationDetails as StationDetails
 	};

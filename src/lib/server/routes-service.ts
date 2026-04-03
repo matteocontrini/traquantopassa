@@ -40,6 +40,14 @@ function mapRouteColor(apiRoute: ApiRoute) {
 		return '#542774';
 	} else if (apiRoute.routeShortName == 'M') {
 		return '#074E3C';
+	} else if (apiRoute.routeShortName == 'L1') {
+		return '#f5c500'
+	} else if (apiRoute.routeShortName == 'L2') {
+		return '#da9694'
+	} else if (apiRoute.routeShortName == 'L3') {
+		return '#92d050'
+	} else if (apiRoute.routeShortName == 'L4') {
+		return '#95b3d7'
 	}
 
 	if (!apiRoute.routeColor) {

@@ -29,5 +29,13 @@ export default {
 	'24610': 'sandona',
 	'21125': 'bezzifilzi',
 	'20120': 'palregione',
-	'21550': 'buc'
+	'21550': 'buc',
+	'21165': 'brenneromarconi',
+	'21754': 'bigcenter',
+	'21770': 'veronaeinaudi',
+	'21715': 'travaifiera',
+	'20115': 'pat',
+	'20145': 'gazzoletti',
+	'21045': 'centroschiara',
+	'21750': 'cave',
 } as Record<string, string>;

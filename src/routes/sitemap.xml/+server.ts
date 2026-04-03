@@ -19,7 +19,7 @@ export async function GET() {
 `;
 	}
 
-	const stations = stationsService.getStations();
+	const stations = stationsService.getStationList();
 	for (const station of stations) {
 		xml += `	<url><loc>${BASE_URL}/treni/${station.slug}</loc></url>
 `;

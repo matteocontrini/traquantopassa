@@ -2,25 +2,26 @@ import NodeCache from 'node-cache';
 import * as api from './rfi-api';
 import type { Train } from '$lib/Train';
 import CachedItem from '$lib/server/CachedItem';
+import type { StopTime } from '$lib/Trip';
 
 const cache = new NodeCache();
 
-const cacheDurationSeconds = 29;
+const cacheDurationSeconds = 30;
 
-export async function getTrains(stationId: string): Promise<CachedItem<Train[]>> {
-	let cachedItem = cache.get<CachedItem<Train[]>>(`trains-${stationId}`);
+export async function getTrains(stationId: string, isDeparture = true): Promise<CachedItem<Train[]>> {
+	let cachedItem = cache.get<CachedItem<Train[]>>(`trains-${stationId}-${isDeparture}`);
 	if (cachedItem) {
 		return cachedItem;
 	}
 
 	// Fetch from API
-	const apiTrains = await api.getTrains(stationId);
+	const apiTrains = await api.getTrains(stationId, !isDeparture);
 
 	const trains = mapTrains(apiTrains);
 	cachedItem = new CachedItem(trains);
 
 	// Save to cache
-	cache.set(`trains-${stationId}`, cachedItem, cacheDurationSeconds);
+	cache.set(`trains-${stationId}-${isDeparture}`, cachedItem, cacheDurationSeconds);
 
 	return cachedItem;
 }
@@ -41,13 +42,16 @@ function mapTrains(apiTrains: api.ApiTrain[]): Train[] {
 		const isReplacedByBus = checkIsReplacedByBus(icon, delay, train.notes);
 
 		// Train is cancelled but sometimes notes are missing for a while, so we don't know if it's replaced by bus or what
-		const isIncomplete = delay == 'Cancellato' && train.notes == '';
+		const isIncomplete = delay == 'Cancellato' && train.notes == '' && train.stopTimes.length == 0;
 
 		// Hide platform if it's "punto fermata" (bus) or if the train is replaced by bus (platform doesn't matter anymore)
 		const platform = (train.platform == 'PF' || isReplacedByBus) ? '' : train.platform;
 
+		train.stopTimes.forEach(stop => stop.name = capitalize(stop.name));
+
 		return {
 			carrier: carrier,
+			uid: carrier + train.number,
 			category: category,
 			icon: icon,
 			number: train.number,
@@ -58,7 +62,9 @@ function mapTrains(apiTrains: api.ApiTrain[]): Train[] {
 			isDelayed: isDelayed,
 			isBlinking: train.isBlinking,
 			isReplacedByBus,
-			isIncomplete: isIncomplete
+			isIncomplete: isIncomplete,
+			notes: train.notes,
+			stopTimes: train.stopTimes
 		};
 	});
 }
@@ -66,11 +72,15 @@ function mapTrains(apiTrains: api.ApiTrain[]): Train[] {
 function capitalize(str: string): string {
 	return str
 		.toLowerCase()
-		.replace(/\.(\w)/g, '. $1') // e.g. "VENEZIA S.LUCIA" -> "VENEZIA S. LUCIA"
-		.replace(/(\w)\/(\w)/g, '$1 / $2') // e.g. "MERANO/MERAN" -> "MERANO / MERAN"
-		.split(' ')
+		.replaceAll(/\.(\w)/g, '. $1') // e.g. "VENEZIA S.LUCIA" -> "VENEZIA S. LUCIA"
+		.replaceAll(/(\w)\/(\w)/g, '$1 / $2') // e.g. "MERANO/MERAN" -> "MERANO / MERAN"
+		.replaceAll(/'+/g, "'") // For some reason apostrophes are repated 4 times in RFI monitor"
+		// split along spaces, dashes and apostrophes before re-capitalizing
+		// ignore the / \w'/ case to properly format names with apostrophes
+		//  e.g. "PONTE D'ADIGE" -> "Ponte d'Adige"
+		.split(/(?!\w')(?<=[ \-'])/g)
 		.map((word) => word.charAt(0).toUpperCase() + word.substring(1))
-		.join(' ');
+		.join('');
 }
 
 function fixCarrier(carrier: string): string {
@@ -113,8 +123,6 @@ function fixCategory(category: string): string {
 }
 
 function categoryToIcon(category: string): string | null {
-	category = category.replace('Categoria ', '');
-
 	const mapping = {
 		'bus': 'bus',
 		'rv': 'rv', // regionale veloce
@@ -125,12 +133,12 @@ function categoryToIcon(category: string): string | null {
 		'intercity': 'ic',
 		'intercity notte': 'icn',
 		'rj': 'rj', // railjet
-		're': 're', // regio express
 		'nj': 'nj', // nightjet
-		'en': 'en' // euronight
+		'en': 'en', // euronight
+		're': 're', // regio express
 	};
 
-	category = category.toLowerCase();
+	category = category.replace('Categoria ', '').toLowerCase();
 
 	if (category in mapping) {
 		return mapping[category as keyof typeof mapping];
@@ -144,9 +152,10 @@ function checkIsReplacedByBus(icon: string | null, delay: string, notes: string)
 	// If the train is marked as cancelled, look if it's replaced by a bus.
 	// Note: sometimes the train is marked as replaced by bus even if it's actually not at the current station
 	// (it could be in previous stations), hence the "cancelled" check, which tells us if it's actually a train.
+	notes = notes.toLocaleLowerCase();
 	if (icon != 'bus' && delay == 'Cancellato') {
 		isReplacedByBus =
-			notes.toLowerCase().includes('autosostituito') || notes.toLowerCase().includes('bus sostitutivo');
+			notes.includes('autosostituito') || notes.includes('bus sostitutivo');
 	}
 
 	return isReplacedByBus;

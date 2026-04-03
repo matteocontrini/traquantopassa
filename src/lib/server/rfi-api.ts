@@ -1,6 +1,8 @@
 import * as cheerio from 'cheerio';
 import * as logger from '$lib/logger';
 import { elapsed } from '$lib/server/time-helpers';
+import type { Coordinates } from '$lib/Coordinates';
+import type { StopTime } from '$lib/Trip';
 
 export interface ApiTrain {
 	carrier: string;
@@ -12,12 +14,113 @@ export interface ApiTrain {
 	delay: string;
 	isBlinking: boolean;
 	notes: string;
+	stopTimes: StopTime[];
 }
 
-export async function getTrains(stationId: string): Promise<ApiTrain[]> {
+export interface ApiStationCode {
+	id: string;
+	name: string;
+}
+
+export interface RfiStation {
+	name: string;
+	coordinates: Coordinates;
+	province: string;
+	region: string;
+	city: string;
+	slug: string;
+}
+
+const TIMEOUT = 10 * 1000;
+
+
+export async function getStations(): Promise<RfiStation[]> {
+	logger.info(`Fetching stations from RFI map`);
+	const start = performance.now();
+
+	const res = await fetch(
+		'https://www.rfi.it/it/stazioni.html',
+		{
+			signal: AbortSignal.timeout(TIMEOUT)
+		}
+	);
+
+	const $ = cheerio.load(await res.text());
+
+	const stationsJSON = $('input#stationsJSON').prop("value");
+
+	const rfiStations: RfiStation[] = JSON.parse(stationsJSON).map((station: any) => {
+		return {
+			name: station.name,
+			coordinates: {
+				latitude: +station.loc.lat,
+				longitude: +station.loc.lng
+			},
+			province: station.pr,
+			region: station.rg,
+			city: station.ct,
+			slug: station.lk.replace('.html', '')
+		} satisfies RfiStation;
+	})
+
+	logger.info(`Fetched ${rfiStations.length} stations in ${elapsed(start)} ms`);
+	return rfiStations;
+}
+
+export async function getIdFromSlug(slug: string): Promise<string | null> {
+	logger.info(`Fetching station ID from RFI for "${slug}"`);
+	const res = await fetch(
+		`https://www.rfi.it/it/stazioni/${slug}.html`,
+		{
+			signal: AbortSignal.timeout(TIMEOUT)
+		}
+	);
+
+	const $ = cheerio.load(await res.text());
+	const iechubLink = $('iframe').prop('src');
+
+	if (!iechubLink){
+		return null;
+	}
+
+	const matches = /\?.*placeId=(\d+)/.exec(iechubLink);
+	if (!matches){
+		return null;
+	}
+
+	return matches[1];
+}
+
+export async function getStationCodes(): Promise<ApiStationCode[]> {
+	logger.info(`Fetching stations from RFI monitor`);
+	const start = performance.now();
+
+	const res = await fetch(
+		'https://iechub.rfi.it/ArriviPartenze/',
+		{
+			signal: AbortSignal.timeout(TIMEOUT)
+		}
+	);
+
+	const $ = cheerio.load(await res.text());
+
+	const stationsList: ApiStationCode[] = [];
+	$('select option').each((i, elem) => {
+		const $elem = $(elem);
+		stationsList.push({
+			id: $elem.attr("value") || "",
+			name: $elem.text(),
+		})
+	})
+
+	logger.info(`Fetched ${stationsList.length} stations in ${elapsed(start)} ms`);
+	return stationsList;
+}
+
+export async function getTrains(stationId: string, arrivals: boolean = false): Promise<ApiTrain[]> {
 	const params = new URLSearchParams();
 	params.append('placeId', stationId);
-	params.append('arrivals', 'false');
+	params.append('arrivals', arrivals.toString());
 
 	logger.info(`Fetching trains for station ${stationId}`);
 	const start = performance.now();
@@ -25,7 +128,7 @@ export async function getTrains(stationId: string): Promise<ApiTrain[]> {
 	const res = await fetch(
 		'https://iechub.rfi.it/ArriviPartenze/ArrivalsDepartures/Monitor?' + params.toString(),
 		{
-			signal: AbortSignal.timeout(6 * 1000)
+			signal: AbortSignal.timeout(TIMEOUT)
 		}
 	);
 	const text = await res.text();
@@ -55,7 +158,27 @@ function parseTrains(html: string): ApiTrain[] {
 		const delay = cells.eq(5).text().trim();
 		const platform = cells.eq(6).text().trim();
 		const isBlinking = cells.eq(7).find('img').length > 0;
-		const notes = cells.eq(8).text().trim();
+
+		const stopsAndNotes = cells.eq(8).find('div');
+		// if "Fermate successive" is not provided, "Informazioni" can be present in its place
+		// so it's not reliable to use .eq() to find it
+		const callingAt = stopsAndNotes.find('div:contains("Fermate successive")')
+			.next('div').text().trim().replace('FERMA A: ', '');
+
+		const notes = stopsAndNotes.find('div:contains("Informazioni")')
+			.next('div').text().trim();
+
+		// If callingAt is an empty string, it will just be split into 1 empty array
+		// an empty array is retruned instead
+		const stopTimes: StopTime[] = callingAt ? callingAt.split(') - ').map(stop => {
+			const result = /^(.+) \((\d\d?.\d\d)\)?$/.exec(stop)
+
+			return {
+				// if regex fails, return the whole row in the name field as a fallback
+				name: result ? result[1] : stop,
+				time: result ? result[2].replace('.', ':') : '',
+			} satisfies StopTime;
+		}) : [];
 
 		trains.push({
 			carrier,
@@ -66,7 +189,8 @@ function parseTrains(html: string): ApiTrain[] {
 			platform,
 			delay,
 			isBlinking,
-			notes
+			notes,
+			stopTimes,
 		});
 	});
 
