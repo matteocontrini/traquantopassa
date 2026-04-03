@@ -21,7 +21,7 @@
 
 </script>
 
-<div class="flex items-center gap-x-3 sm:gap-x-4 mb-2"
+<div class="flex items-center gap-x-3 sm:gap-x-4 mb-2 cursor-pointer"
      role="button" aria-expanded={expanded}
      onclick={() => toggle()} tabindex="0"
      onkeydown={(e) => (e.key === 'Enter' || e.key === ' ' ? toggle() : null)}>
