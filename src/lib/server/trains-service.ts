@@ -76,8 +76,9 @@ function capitalize(str: string): string {
 		.replaceAll(/(\w)\/(\w)/g, '$1 / $2') // e.g. "MERANO/MERAN" -> "MERANO / MERAN"
 		.replaceAll(/'+/g, "'") // For some reason apostrophes are repated 4 times in RFI monitor"
 		// split along spaces, dashes and apostrophes before re-capitalizing
-		//  e.g. "PONTE D'ADIGE" -> "Ponte D'Adige" 
-		.split(/(?<=[ \-'])/g)
+		// ignore the / \w'/ case to properly format names with apostrophes
+		//  e.g. "PONTE D'ADIGE" -> "Ponte d'Adige"
+		.split(/(?!\w')(?<=[ \-'])/g)
 		.map((word) => word.charAt(0).toUpperCase() + word.substring(1))
 		.join('');
 }
