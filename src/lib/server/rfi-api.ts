@@ -2,6 +2,7 @@ import * as cheerio from 'cheerio';
 import * as logger from '$lib/logger';
 import { elapsed } from '$lib/server/time-helpers';
 import type { Coordinates } from '$lib/Coordinates';
+import type { StopTime } from '$lib/Trip';
 
 export interface ApiTrain {
 	carrier: string;
@@ -13,7 +14,7 @@ export interface ApiTrain {
 	delay: string;
 	isBlinking: boolean;
 	notes: string;
-	callingAt: string;
+	stopTimes: StopTime[];
 }
 
 export interface ApiStationCode {
@@ -163,8 +164,21 @@ function parseTrains(html: string): ApiTrain[] {
 		// so it's not reliable to use .eq() to find it
 		const callingAt = stopsAndNotes.find('div:contains("Fermate successive")')
 			.next('div').text().trim().replace('FERMA A: ', '');
+
 		const notes = stopsAndNotes.find('div:contains("Informazioni")')
 			.next('div').text().trim();
+
+		// If callingAt is an empty string, it will just be split into 1 empty array
+		// an empty array is retruned instead
+		const stopTimes: StopTime[] = callingAt ? callingAt.split(') - ').map(stop => {
+			const result = /^(.+) \((\d\d?.\d\d)\)?$/.exec(stop)
+
+			return {
+				// if regex fails, return the whole row in the name field as a fallback
+				name: result ? result[1] : stop,
+				time: result ? result[2].replace('.', ':') : '',
+			} satisfies StopTime;
+		}) : [];
 
 		trains.push({
 			carrier,
@@ -176,7 +190,7 @@ function parseTrains(html: string): ApiTrain[] {
 			delay,
 			isBlinking,
 			notes,
-			callingAt,
+			stopTimes,
 		});
 	});
 

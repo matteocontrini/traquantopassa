@@ -42,22 +42,12 @@ function mapTrains(apiTrains: api.ApiTrain[]): Train[] {
 		const isReplacedByBus = checkIsReplacedByBus(icon, delay, train.notes);
 
 		// Train is cancelled but sometimes notes are missing for a while, so we don't know if it's replaced by bus or what
-		const isIncomplete = delay == 'Cancellato' && train.notes == '' && train.callingAt == '';
+		const isIncomplete = delay == 'Cancellato' && train.notes == '' && train.stopTimes.length == 0;
 
 		// Hide platform if it's "punto fermata" (bus) or if the train is replaced by bus (platform doesn't matter anymore)
 		const platform = (train.platform == 'PF' || isReplacedByBus) ? '' : train.platform;
 
-		// If callingAt is an empty string, it will just be split into 1 empty array
-		// an empty array is retruned instead
-		const stopTimes: StopTime[] = train.callingAt ? train.callingAt.split(') - ').map(stop => {
-			const result = /^(.+) \((\d\d?.\d\d)\)?$/.exec(stop)
-
-			return {
-				// if regex fails, return the whole row in the name field as a fallback
-				name: result ? capitalize(result[1]) : stop,
-				time: result ? result[2].replace('.', ':') : '',
-			} satisfies StopTime;
-		}) : [];
+		train.stopTimes.forEach(stop => stop.name = capitalize(stop.name));
 
 		return {
 			carrier: carrier,
@@ -74,7 +64,7 @@ function mapTrains(apiTrains: api.ApiTrain[]): Train[] {
 			isReplacedByBus,
 			isIncomplete: isIncomplete,
 			notes: train.notes,
-			stopTimes
+			stopTimes: train.stopTimes
 		};
 	});
 }
