@@ -41,10 +41,11 @@ function mapTrains(apiTrains: api.ApiTrain[]): Train[] {
 
 		const isReplacedByBus = checkIsReplacedByBus(icon, delay, train.notes);
 
-		// Train is cancelled but sometimes notes are missing for a while, so we don't know if it's replaced by bus or what
+		// Train is cancelled, but sometimes notes are missing for a while,
+		// so we do not know whether it is replaced by a bus or something else.
 		const isIncomplete = delay == 'Cancellato' && train.notes == '' && train.stopTimes.length == 0;
 
-		// Hide platform if it's "punto fermata" (bus) or if the train is replaced by bus (platform doesn't matter anymore)
+		// Hide the platform if it is "punto fermata" (bus) or if the train is replaced by a bus.
 		const platform = (train.platform == 'PF' || isReplacedByBus) ? '' : train.platform;
 
 		train.stopTimes.forEach(stop => stop.name = capitalize(stop.name));
@@ -74,10 +75,11 @@ function capitalize(str: string): string {
 		.toLowerCase()
 		.replaceAll(/\.(\w)/g, '. $1') // e.g. "VENEZIA S.LUCIA" -> "VENEZIA S. LUCIA"
 		.replaceAll(/(\w)\/(\w)/g, '$1 / $2') // e.g. "MERANO/MERAN" -> "MERANO / MERAN"
-		.replaceAll(/'+/g, "'") // For some reason apostrophes are repated 4 times in RFI monitor"
-		// split along spaces, dashes and apostrophes before re-capitalizing
-		// ignore the / \w'/ case to properly format names with apostrophes
+		// For some reason apostrophes are repeated 4 times in the RFI monitor.
+		// Split along spaces, dashes and apostrophes before re-capitalizing,
+		// and ignore the / \w'/ case to properly format names with apostrophes
 		//  e.g. "PONTE D'ADIGE" -> "Ponte d'Adige"
+		.replaceAll(/'+/g, '\'')
 		.split(/(?!\w')(?<=[ \-'])/g)
 		.map((word) => word.charAt(0).toUpperCase() + word.substring(1))
 		.join('');
@@ -135,7 +137,7 @@ function categoryToIcon(category: string): string | null {
 		'rj': 'rj', // railjet
 		'nj': 'nj', // nightjet
 		'en': 'en', // euronight
-		're': 're', // regio express
+		're': 're' // regio express
 	};
 
 	category = category.replace('Categoria ', '').toLowerCase();
@@ -150,7 +152,7 @@ function categoryToIcon(category: string): string | null {
 function checkIsReplacedByBus(icon: string | null, delay: string, notes: string): boolean {
 	let isReplacedByBus = false;
 	// If the train is marked as cancelled, look if it's replaced by a bus.
-	// Note: sometimes the train is marked as replaced by bus even if it's actually not at the current station
+	// Note: sometimes the train is marked as replaced by a bus even if it is not actually at the current station
 	// (it could be in previous stations), hence the "cancelled" check, which tells us if it's actually a train.
 	notes = notes.toLocaleLowerCase();
 	if (icon != 'bus' && delay == 'Cancellato') {

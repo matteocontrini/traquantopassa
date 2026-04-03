@@ -57,7 +57,7 @@ export async function getStationBySlug(slug: string): Promise<Station | null> {
 	if (station.id == null) {
 		const id = await getIdFromSlug(slug);
 		if (id == null) {
-			// if unable to find on RFI, delete the entry to not bother RFI too much
+			// If we cannot find it on RFI, delete the entry to avoid bothering RFI too much.
 			stationMap.delete(slug);
 			return null;
 		}

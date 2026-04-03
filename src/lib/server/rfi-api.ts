@@ -168,8 +168,8 @@ function parseTrains(html: string): ApiTrain[] {
 		const notes = stopsAndNotes.find('div:contains("Informazioni")')
 			.next('div').text().trim();
 
-		// If callingAt is an empty string, it will just be split into 1 empty array
-		// an empty array is retruned instead
+		// If callingAt is an empty string, split() would return a one-element array.
+		// Return an empty array instead.
 		const stopTimes: StopTime[] = callingAt ? callingAt.split(') - ').map(stop => {
 			const result = /^(.+) \((\d\d?.\d\d)\)?$/.exec(stop)
 
