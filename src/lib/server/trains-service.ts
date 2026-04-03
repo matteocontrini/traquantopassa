@@ -50,8 +50,8 @@ function mapTrains(apiTrains: api.ApiTrain[]): Train[] {
 		train.stopTimes.forEach(stop => stop.name = capitalize(stop.name));
 
 		return {
+			id: carrier + train.number,
 			carrier: carrier,
-			uid: carrier + train.number,
 			category: category,
 			icon: icon,
 			number: train.number,
