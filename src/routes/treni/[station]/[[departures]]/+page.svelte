@@ -111,8 +111,10 @@
 <footer class="my-12">
 	<div class="text-sm text-neutral-500">
 		<div>
-			Dati RFI. I dati si riferiscono {details.isDeparture ?  "alle partenze" : "agli arrivi"}. La granularità dei ritardi è di 5 minuti. I
-			dati sugli autobus sostitutivi non sono sempre affidabili, verifica sugli orari.
+			<a href="https://iechub.rfi.it/ArriviPartenze/ArrivalsDepartures/Monitor?placeId={data.details.id}&arrivals={!data.details.isDeparture}">
+				Dati RFI
+			</a>. La granularità dei ritardi è di 5 minuti.
+			I dati sugli autobus sostitutivi non sono sempre affidabili, verifica sugli orari.
 		</div>
 
 		<div class="mt-2">
