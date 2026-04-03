@@ -14,7 +14,7 @@
 </script>
 
 <a href={resolve('/[stop]', { stop: stop.slugs[0] })}
-	 class="w-full h-full bg-neutral-800 rounded-lg px-4 pt-3 pb-4 no-underline"
+   class="w-full h-full bg-neutral-800 rounded-lg px-4 pt-3 pb-4 no-underline"
 >
 	<div class="flex gap-2 justify-between items-start">
 		<div class="flex flex-col gap-1">

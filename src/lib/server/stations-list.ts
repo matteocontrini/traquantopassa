@@ -191,8 +191,8 @@ export default [
 	),
 	station(
 		1852,
-		"mori",
-		"Mori",
+		'mori',
+		'Mori',
 		[45.861248430026514, 11.002382579148355],
 		railwayBrennero
 	)

@@ -18,7 +18,7 @@ export default {
 	'21300': 'Fratelli Fontana Generale Cantore',
 	'24810': 'Villamontagna Piazza Predaroi',
 
-	'22650': 'Ghiaie Zona Industriale FTM', // capitalizes FTM 
+	'22650': 'Ghiaie Zona Industriale FTM', // capitalizes FTM
 	'20150': 'Dogana Stazione FTM',
 	'22020': 'Gardolo Stazione FTM',
 	'22205': 'Lamar Stazione FTM',
@@ -91,5 +91,5 @@ export default {
 	'28320': 'Vela Scuole San Vigilio',
 	'21765': 'Verona San Bartolameo',
 	'23425': 'Vigo Meano San Pietro',
-	'21790': 'Vittorio Veneto San Giuseppe',
+	'21790': 'Vittorio Veneto San Giuseppe'
 } as Record<string, string>;

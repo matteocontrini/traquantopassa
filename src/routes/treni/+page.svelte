@@ -114,8 +114,8 @@
 		<div class="{activeTab === 'all' && (showGeolocationButton || loadingGeolocationData) ? 'mt-4' : 'mt-8'}">
 			{#if activeTab === 'all' && showGeolocationButton}
 				<button onclick={updatePosition}
-								in:slide
-								class="block px-3.5 py-2 w-full text-center">
+				        in:slide
+				        class="block px-3.5 py-2 w-full text-center">
 					⚠️ Consenti accesso alla posizione
 				</button>
 			{:else if activeTab === 'all' && loadingGeolocationData}
@@ -145,7 +145,7 @@
 
 				{#if searchTerm || selectedRailway}
 					<button class="w-full mt-4 px-3.5 py-2 rounded-md bg-neutral-800 hover:bg-neutral-700"
-									onclick={() => { searchTerm = ''; selectedRailway = ''; }}>
+					        onclick={() => { searchTerm = ''; selectedRailway = ''; }}>
 						❌ Rimuovi filtri
 					</button>
 				{/if}
@@ -168,8 +168,8 @@
 			<div class="text-lg grid xs:grid-cols-2 gap-4">
 				{#each favoriteStations as station (station.id)}
 					<div class="flex shrink-0"
-							 animate:flip={{duration: 500, delay: 1000}}
-							 out:fade={{delay: 1000, duration: 100}}>
+					     animate:flip={{duration: 500, delay: 1000}}
+					     out:fade={{delay: 1000, duration: 100}}>
 						<StationBlock {station} />
 					</div>
 				{/each}

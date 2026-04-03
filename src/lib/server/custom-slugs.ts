@@ -37,5 +37,5 @@ export default {
 	'20115': 'pat',
 	'20145': 'gazzoletti',
 	'21045': 'centroschiara',
-	'21750': 'cave',
+	'21750': 'cave'
 } as Record<string, string>;

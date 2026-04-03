@@ -22,9 +22,9 @@
 </script>
 
 <div class="flex items-center gap-x-3 sm:gap-x-4 mb-2"
-		 role="button" aria-expanded={expanded}
-		 onclick={() => toggle()} tabindex="0"
-		 onkeydown={(e) => (e.key === 'Enter' || e.key === ' ' ? toggle() : null)}>
+     role="button" aria-expanded={expanded}
+     onclick={() => toggle()} tabindex="0"
+     onkeydown={(e) => (e.key === 'Enter' || e.key === ' ' ? toggle() : null)}>
 	<div
 		class="h-10 w-16 sm:w-20 bg-neutral-600 shrink-0 flex justify-center items-center font-semibold text-lg rounded-md"
 	>

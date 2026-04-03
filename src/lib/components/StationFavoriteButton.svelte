@@ -28,7 +28,7 @@
 		starElement?.addEventListener('animationend', () => {
 			starElement?.classList.remove('animate-spin-forward', 'animate-spin-backward');
 		}, {
-			once: true, // prevent memory leaks
+			once: true // prevent memory leaks
 		});
 	}
 </script>
@@ -36,7 +36,7 @@
 
 <button class={className} onclick={toggleFavorite}>
 	<img src={isFavorite ? starFilled : star}
-			 alt={isFavorite ? 'Starred' : 'Unstarred'}
-			 class="size-6"
-			 bind:this={starElement} />
+	     alt={isFavorite ? 'Starred' : 'Unstarred'}
+	     class="size-6"
+	     bind:this={starElement} />
 </button>

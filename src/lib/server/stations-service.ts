@@ -8,6 +8,7 @@ interface LazyStation extends Omit<Station, 'id'> {
 
 
 const stationMap = new Map<string, Station | LazyStation>();
+
 async function getStationMap() {
 	if (stationMap.size != 0) {
 		return stationMap;
@@ -18,7 +19,7 @@ async function getStationMap() {
 	}
 
 	for (const station of await getStations()) {
-		if (stationMap.has(station.slug) ) {
+		if (stationMap.has(station.slug)) {
 			continue;
 		}
 		stationMap.set(station.slug, {

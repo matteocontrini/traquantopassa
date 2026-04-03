@@ -7,14 +7,14 @@ import * as logger from '$lib/logger';
 
 export async function load({ params }) {
 	const slug = params.station;
-	const isDeparture = params.departures != 'arrivi'
+	const isDeparture = params.departures != 'arrivi';
 
 	const station = await stationsService.getStationBySlug(slug);
 	if (!station) {
 		error(404);
 	}
 
-	if (params.departures && params.departures != 'arrivi'){
+	if (params.departures && params.departures != 'arrivi') {
 		error(404);
 	}
 

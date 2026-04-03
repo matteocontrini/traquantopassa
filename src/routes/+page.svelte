@@ -121,8 +121,8 @@
 		<div class="{activeTab === 'all' && (showGeolocationButton || loadingGeolocationData) ? 'mt-4' : 'mt-8'}">
 			{#if activeTab === 'all' && showGeolocationButton}
 				<button onclick={updatePosition}
-								in:slide
-								class="block px-3.5 py-2 w-full text-center">
+				        in:slide
+				        class="block px-3.5 py-2 w-full text-center">
 					⚠️ Consenti accesso alla posizione
 				</button>
 			{:else if activeTab === 'all' && loadingGeolocationData}
@@ -141,7 +141,7 @@
 							bind:value={searchTerm}
 						/>
 						<a href={resolve('/aiuto')}
-							 class="w-fit flex items-center justify-center px-3 rounded-md bg-neutral-800 hover:bg-neutral-700 no-underline">
+						   class="w-fit flex items-center justify-center px-3 rounded-md bg-neutral-800 hover:bg-neutral-700 no-underline">
 							❓
 						</a>
 					</div>
@@ -158,7 +158,7 @@
 
 				{#if searchTerm || selectedRoute}
 					<button class="w-full mt-4 px-3.5 py-2 rounded-md bg-neutral-800 hover:bg-neutral-700"
-									onclick={() => { searchTerm = ''; selectedRoute = ''; }}>
+					        onclick={() => { searchTerm = ''; selectedRoute = ''; }}>
 						❌ Rimuovi filtri
 					</button>
 				{/if}
@@ -187,8 +187,8 @@
 			<div class="text-lg grid sm:grid-cols-2 gap-4">
 				{#each favoriteStops as stop (stop.slugs[0])}
 					<div class="flex shrink-0"
-							 animate:flip={{duration: 500, delay: 1000}}
-							 out:fade={{delay: 1000, duration: 100}}>
+					     animate:flip={{duration: 500, delay: 1000}}
+					     out:fade={{delay: 1000, duration: 100}}>
 						<StopBlock {stop} routes={data.routes} />
 					</div>
 				{/each}

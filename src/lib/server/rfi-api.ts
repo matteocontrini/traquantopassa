@@ -47,7 +47,7 @@ export async function getStations(): Promise<RfiStation[]> {
 
 	const $ = cheerio.load(await res.text());
 
-	const stationsJSON = $('input#stationsJSON').prop("value");
+	const stationsJSON = $('input#stationsJSON').prop('value');
 
 	const rfiStations: RfiStation[] = JSON.parse(stationsJSON).map((station: any) => {
 		return {
@@ -61,7 +61,7 @@ export async function getStations(): Promise<RfiStation[]> {
 			city: station.ct,
 			slug: station.lk.replace('.html', '')
 		} satisfies RfiStation;
-	})
+	});
 
 	logger.info(`Fetched ${rfiStations.length} stations in ${elapsed(start)} ms`);
 	return rfiStations;
@@ -79,12 +79,12 @@ export async function getIdFromSlug(slug: string): Promise<string | null> {
 	const $ = cheerio.load(await res.text());
 	const iechubLink = $('iframe').prop('src');
 
-	if (!iechubLink){
+	if (!iechubLink) {
 		return null;
 	}
 
 	const matches = /\?.*placeId=(\d+)/.exec(iechubLink);
-	if (!matches){
+	if (!matches) {
 		return null;
 	}
 
@@ -108,10 +108,10 @@ export async function getStationCodes(): Promise<ApiStationCode[]> {
 	$('select option').each((i, elem) => {
 		const $elem = $(elem);
 		stationsList.push({
-			id: $elem.attr("value") || "",
-			name: $elem.text(),
-		})
-	})
+			id: $elem.attr('value') || '',
+			name: $elem.text()
+		});
+	});
 
 	logger.info(`Fetched ${stationsList.length} stations in ${elapsed(start)} ms`);
 	return stationsList;
@@ -171,12 +171,12 @@ function parseTrains(html: string): ApiTrain[] {
 		// If callingAt is an empty string, split() would return a one-element array.
 		// Return an empty array instead.
 		const stopTimes: StopTime[] = callingAt ? callingAt.split(') - ').map(stop => {
-			const result = /^(.+) \((\d\d?.\d\d)\)?$/.exec(stop)
+			const result = /^(.+) \((\d\d?.\d\d)\)?$/.exec(stop);
 
 			return {
 				// if regex fails, return the whole row in the name field as a fallback
 				name: result ? result[1] : stop,
-				time: result ? result[2].replace('.', ':') : '',
+				time: result ? result[2].replace('.', ':') : ''
 			} satisfies StopTime;
 		}) : [];
 
@@ -190,7 +190,7 @@ function parseTrains(html: string): ApiTrain[] {
 			delay,
 			isBlinking,
 			notes,
-			stopTimes,
+			stopTimes
 		});
 	});
 

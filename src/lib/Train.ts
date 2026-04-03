@@ -1,4 +1,4 @@
-import type { StopTime } from "./Trip";
+import type { StopTime } from './Trip';
 
 export interface Train {
 	carrier: string;
