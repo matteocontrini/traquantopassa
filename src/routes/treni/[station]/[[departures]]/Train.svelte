@@ -2,7 +2,7 @@
 	import type { Train } from '$lib/Train';
 	import type { ExpandedTripState } from '$lib/Trip';
 	import { getContext } from 'svelte';
-	import DepartingTrainAnimation from './DepartingTrainAnimation.svelte';
+	import DepartingTrainAnimation from '$lib/components/DepartingTrainAnimation.svelte';
 	import { slide } from 'svelte/transition';
 	import TrainDetail from './TrainDetail.svelte';
 

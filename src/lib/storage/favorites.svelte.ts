@@ -2,6 +2,7 @@ import { browser } from '$app/environment';
 
 const STOPS_KEY = 'tqp_stops_favorites';
 const STATIONS_KEY = 'tqp_stations_favorites';
+const FTM_STATION_KEY = 'tqp_ftm_stations_favorites';
 
 export class LocalStore<T> {
 	value = $state<T>() as T;
@@ -64,4 +65,17 @@ export class FavoriteStops extends LocalStore<string[]> {
 
 export function favoriteStopsStore(): FavoriteStops {
 	return new FavoriteStops(STOPS_KEY, []);
+}
+
+export class FavoriteFtmStations extends LocalStore<string[]> {
+	addFavorite = (stationId: string) => {
+		this.value.push(stationId);
+	};
+	removeFavorite = (stationId: string) => {
+		this.value.splice(this.value.indexOf(stationId), 1);
+	};
+}
+
+export function favoriteFtmStationsStore(): FavoriteStations {
+	return new FavoriteFtmStations(FTM_STATION_KEY, []);
 }

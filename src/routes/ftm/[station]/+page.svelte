@@ -1,16 +1,17 @@
 <script lang="ts">
 	import { PUBLIC_BASE_URL } from '$env/static/public';
-	import Train from './Train.svelte';
+	import Train from './FtmTrain.svelte';
 	import FooterNavigation from '$lib/components/FooterNavigation.svelte';
 	import { onMount, setContext } from 'svelte';
 	import { invalidateAll } from '$app/navigation';
 	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
 	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
-	import DepartingTrainAnimation from '$lib/components/DepartingTrainAnimation.svelte';
-	import StationFavoriteButton from '$lib/components/StationFavoriteButton.svelte';
 	import type { ExpandedTripState } from '$lib/Trip';
-	import ArrivalsDeparturesSwitch from '$lib/components/ArrivalsDeparturesSwitch.svelte';
+	import LiveTripAnimation from '$lib/components/LiveTripAnimation.svelte';
+	import { Flag } from 'lucide-svelte';
+	import FtmFavoriteButton from '$lib/components/FtmFavoriteButton.svelte';
+	import DepartingTrainAnimation from '$lib/components/DepartingTrainAnimation.svelte';
 
 	let { data } = $props();
 
@@ -22,12 +23,6 @@
 	const REFRESH_INTERVAL = 30 * 1000;
 	let timer: ReturnType<typeof setInterval>;
 
-	const trainState: ExpandedTripState = {
-		id: null
-	};
-	const expandedTrain = $state(trainState);
-	setContext('expandedTrain', expandedTrain);
-
 	function onVisibilityChange() {
 		clearInterval(timer);
 		if (document.visibilityState != 'hidden') {
@@ -35,6 +30,12 @@
 			timer = setInterval(invalidateAll, REFRESH_INTERVAL);
 		}
 	}
+
+	const tripState: ExpandedTripState = {
+		id: null
+	};
+	const expandedTrip = $state(tripState);
+	setContext('expandedTrip', expandedTrip);
 
 	onMount(() => {
 		timer = setInterval(invalidateAll, REFRESH_INTERVAL);
@@ -54,7 +55,7 @@
 <header>
 	<h1 class="text-center text-4xl font-semibold">
 		Stazione di {details.name}
-		<StationFavoriteButton stationId={details.id} className="pl-1" />
+		<FtmFavoriteButton stationId={details.id} className="pl-1" />
 	</h1>
 	<div class="mt-1 text-center text-sm">
 		aggiornato alle
@@ -66,28 +67,21 @@
 
 	{#if details.connections}
 		<div class="mt-6 flex justify-center">
-			<ModesSwitch selectedTab={'train'} connections={details.connections} />
+			<ModesSwitch selectedTab={'ftm'} connections={details.connections} />
 		</div>
 	{/if}
-
-	<div class="mt-6 flex justify-center">
-		<ArrivalsDeparturesSwitch
-			isDeparture={details.isDeparture}
-			stationSlug={details.canonicalSlug}
-		/>
-	</div>
 </header>
 
 <main>
 	<div class="mt-10 flex flex-col">
 		{#if details.trains.length > 0}
-			{#each details.trains.slice(0, limit) as train (train.uid)}
+			{#each details.trains.slice(0, limit) as train (train.id)}
 				<div
 					animate:flip={{ delay: 300 }}
 					in:fade={{ delay: showMoreInProgress ? 0 : 800, duration: 300 }}
 					out:fade={{ duration: 300 }}
 				>
-					<Train {train} />
+					<Train {train} userPosition={details.position} />
 				</div>
 			{/each}
 
@@ -112,27 +106,33 @@
 </main>
 
 <footer class="my-12">
-	<div class="text-sm text-neutral-500">
-		<div>
-			<a href="https://iechub.rfi.it/ArriviPartenze/ArrivalsDepartures/Monitor?placeId={data.details.id}&arrivals={!data.details.isDeparture}">
-				Dati RFI
-			</a>. La granularità dei ritardi è di 5 minuti.
-			I dati sugli autobus sostitutivi non sono sempre affidabili, verifica sugli orari.
-		</div>
+	<div class="space-y-2 text-sm text-neutral-500">
+		<p>
+			Dati in tempo reale Algorab. Gli orari si riferiscono agli orari programmati di arrivo dei
+			treni. I dati sugli autobus sostitutivi non sono presenti, verifica sul sito di Trentino
+			Trasporti.
+		</p>
+
+		<p class="mt-2">
+			Il pallino verde
+			<LiveTripAnimation className="inline-block mx-1" live="green" />
+			indica che i dati sono in tempo reale.
+		</p>
+
+		<p>
+			Il simbolo
+			<Flag class="inline size-4" />
+			indica che la corsa terminerà in questa stazione.
+		</p>
 
 		<div class="mt-2">
 			<span class="inline-block w-5">
 				<DepartingTrainAnimation />
 			</span>
-			indica che il treno è in partenza.
+			indica che il treno è in arrivo.
 		</div>
 
-		<div class="mt-2">
-			⚠️ indica che i dettagli sul treno cancellato sono temporaneamente non disponibili (il treno
-			potrebbe essere sostituito da bus).
-		</div>
-
-		<div class="mt-2">La pagina si aggiorna automaticamente ogni 30 secondi.</div>
+		<p>La pagina si aggiorna automaticamente ogni 30 secondi.</p>
 	</div>
 
 	<FooterNavigation className="mt-6" isBus={false} />

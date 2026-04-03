@@ -1,4 +1,5 @@
 import type { Train } from '$lib/Train';
+import type { StopConnections } from './server/stops-stations-mapping';
 
 export default interface StationDetails {
 	id: string;
@@ -7,5 +8,5 @@ export default interface StationDetails {
 	lastUpdatedAt: Date;
 	trains: Train[];
 	isDeparture: boolean;
-	stopSlug: string | null;
+	connections?: StopConnections;
 }

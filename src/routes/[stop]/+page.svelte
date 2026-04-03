@@ -7,7 +7,7 @@
 	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
 	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
-	import LiveTripAnimation from './LiveTripAnimation.svelte';
+	import LiveTripAnimation from '$lib/components/LiveTripAnimation.svelte';
 	import StopFavoriteButton from '$lib/components/StopFavoriteButton.svelte';
 	import { Flag } from 'lucide-svelte';
 	import type { ExpandedTripState } from '$lib/Trip';
@@ -66,13 +66,9 @@
 		})}
 	</div>
 
-	{#if details.trainStationSlug}
+	{#if details.connections}
 		<div class="mt-6 flex justify-center">
-			<ModesSwitch
-				isBus={true}
-				stopSlug={details.canonicalSlug}
-				stationSlug={details.trainStationSlug}
-			/>
+			<ModesSwitch connections={details.connections} selectedTab={'bus'} />
 		</div>
 	{/if}
 </header>
@@ -101,7 +97,7 @@
 
 				{#if !showMore && direction.trips.length > limit}
 					<button
-						class="mt-2 rounded-md bg-neutral-800 px-3 py-1 text-mid no-underline hover:bg-neutral-700"
+						class="text-mid mt-2 rounded-md bg-neutral-800 px-3 py-1 no-underline hover:bg-neutral-700"
 						onclick={() => {
 							showMore = true;
 							showMoreInProgress = true;

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Trip, ExpandedTripState } from '$lib/Trip';
-	import LiveTripAnimation from './LiveTripAnimation.svelte';
+	import LiveTripAnimation from '$lib/components/LiveTripAnimation.svelte';
 	import PulsingMinutes from './PulsingMinutes.svelte';
 	import { Flag } from 'lucide-svelte';
 	import BusTripDetail from './BusTripDetail.svelte';
