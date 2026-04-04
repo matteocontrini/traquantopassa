@@ -17,6 +17,18 @@ export interface ApiTrain {
 	stopTimes: StopTime[];
 }
 
+interface RfiJsonStation {
+	name: string;
+	loc: {
+		lat: string;
+		lng: string;
+	};
+	pr: string;
+	rg: string;
+	ct: string;
+	lk: string;
+}
+
 export interface RfiStation {
 	name: string;
 	coordinates: Coordinates;
@@ -30,7 +42,7 @@ const TIMEOUT = 10 * 1000;
 
 
 export async function getStations(): Promise<RfiStation[]> {
-	logger.info(`Fetching stations from RFI map`);
+	logger.info(`Fetching stations from RFI map page`);
 	const start = performance.now();
 
 	const res = await fetch(
@@ -42,9 +54,14 @@ export async function getStations(): Promise<RfiStation[]> {
 
 	const $ = cheerio.load(await res.text());
 
-	const stationsJSON = $('input#stationsJSON').prop('value');
+	const stationsJson = $('input#stationsJSON').prop('value');
+	const parsedStations = JSON.parse(stationsJson) as RfiJsonStation[];
 
-	const rfiStations: RfiStation[] = JSON.parse(stationsJSON).map((station: any) => {
+	if (!Array.isArray(parsedStations)) {
+		throw new Error('Invalid stations JSON format, array expected');
+	}
+
+	const rfiStations: RfiStation[] = parsedStations.map((station) => {
 		return {
 			name: station.name,
 			coordinates: {
@@ -55,7 +72,7 @@ export async function getStations(): Promise<RfiStation[]> {
 			region: station.rg,
 			city: station.ct,
 			slug: station.lk.replace('.html', '')
-		} satisfies RfiStation;
+		};
 	});
 
 	logger.info(`Fetched ${rfiStations.length} stations in ${elapsed(start)} ms`);
