@@ -14,15 +14,19 @@
 	<div class="rounded-lg bg-neutral-800 border border-neutral-700">
 		<div class="max-h-40 py-3 overflow-y-auto px-4 flex flex-col gap-y-2.5">
 			{#if train.notes}
-				<div class="font-medium text-neutral-400 leading-none mb-1">
-					Informazioni:
+				<div class="leading-[1.3]">
+					<h3 class="inline font-medium text-neutral-400">
+						Informazioni:
+					</h3>
+					<p class="inline m-0">
+						{train.notes}
+					</p>
 				</div>
-				{train.notes}
 			{/if}
 			{#if train.stopTimes.length}
-				<div class="font-medium text-neutral-400 leading-none mb-1">
+				<h3 class="font-medium text-neutral-400 leading-none mb-1">
 					Ferma a:
-				</div>
+				</h3>
 				<!-- eslint-disable-next-line svelte/require-each-key -->
 				{#each train.stopTimes as stopTime}
 					<div class="flex items-center gap-x-4">
@@ -37,7 +41,7 @@
 				{/each}
 			{/if}
 			{#if !train.notes && !train.stopTimes.length}
-				<div class="text-center text-neutral-400">
+				<div class="text-center">
 					Nessuna informazione disponibile per
 					questo {train.category === 'Bus' || train.isReplacedByBus ? 'autobus' : 'treno'}
 				</div>
