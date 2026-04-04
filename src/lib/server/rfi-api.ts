@@ -17,11 +17,6 @@ export interface ApiTrain {
 	stopTimes: StopTime[];
 }
 
-export interface ApiStationCode {
-	id: string;
-	name: string;
-}
-
 export interface RfiStation {
 	name: string;
 	coordinates: Coordinates;
@@ -89,32 +84,6 @@ export async function getIdFromSlug(slug: string): Promise<string | null> {
 	}
 
 	return matches[1];
-}
-
-export async function getStationCodes(): Promise<ApiStationCode[]> {
-	logger.info(`Fetching stations from RFI monitor`);
-	const start = performance.now();
-
-	const res = await fetch(
-		'https://iechub.rfi.it/ArriviPartenze/',
-		{
-			signal: AbortSignal.timeout(TIMEOUT)
-		}
-	);
-
-	const $ = cheerio.load(await res.text());
-
-	const stationsList: ApiStationCode[] = [];
-	$('select option').each((i, elem) => {
-		const $elem = $(elem);
-		stationsList.push({
-			id: $elem.attr('value') || '',
-			name: $elem.text()
-		});
-	});
-
-	logger.info(`Fetched ${stationsList.length} stations in ${elapsed(start)} ms`);
-	return stationsList;
 }
 
 export async function getTrains(stationId: string, arrivals: boolean = false): Promise<ApiTrain[]> {
