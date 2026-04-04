@@ -146,25 +146,46 @@ function parseTrains(html: string): ApiTrain[] {
 		const isBlinking = cells.eq(7).find('img').length > 0;
 
 		const stopsAndNotes = cells.eq(8).find('div');
-		// if "Fermate successive" is not provided, "Informazioni" can be present in its place
-		// so it's not reliable to use .eq() to find it
-		const callingAt = stopsAndNotes.find('div:contains("Fermate successive")')
-			.next('div').text().trim().replace('FERMA A: ', '');
+		// If "Fermate successive" is not provided, "Informazioni" can be present in its place,
+		// so it's not reliable to use .eq() to find it.
+		// We therefore search for the divs containing the respective labels and get the next div for the content.
+		const callingAt = stopsAndNotes
+			.find('div:contains("Fermate successive")')
+			.next('div')
+			.text()
+			.trim()
+			// Example: "FERMA A: TRENTO (14:02) - ROVERETO (14:17) - VERONA P.N. (15:01) - BOLOGNA C.LE (16:08)"
+			// The space after "FERMA A:" is sometimes missing.
+			.replace(/^FERMA A: ?/, '');
 
-		const notes = stopsAndNotes.find('div:contains("Informazioni")')
-			.next('div').text().trim();
+		const notes = stopsAndNotes
+			.find('div:contains("Informazioni")')
+			.next('div')
+			.text()
+			.trim();
 
-		// If callingAt is an empty string, split() would return a one-element array.
-		// Return an empty array instead.
-		const stopTimes: StopTime[] = callingAt ? callingAt.split(') - ').map(stop => {
-			const result = /^(.+) \((\d\d?.\d\d)\)?$/.exec(stop);
+		let stopTimes: StopTime[] = [];
 
-			return {
-				// if regex fails, return the whole row in the name field as a fallback
-				name: result ? result[1] : stop,
-				time: result ? result[2].replace('.', ':') : ''
-			} satisfies StopTime;
-		}) : [];
+		// Parse stop times from the callingAt text if available.
+		// Example: "TRENTO (14:02) - ROVERETO (14:17) - VERONA P.N. (15:01) - BOLOGNA C.LE (16:08)"
+		if (callingAt) {
+			stopTimes = callingAt
+				.split(') - ')
+				.map(stop => {
+					const result = /^(.+?)\s*\((\d{1,2}.\d{1,2})\)?$/.exec(stop);
+
+					let name, time;
+					if (result) {
+						name = result[1].trim();
+						time = result[2].replace('.', ':');
+					} else {
+						name = stop;
+						time = '';
+					}
+
+					return { name, time };
+				});
+		}
 
 		trains.push({
 			carrier,
