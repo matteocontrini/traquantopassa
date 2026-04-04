@@ -15,7 +15,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-      - name: Setup Fly CLI
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24.x'
+          cache: npm
+      - name: Install dependencies
+        run: npm install
+      - name: Run Svelte checks
+        run: npm run check
+      - name: Run tests
+        run: npm run test
+      - name: Set up Fly CLI
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Deploy to Fly
         run: flyctl deploy --local-only
