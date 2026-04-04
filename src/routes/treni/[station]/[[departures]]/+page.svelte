@@ -78,15 +78,17 @@
 <main>
 	<div class="mt-10 flex flex-col">
 		{#if details.trains.length > 0}
-			{#each details.trains.slice(0, limit) as train (train.id)}
-				<div
-					animate:flip={{ delay: 300 }}
-					in:fade={{ delay: showMoreInProgress ? 0 : 800, duration: 300 }}
-					out:fade={{ duration: 300 }}
-				>
-					<Train {train} />
-				</div>
-			{/each}
+			{#key details.isDeparture} <!-- key to prevent the (slow) transition on arrival/departure switch -->
+				{#each details.trains.slice(0, limit) as train (train.id)}
+					<div
+						animate:flip={{ delay: 300 }}
+						in:fade={{ delay: showMoreInProgress ? 0 : 800, duration: 300 }}
+						out:fade={{ duration: 300 }}
+					>
+						<Train {train} />
+					</div>
+				{/each}
+			{/key}
 
 			{#if !showMore && details.trains.length > limit}
 				<button
