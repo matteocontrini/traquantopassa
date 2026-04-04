@@ -18,4 +18,4 @@ jobs:
       - name: Setup Fly CLI
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Deploy to Fly
-        run: flyctl deploy --remote-only
+        run: flyctl deploy --local-only
