@@ -101,7 +101,7 @@
 
 				{#if !showMore && direction.trips.length > limit}
 					<button
-						class="mt-2 rounded-md bg-neutral-800 px-3 py-1 text-mid no-underline hover:bg-neutral-700"
+						class="mt-2 rounded-md bg-neutral-800 px-3 py-1 text-mid no-underline hover:bg-neutral-700 cursor-pointer"
 						onclick={() => {
 							showMore = true;
 							showMoreInProgress = true;

@@ -90,7 +90,7 @@
 
 			{#if !showMore && details.trains.length > limit}
 				<button
-					class="text-mid mt-2 rounded-md bg-neutral-800 px-3 py-1 no-underline hover:bg-neutral-700"
+					class="text-mid mt-2 rounded-md bg-neutral-800 px-3 py-1 no-underline hover:bg-neutral-700 cursor-pointer"
 					onclick={() => {
 						showMore = true;
 						showMoreInProgress = true;
