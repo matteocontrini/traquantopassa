@@ -70,7 +70,7 @@ function mapTrains(apiTrains: api.ApiTrain[]): Train[] {
 	});
 }
 
-function capitalize(str: string): string {
+export function capitalize(str: string): string {
 	return str
 		.toLowerCase()
 		.replaceAll(/\.(\w)/g, '. $1') // e.g. "VENEZIA S.LUCIA" -> "VENEZIA S. LUCIA"
