@@ -23,6 +23,8 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Run Svelte checks
+        env:
+          PUBLIC_BASE_URL: https://traquantopassa.in
         run: npm run check
       - name: Run tests
         run: npm run test
