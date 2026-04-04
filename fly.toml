@@ -7,6 +7,9 @@ app = 'traquantopassa'
 primary_region = 'cdg'
 
 [build]
+  [build.args]
+    NODE_VERSION = "24"
+
 
 [http_service]
   internal_port = 3000
