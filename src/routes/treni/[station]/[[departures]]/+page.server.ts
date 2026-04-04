@@ -9,7 +9,14 @@ export async function load({ params }) {
 	const slug = params.station;
 	const isDeparture = params.departures != 'arrivi';
 
-	const station = await stationsService.getStationBySlug(slug);
+	let station;
+	try {
+		station = await stationsService.getStationBySlug(slug);
+	} catch (e) {
+		logger.error(`Error while fetching station with slug ${slug}:`, e);
+		error(503);
+	}
+
 	if (!station) {
 		error(404);
 	}
