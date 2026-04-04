@@ -38,7 +38,7 @@ export interface RfiStation {
 	slug: string;
 }
 
-const TIMEOUT = 10 * 1000;
+const TIMEOUT = 15 * 1000;
 
 
 export async function getStations(): Promise<RfiStation[]> {
