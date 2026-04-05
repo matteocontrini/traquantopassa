@@ -107,23 +107,26 @@
 
 <footer class="my-12">
 	<div class="space-y-2 text-sm text-neutral-500">
-		<p>
-			Dati in tempo reale Algorab. Gli orari si riferiscono agli orari programmati di arrivo dei
+		<div>
+			<a href="http://trainview.algorab.net">
+				Dati in tempo reale Algorab
+			</a>.
+			Gli orari si riferiscono agli orari programmati di arrivo dei
 			treni. I dati sugli autobus sostitutivi non sono presenti, verifica sul sito di Trentino
 			Trasporti.
-		</p>
+		</div>
 
-		<p class="mt-2">
+		<div class="mt-2">
 			Il pallino verde
 			<LiveTripAnimation className="inline-block mx-1" live="green" />
 			indica che i dati sono in tempo reale.
-		</p>
+		</div>
 
-		<p>
+		<div>
 			Il simbolo
 			<Flag class="inline size-4" />
 			indica che la corsa terminerà in questa stazione.
-		</p>
+		</div>
 
 		<div class="mt-2">
 			<span class="inline-block w-5">
