@@ -1,16 +1,13 @@
-name: Deploy
+name: Build and test
 on:
-  workflow_dispatch:
-env:
-  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 jobs:
-  deploy:
-    name: Deploy app
+  build:
+    name: Build and test
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-    environment:
-      name: 'production'
-      url: 'https://traquantopassa.in'
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -27,7 +24,3 @@ jobs:
         run: npm run check
       - name: Run tests
         run: npm run test
-      - name: Set up Fly CLI
-        uses: superfly/flyctl-actions/setup-flyctl@master
-      - name: Deploy to Fly
-        run: flyctl deploy --local-only
