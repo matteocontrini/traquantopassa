@@ -58,7 +58,7 @@
 						{:else}
 							<span class:text-neutral-500={stopTime.requestOnly}>{stopTime.name}</span>
 							{#if stopTime.requestOnly}
-								<span class="italic text-neutral-600 text-sm">(Solo a richiesta)</span>
+								<span class="italic text-neutral-600 text-sm">(a richiesta)</span>
 							{/if}
 						{/if}
 					</div>

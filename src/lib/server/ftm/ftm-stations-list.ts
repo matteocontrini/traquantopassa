@@ -41,7 +41,7 @@ export default [
 	station(5656,
 		5,
 		2573,
-		'Spini di Gardolo - Zona industriale',
+		'Spini - Zona industriale',
 		'spini',
 		[46.11851953108368, 11.105132614278947],
 		true
