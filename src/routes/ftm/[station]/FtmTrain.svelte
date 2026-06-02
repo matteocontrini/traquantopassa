@@ -55,11 +55,18 @@
 				</span>
 			{/if}
 			{#if train.position != null}
-				Treno n.{train.number} • a {(Math.abs(train.position - userPosition) / 1000).toFixed(1)} km da
-				te
-			{/if}
-			{#if train.delay === 0}
-				• in orario
+				Treno n.{train.number}
+				
+				{#if train.currentStopSequenceNumber === 0}
+					• non ancora partito
+				{:else} 
+					• a {(Math.abs(train.position - userPosition) / 1000).toFixed(1)} km da te
+				{/if}
+					
+				{#if train.delay === 0}
+					• in orario
+				{/if}
+
 			{/if}
 		</span>
 	</div>
