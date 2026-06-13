@@ -103,8 +103,12 @@ export async function getRoutes() {
 	return data;
 }
 
-export async function getTrips(stopId: number, limit: number) {
-	const path = `/gtlservice/trips_new?limit=${limit}&stopId=${stopId}&type=U`;
+export async function getTrips(stopId: number, limit: number, refDateTime?: string) {
+	let path = `/gtlservice/trips_new?limit=${limit}&stopId=${stopId}&type=U`;
+
+	if (refDateTime) {
+		path += `&refDateTime=${encodeURIComponent(refDateTime)}`;
+	}
 
 	logger.info(`Fetching trips for ${stopId}`);
 	const start = performance.now();

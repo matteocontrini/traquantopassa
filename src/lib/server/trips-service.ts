@@ -18,21 +18,22 @@ const tripsCacheDurationSeconds = 29;
 const defaultLimit = 15;
 const outdatedDataThresholdMillis = 1000 * 60 * 5;
 
-export async function getTrips(stop: Stop): Promise<CachedItem<StopDirection>> {
+export async function getTrips(stop: Stop, refDateTime?: string): Promise<CachedItem<StopDirection>> {
 	const stopId = stop.id;
+	const cacheKey = `trips-${stopId}${refDateTime ? `-${refDateTime}` : ''}`;
 
 	// Return from cache if available
-	let cachedItem = cache.get<CachedItem<StopDirection>>(`trips-${stopId}`);
+	let cachedItem = cache.get<CachedItem<StopDirection>>(cacheKey);
 	if (cachedItem) {
 		return cachedItem;
 	}
 
 	// Fetch from API
-	logger.info(`Fetching trips for stop ${stopId}`);
-	const apiTrips = await api.getTrips(stopId, defaultLimit);
+	logger.info(`Fetching trips for stop ${stopId}${refDateTime ? ` at ${refDateTime}` : ''}`);
+	const apiTrips = await api.getTrips(stopId, defaultLimit, refDateTime);
 	const routes = await routesService.getRoutes();
 
-	const trips = await mapApiTrips(apiTrips, routes, stopId);
+	const trips = await mapApiTrips(apiTrips, routes, stopId, refDateTime);
 
 	const direction = {
 		name: directionName(stop),
@@ -42,12 +43,12 @@ export async function getTrips(stop: Stop): Promise<CachedItem<StopDirection>> {
 	cachedItem = new CachedItem(direction);
 
 	// Save to cache
-	cache.set(`trips-${stopId}`, cachedItem, tripsCacheDurationSeconds);
+	cache.set(cacheKey, cachedItem, tripsCacheDurationSeconds);
 
 	return cachedItem;
 }
 
-async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId: number) {
+async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId: number, refDateTime?: string) {
 	return Promise.all(apiTrips.map(async trip => {
 		const route = routes.find(r => r.id === trip.routeId)!;
 
@@ -108,7 +109,9 @@ async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId:
 			userStopSequenceNumber,
 			isOutdated,
 			isEndOfRouteForUser,
-			stopTimes
+			stopTimes,
+			arrivalTime: formatTime(expectedTime),
+			isFutureSearch: !!refDateTime
 		} satisfies Trip as Trip;
 	}));
 }
@@ -133,5 +136,5 @@ function directionName(stop: Stop): string {
 
 function formatTime(date: Date) {
 	// Output format should always be 15:00:00
-	return date.toLocaleTimeString('it-IT', { timeZone: 'Europe/Rome' });
+	return date.toLocaleTimeString('it-IT', { timeZone: 'Europe/Rome', hour12: false });
 }

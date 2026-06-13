@@ -10,6 +10,8 @@ export interface Trip {
 	isOutdated: boolean;
 	isEndOfRouteForUser: boolean;
 	stopTimes: StopTime[];
+	arrivalTime: string;
+	isFutureSearch: boolean;
 }
 
 export interface StopTime {
