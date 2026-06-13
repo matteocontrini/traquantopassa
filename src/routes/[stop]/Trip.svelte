@@ -43,7 +43,7 @@
 			{/if}
 		</span>
 		<span class="block leading-none text-xs text-neutral-500">
-			{#if trip.delay != null}
+			{#if trip.delay != null && !trip.isFutureSearch}
 				{@const distanceInStops = trip.userStopSequenceNumber - trip.currentStopSequenceNumber}
 
 				{#if trip.currentStopSequenceNumber === 0}
@@ -73,7 +73,7 @@
 			{/if}
 		</span>
 	</div>
-	<PulsingMinutes minutes={trip.minutes} dimmed={trip.isEndOfRouteForUser} />
+	<PulsingMinutes minutes={trip.minutes} dimmed={trip.isEndOfRouteForUser} arrivalTime={trip.arrivalTime} isFutureSearch={trip.isFutureSearch} />
 	<LiveTripAnimation live={trip.delay != null ? (trip.isOutdated ? 'yellow' : 'green') : null} />
 </div>
 

@@ -3,7 +3,7 @@
 	import Trip from './Trip.svelte';
 	import FooterNavigation from '$lib/components/FooterNavigation.svelte';
 	import { onMount, setContext } from 'svelte';
-	import { invalidateAll } from '$app/navigation';
+	import { goto, invalidateAll } from '$app/navigation';
 	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
 	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
@@ -11,6 +11,7 @@
 	import StopFavoriteButton from '$lib/components/StopFavoriteButton.svelte';
 	import { Flag } from 'lucide-svelte';
 	import type { ExpandedTripState } from '$lib/Trip';
+	import { page } from '$app/stores';
 
 	let { data } = $props();
 
@@ -27,6 +28,17 @@
 
 	const REFRESH_INTERVAL = 30 * 1000;
 	let timer: ReturnType<typeof setInterval>;
+	let selectedDate = $state($page.url.searchParams.get('refDateTime') || '');
+
+	function applyDate() {
+		const url = new URL($page.url);
+		if (selectedDate) {
+			url.searchParams.set('refDateTime', selectedDate);
+		} else {
+			url.searchParams.delete('refDateTime');
+		}
+		goto(url, { keepFocus: true });
+	}
 
 	function onVisibilityChange() {
 		clearInterval(timer);
@@ -78,6 +90,16 @@
 </header>
 
 <main>
+	<div class="mt-8 mb-4 flex justify-end px-4">
+		<label class="flex items-center gap-2 cursor-pointer text-sm text-neutral-400 hover:text-white transition-colors" title="Cambia data e ora">
+			<input
+				type="datetime-local"
+				class="bg-transparent outline-none cursor-pointer"
+				bind:value={selectedDate}
+				onchange={applyDate}
+			/>
+		</label>
+	</div>
 	{#each details.directions as direction}
 		<div class="mt-10 flex flex-col">
 			{#if direction.name && details.directions.length > 1}
