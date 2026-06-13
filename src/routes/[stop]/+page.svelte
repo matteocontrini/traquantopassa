@@ -96,7 +96,7 @@
 				type="datetime-local"
 				class="bg-transparent outline-none cursor-pointer"
 				bind:value={selectedDate}
-				onchange={applyDate}
+				oninput={applyDate}
 			/>
 		</label>
 	</div>
