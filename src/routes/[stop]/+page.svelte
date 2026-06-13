@@ -30,6 +30,36 @@
 	let timer: ReturnType<typeof setInterval>;
 	let selectedDate = $state($page.url.searchParams.get('refDateTime') || '');
 
+	let selectedRoutes = $state<string[]>([]);
+	
+	let availableRoutes = $derived(
+		Array.from(
+			new Map(
+				details.directions
+					.flatMap(d => d.trips)
+					.filter(t => t.routeName)
+					.map(t => [t.routeName, { name: t.routeName, color: t.routeColor }])
+			).values()
+		).sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }))
+	);
+
+	let filteredDirections = $derived(
+		details.directions.map(direction => ({
+			...direction,
+			trips: selectedRoutes.length === 0
+				? direction.trips
+				: direction.trips.filter(trip => selectedRoutes.includes(trip.routeName))
+		}))
+	);
+
+	function toggleRoute(routeName: string) {
+		if (selectedRoutes.includes(routeName)) {
+			selectedRoutes = selectedRoutes.filter(name => name !== routeName);
+		} else {
+			selectedRoutes = [...selectedRoutes, routeName];
+		}
+	}
+
 	function applyDate() {
 		const url = new URL($page.url);
 		if (selectedDate) {
@@ -90,17 +120,33 @@
 </header>
 
 <main>
-	<div class="mt-8 mb-4 flex justify-end px-4">
-		<label class="flex items-center gap-2 cursor-pointer text-sm text-neutral-400 hover:text-white transition-colors" title="Cambia data e ora">
-			<input
-				type="datetime-local"
-				class="bg-transparent outline-none cursor-pointer"
-				bind:value={selectedDate}
-				oninput={applyDate}
-			/>
-		</label>
+	<div class="mt-8 mb-4 flex flex-col gap-4 px-4 overflow-hidden">
+		<div class="flex justify-end">
+			<label class="flex shrink-0 items-center gap-2 cursor-pointer text-sm text-neutral-400 hover:text-white transition-colors" title="Cambia data e ora">
+				<input
+					type="datetime-local"
+					class="bg-transparent outline-none cursor-pointer"
+					bind:value={selectedDate}
+					oninput={applyDate}
+				/>
+			</label>
+		</div>
+
+		<div class="flex w-full overflow-x-auto gap-2 py-2" style="scrollbar-width: none;">
+			{#each availableRoutes as route (route.name)}
+				<button
+					class="h-7 min-w-7 px-1 flex shrink-0 items-center justify-center rounded-md border border-black/20 text-xs font-bold text-white transition-all dark:border-white/20 {selectedRoutes.includes(route.name) ? 'scale-110 opacity-100 shadow-sm' : 'opacity-40 hover:opacity-70 grayscale-[30%]'}"
+					style="background-color: {route.color || '#9ca3af'}; text-shadow: 0px 1px 2px rgba(0,0,0,0.6);"
+					onclick={() => toggleRoute(route.name)}
+					title="Linea {route.name}"
+					aria-label="Filtra per linea {route.name}"
+				>
+					{route.name}
+				</button>
+			{/each}
+		</div>
 	</div>
-	{#each details.directions as direction}
+	{#each filteredDirections as direction}
 		<div class="mt-10 flex flex-col">
 			{#if direction.name && details.directions.length > 1}
 				<div class="mx-auto mb-4 w-fit text-center text-lg font-medium uppercase">
@@ -114,7 +160,7 @@
 							delay: 0,
 							duration: 300
 						}}
-						in:fade={{ delay: showMoreInProgress ? 0 : 800, duration: 300 }}
+						in:fade={{ duration: 300 }}
 						out:fade={{ duration: 300 }}
 					>
 						<Trip {trip} />
