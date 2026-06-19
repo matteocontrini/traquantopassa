@@ -21,6 +21,8 @@ export async function getRoutes() {
 	logger.info('Fetching routes from API');
 	const apiRoutes = await api.getRoutes();
 
+	console.log(apiRoutes)
+
 	routes = apiRoutes.map(apiRoute => apiRouteToRoute(apiRoute));
 
 	// Sort by route name (numeric)
@@ -34,8 +36,8 @@ export async function getRoutes() {
 function mapRouteColor(apiRoute: ApiRoute) {
 	if (apiRoute.routeShortName == '5/' || apiRoute.routeShortName == 'CM') {
 		return '#F5C500';
-	} else if (apiRoute.routeShortName == 'P') {
-		return '#C52720';
+	} else if (apiRoute.routeShortName == '18') {
+		return '#8ea24c';
 	} else if (apiRoute.routeShortName == 'G') {
 		return '#542774';
 	} else if (apiRoute.routeShortName == 'M') {
