@@ -4,6 +4,8 @@ export function load({ setHeaders }) {
 	const stations = stationsService.getStationList();
 	const railways = stationsService.getRailways();
 
+	setHeaders({ 'Cache-Control': 'no-cache' });
+
 	return {
 		stations,
 		railways

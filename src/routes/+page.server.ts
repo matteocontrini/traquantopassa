@@ -15,6 +15,8 @@ export async function load({ setHeaders }) {
 		error(503);
 	}
 
+	setHeaders({ 'Cache-Control': 'no-cache' });
+
 	return {
 		stops,
 		routes,
