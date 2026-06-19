@@ -150,7 +150,7 @@
 						bind:value={selectedRoute}
 						class="w-full basis-1/2 py-2 px-3.5 rounded-md bg-neutral-800 text-neutral-100 focus:outline-2 focus:outline-neutral-700">
 						<option value="">🚏 Filtra per linea</option>
-						{#each data.routes as route (route.name)}
+						{#each data.routes as route (route.id)}
 							<option value={route.name}>{route.name} - {route.longName}</option>
 						{/each}
 					</select>

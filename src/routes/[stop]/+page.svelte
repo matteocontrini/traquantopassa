@@ -9,7 +9,7 @@
 	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
 	import LiveTripAnimation from './LiveTripAnimation.svelte';
 	import StopFavoriteButton from '$lib/components/StopFavoriteButton.svelte';
-	import { Flag } from 'lucide-svelte';
+	import { Flag } from '@lucide/svelte';
 	import type { ExpandedTripState } from '$lib/Trip';
 
 	let { data } = $props();
