@@ -4,8 +4,6 @@ export function load({ setHeaders }) {
 	const stations = stationsService.getStationList();
 	const railways = stationsService.getRailways();
 
-	setHeaders({ 'Cache-Control': 'max-age=3600' });
-
 	return {
 		stations,
 		railways

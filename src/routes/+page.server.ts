@@ -15,8 +15,6 @@ export async function load({ setHeaders }) {
 		error(503);
 	}
 
-	setHeaders({ 'Cache-Control': 'max-age=3600' });
-
 	return {
 		stops,
 		routes,
