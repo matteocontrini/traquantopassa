@@ -21,8 +21,6 @@ export async function getRoutes() {
 	logger.info('Fetching routes from API');
 	const apiRoutes = await api.getRoutes();
 
-	console.log(apiRoutes)
-
 	routes = apiRoutes.map(apiRoute => apiRouteToRoute(apiRoute));
 
 	// Sort by route name (numeric)
