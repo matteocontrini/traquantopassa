@@ -16,7 +16,11 @@ export default {
 	'41022': 'Pressano Via Claudia Augusta', // exapands other ambiguous abbreviations
 	'22555': 'Spini Palazzo Giano',
 	'21300': 'Fratelli Fontana Generale Cantore',
+	'21295': 'Fratelli Fontana Oberziner',
+	'21305': 'Fratelli Perini 3 Novembre',
 	'24810': 'Villamontagna Piazza Predaroi',
+	'5173' : 'Piazza Dante Palazzo Regione',
+	'22660': 'Ghiaie Scuola Materna',
 
 	'22650': 'Ghiaie Zona Industriale FTM', // capitalizes FTM
 	'20150': 'Dogana Stazione FTM',
