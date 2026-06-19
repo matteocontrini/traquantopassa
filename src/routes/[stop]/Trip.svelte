@@ -2,7 +2,7 @@
 	import type { Trip, ExpandedTripState } from '$lib/Trip';
 	import LiveTripAnimation from './LiveTripAnimation.svelte';
 	import PulsingMinutes from './PulsingMinutes.svelte';
-	import { Flag } from 'lucide-svelte';
+	import { Flag } from '@lucide/svelte';
 	import BusTripDetail from './BusTripDetail.svelte';
 	import { slide } from 'svelte/transition';
 	import { getContext } from 'svelte';
