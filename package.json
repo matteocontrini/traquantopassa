@@ -48,7 +48,7 @@
     "@fontsource-variable/inter": "^5.2.8",
     "cheerio": "^1.2.0",
     "dotenv": "^17.4.2",
-    "lucide-svelte": "^1.0.1",
+    "@lucide/svelte": "^1.21.0",
     "node-cache": "^5.1.2",
     "topbar": "^3.0.1"
   }
