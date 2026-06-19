@@ -19,7 +19,7 @@ export default {
 	'21295': 'Fratelli Fontana Oberziner',
 	'21305': 'Fratelli Perini 3 Novembre',
 	'24810': 'Villamontagna Piazza Predaroi',
-	'5173' : 'Piazza Dante Palazzo Regione',
+	'20120': 'Piazza Dante Palazzo Regione',
 	'22660': 'Ghiaie Scuola Materna',
 
 	'22650': 'Ghiaie Zona Industriale FTM', // capitalizes FTM
