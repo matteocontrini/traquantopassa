@@ -1,10 +1,8 @@
 import * as stationsService from '$lib/server/stations-service';
 
-export function load({ setHeaders }) {
+export function load() {
 	const stations = stationsService.getStationList();
 	const railways = stationsService.getRailways();
-
-	setHeaders({ 'Cache-Control': 'no-cache' });
 
 	return {
 		stations,

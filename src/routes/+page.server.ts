@@ -4,7 +4,7 @@ import * as stopsRankingService from '$lib/server/stops-ranking-service';
 import { error } from '@sveltejs/kit';
 import * as logger from '$lib/logger';
 
-export async function load({ setHeaders }) {
+export async function load() {
 	let stops, routes, rankings;
 	try {
 		stops = await stopsService.getStopGroups();
@@ -14,8 +14,6 @@ export async function load({ setHeaders }) {
 		logger.error('Error while fetching stops/routes', e);
 		error(503);
 	}
-
-	setHeaders({ 'Cache-Control': 'no-cache' });
 
 	return {
 		stops,
