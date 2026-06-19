@@ -16,6 +16,7 @@
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
     "check-updates": "npx npm-check-updates -i --format group,repo --cooldown 1d",
+    "check-updates-semver": "npx npm-check-updates -i --format group,repo --cooldown 1d --target semver",
     "test": "vitest run --reporter=tree",
     "test:dev": "vitest"
   },
