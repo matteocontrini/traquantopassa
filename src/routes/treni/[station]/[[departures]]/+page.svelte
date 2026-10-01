@@ -45,14 +45,14 @@
 		// Round to nearest 5s
 		const seconds = Math.floor((timeState.now - details.lastUpdatedAt.getTime()) / 5000) * 5;
 		if (seconds <= 0) {
-			return 'ora';
+			return 'proprio ora';
 		}
-		if (seconds <= 60) {
-			return `${seconds}s fa`;
+		if (seconds < 60) {
+			return `${seconds} secondi fa`;
 		}
 
 		const minutes = Math.floor(seconds / 60);
-		return `${minutes} min fa`;
+		return `${minutes} ${minutes === 1 ? 'minuto' : 'minuti'} fa`;
 	}
 
 	$effect(() => {

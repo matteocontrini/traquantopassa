@@ -26,28 +26,30 @@
 		// Round to nearest 5s
 		const seconds = Math.floor((timeState.now - trip.lastUpdatedTimestamp) / 5000) * 5;
 		if (seconds <= 0) {
-			return 'ora';
+			return 'appena ricevuta';
 		}
-		if (seconds <= 60) {
-			return `${seconds}s fa`;
+		if (seconds < 60) {
+			return `${seconds} secondi fa`;
 		}
 
 		const minutes = Math.floor(seconds / 60);
-		return `${minutes} min fa`;
+		return `${minutes} ${minutes === 1 ? 'minuto' : 'minuti'} fa`;
 	}
 </script>
 
 <!-- This wrapper is needed to be able to add a bottom padding and avoid the slide transition jerkiness -->
 <div class="pt-1 pb-3">
 	<div class="rounded-lg border border-neutral-700 bg-neutral-800">
-		<div class="flex justify-between px-3 py-1.5">
+		<div
+			class="flex flex-wrap items-center justify-between gap-x-2 border-b border-b-neutral-700 px-4 py-1.5"
+		>
 			{#if trip.vehicleId}
-				<span class="font-bold">Bus {trip.vehicleId}</span>
+				<span class="font-semibold">Bus {trip.vehicleId}</span>
 			{:else}
-				<span class="font-semibold italic">Dati non disponibili</span>
+				<span class="text-sm text-neutral-400">Dati in tempo reale non disponibili</span>
 			{/if}
 			{#if trip.lastUpdatedTimestamp !== 0}
-				<span class="font-light">Aggiornato {timeAgo()}</span>
+				<span class="text-sm text-neutral-400">Ultima posizione {timeAgo()}</span>
 			{/if}
 		</div>
 
