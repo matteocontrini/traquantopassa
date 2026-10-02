@@ -35,17 +35,20 @@ export async function getTrips(stop: Stop): Promise<CachedItem<StopDirection>> {
 
 	let trips = await mapApiTrips(apiTrips, routes, stopId);
 
-	// Sometimes the wrong id is inserted, and the bus is massively early
-	// this causes the bus to persist even after it passed the users's stop
-	// we also remove it reached the end of the line in case the user is less than 2 stops
-	// before the end of line.
+	// Sometimes an incorrect trip ID is inserted, causing data from the next trip
+	// to be displayed. This can make a bus appear massively early.
+	// Example: a bus that is 5 minutes late may show the next trip's data and appear
+	// 55 minutes early. The trip remains visible at all stops until its scheduled
+	// departure time, which is confusing for users.
+	//
+	// Hide suspiciously early trips if the bus has already passed the current stop
+	// or reached the end of the line. Smaller early values are kept visible since
+	// they may be legitimate and allow users to see that they missed the bus.
 	trips = trips.filter((trip) => {
 		const distanceInStops = trip.userStopSequenceNumber - trip.currentStopSequenceNumber;
 		const isFarAhead = distanceInStops < -STOP_AHEAD_THRESHOLD;
 		const isEndOfLine = trip.currentStopSequenceNumber === trip.stopTimes.length;
 
-		// if it's below a certain threshold it will still be shown as it likely was actually early
-		// it will be removed the the api anyways after that time
 		const isTooEarly = trip.delay != null && trip.delay < -EARLY_THRESHOLD_MINS;
 
 		return !(isTooEarly && (isFarAhead || isEndOfLine));

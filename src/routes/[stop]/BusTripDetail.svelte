@@ -49,7 +49,7 @@
 				<span class="text-sm text-neutral-400">Dati in tempo reale non disponibili</span>
 			{/if}
 			{#if trip.lastUpdatedTimestamp !== 0}
-				<span class="text-sm text-neutral-400">Ultima posizione {timeAgo()}</span>
+				<span class="text-sm text-neutral-400">ultima posizione {timeAgo()}</span>
 			{/if}
 		</div>
 
