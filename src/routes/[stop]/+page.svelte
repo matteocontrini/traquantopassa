@@ -1,23 +1,18 @@
 <script lang="ts">
 	import { PUBLIC_BASE_URL } from '$env/static/public';
-	import Trip from './Trip.svelte';
 	import FooterNavigation from '$lib/components/FooterNavigation.svelte';
 	import { onMount, setContext } from 'svelte';
 	import { invalidateAll } from '$app/navigation';
-	import { flip } from 'svelte/animate';
-	import { fade } from 'svelte/transition';
 	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
 	import LiveTripAnimation from './LiveTripAnimation.svelte';
 	import StopFavoriteButton from '$lib/components/StopFavoriteButton.svelte';
 	import { Flag } from '@lucide/svelte';
-	import type { ExpandedTripState } from '$lib/Trip';
+	import type { ExpandedTripState, TimeState } from '$lib/Trip';
+	import Direction from './Direction.svelte';
 
 	let { data } = $props();
 
 	let details = $derived(data.details);
-	let showMore = $state(data.details.directions.length < 2);
-	let limit = $derived(showMore ? 15 : 5);
-	let showMoreInProgress = $state(false);
 
 	const tripState: ExpandedTripState = {
 		id: null,
@@ -26,22 +21,56 @@
 	setContext('expandedTrip', expandedTrip);
 
 	const REFRESH_INTERVAL = 30 * 1000;
+	const TIMER_UPDATE_INTERVAL = 5 * 1000;
 	let timer: ReturnType<typeof setInterval>;
+	const timeStateVal: TimeState = {
+		now: Date.now(),
+	};
+	const timeState = $state(timeStateVal);
+	setContext('timeState', timeState);
+
+	function updateTime() {
+		timeState.now = Date.now();
+		const cacheAge = timeState.now - details.lastUpdatedAt.getTime();
+		if (cacheAge > REFRESH_INTERVAL) {
+			invalidateAll();
+		}
+	}
+
+	function timeAgo() {
+		// Round to nearest 5s
+		const seconds = Math.floor((timeState.now - details.lastUpdatedAt.getTime()) / 5000) * 5;
+		if (seconds <= 0) {
+			return 'proprio ora';
+		}
+		if (seconds < 60) {
+			return `${seconds} secondi fa`;
+		}
+
+		const minutes = Math.floor(seconds / 60);
+		return `${minutes} ${minutes === 1 ? 'minuto' : 'minuti'} fa`;
+	}
+
+	$effect(() => {
+		// Re-sync timer when data is updated
+		// prevents extra 5s delay before next update
+		onVisibilityChange();
+	});
 
 	function onVisibilityChange() {
 		clearInterval(timer);
 		if (document.visibilityState != 'hidden') {
-			invalidateAll();
-			timer = setInterval(invalidateAll, REFRESH_INTERVAL);
+			updateTime();
+			timer = setInterval(updateTime, TIMER_UPDATE_INTERVAL);
 		}
 	}
 
 	onMount(() => {
-		timer = setInterval(invalidateAll, REFRESH_INTERVAL);
+		onVisibilityChange();
 		document.addEventListener('visibilitychange', onVisibilityChange);
 		return () => {
-			clearInterval(timer);
 			document.removeEventListener('visibilitychange', onVisibilityChange);
+			clearInterval(timer);
 		};
 	});
 </script>
@@ -59,11 +88,7 @@
 		<StopFavoriteButton stopCode={details.code} className="pl-2" />
 	</div>
 	<div class="mt-1 text-center text-sm">
-		aggiornato alle
-		{new Date(details.lastUpdatedAt).toLocaleTimeString(['it-IT'], {
-			hour: '2-digit',
-			minute: '2-digit',
-		})}
+		aggiornato {timeAgo()}
 	</div>
 
 	{#if details.trainStationSlug}
@@ -80,44 +105,7 @@
 <main>
 	<!-- eslint-disable-next-line svelte/require-each-key -->
 	{#each details.directions as direction}
-		<div class="mt-10 flex flex-col">
-			{#if direction.name && details.directions.length > 1}
-				<div class="mx-auto mb-4 w-fit text-center text-lg font-medium uppercase">
-					{direction.name}
-				</div>
-			{/if}
-			{#if direction.trips.length > 0}
-				{#each direction.trips.slice(0, limit) as trip (trip.id)}
-					<div
-						animate:flip={{
-							delay: 0,
-							duration: 300,
-						}}
-						in:fade={{ delay: showMoreInProgress ? 0 : 800, duration: 300 }}
-						out:fade={{ duration: 300 }}
-					>
-						<Trip {trip} />
-					</div>
-				{/each}
-
-				{#if !showMore && direction.trips.length > limit}
-					<button
-						class="mt-2 cursor-pointer rounded-md bg-neutral-800 px-3 py-1 text-mid no-underline hover:bg-neutral-700"
-						onclick={() => {
-							showMore = true;
-							showMoreInProgress = true;
-							setTimeout(() => {
-								showMoreInProgress = false;
-							}, 50);
-						}}
-					>
-						Mostra altri {direction.trips.length - limit}
-					</button>
-				{/if}
-			{:else}
-				<div class="text-center">Nessun autobus previsto per oggi</div>
-			{/if}
-		</div>
+		<Direction {direction} alone={details.directions.length < 2} />
 	{/each}
 </main>
 

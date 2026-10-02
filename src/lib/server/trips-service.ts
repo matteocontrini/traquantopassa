@@ -15,8 +15,9 @@ const cache = new NodeCache();
 // sometimes only happens every 1 minute instead of every 30s
 const tripsCacheDurationSeconds = 29;
 
-const defaultLimit = 15;
-const outdatedDataThresholdMillis = 1000 * 60 * 5;
+const DEFAULT_LIMIT = 16;
+const EARLY_THRESHOLD_MINS = 5;
+const STOP_AHEAD_THRESHOLD = 2;
 
 export async function getTrips(stop: Stop): Promise<CachedItem<StopDirection>> {
 	const stopId = stop.id;
@@ -29,10 +30,29 @@ export async function getTrips(stop: Stop): Promise<CachedItem<StopDirection>> {
 
 	// Fetch from API
 	logger.info(`Fetching trips for stop ${stopId}`);
-	const apiTrips = await api.getTrips(stopId, defaultLimit);
+	const apiTrips = await api.getTrips(stopId, DEFAULT_LIMIT);
 	const routes = await routesService.getRoutes();
 
-	const trips = await mapApiTrips(apiTrips, routes, stopId);
+	let trips = await mapApiTrips(apiTrips, routes, stopId);
+
+	// Sometimes an incorrect trip ID is inserted, causing data from the next trip
+	// to be displayed. This can make a bus appear massively early.
+	// Example: a bus that is 5 minutes late may show the next trip's data and appear
+	// 55 minutes early. The trip remains visible at all stops until its scheduled
+	// departure time, which is confusing for users.
+	//
+	// Hide suspiciously early trips if the bus has already passed the current stop
+	// or reached the end of the line. Smaller early values are kept visible since
+	// they may be legitimate and allow users to see that they missed the bus.
+	trips = trips.filter((trip) => {
+		const distanceInStops = trip.userStopSequenceNumber - trip.currentStopSequenceNumber;
+		const isFarAhead = distanceInStops < -STOP_AHEAD_THRESHOLD;
+		const isEndOfLine = trip.currentStopSequenceNumber === trip.stopTimes.length;
+
+		const isTooEarly = trip.delay != null && trip.delay < -EARLY_THRESHOLD_MINS;
+
+		return !(isTooEarly && (isFarAhead || isEndOfLine));
+	});
 
 	const direction = {
 		name: directionName(stop),
@@ -61,13 +81,18 @@ async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId:
 
 			const delay = trip.delay;
 
-			const currentStopSequenceNumber = trip.lastSequenceDetection;
+			let currentStopSequenceNumber = trip.lastSequenceDetection;
+
+			// If a bus is delayed enough that it won't make it to the next route in time,
+			// it is incorrectly shown as being on the first stop, this sets it to -1 so we can display the information
+			if (trip.stopNext === 0 && delay != null) {
+				currentStopSequenceNumber = -1;
+			}
 
 			// Check if the last update of real-time data isn't recent enough
-			let isOutdated = false;
-			if (delay != null) {
-				const lastEventDate = new Date(trip.lastEventRecivedAt);
-				isOutdated = Date.now() - lastEventDate.getTime() > outdatedDataThresholdMillis;
+			let lastUpdatedTimestamp = 0;
+			if (delay != null && trip.lastEventRecivedAt != null) {
+				lastUpdatedTimestamp = new Date(trip.lastEventRecivedAt).getTime();
 			}
 
 			// Check if the trip will end at the current user stop
@@ -104,11 +129,12 @@ async function mapApiTrips(apiTrips: api.ApiTrip[], routes: Route[], userStopId:
 				routeName: route.name,
 				routeColor: route.color,
 				destination: trip.tripHeadsign,
+				vehicleId: trip.matricolaBus?.toString() || null,
 				minutes,
 				delay,
 				currentStopSequenceNumber,
 				userStopSequenceNumber,
-				isOutdated,
+				lastUpdatedTimestamp,
 				isEndOfRouteForUser,
 				stopTimes,
 			} satisfies Trip as Trip;
@@ -121,6 +147,8 @@ function directionName(stop: Stop): string {
 		return `» Periferia`;
 	} else if (stop.code.endsWith('x')) {
 		return `» Centro`;
+	} else if (stop.code.endsWith('c')) {
+		return `Capolinea`;
 	} else if (stop.code.endsWith('s')) {
 		return `Sud`;
 	} else if (stop.code.endsWith('n')) {

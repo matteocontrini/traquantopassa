@@ -4,10 +4,11 @@ export interface Trip {
 	routeColor: string;
 	destination: string;
 	minutes: number;
+	vehicleId: string | null;
 	delay: number | null;
 	currentStopSequenceNumber: number;
 	userStopSequenceNumber: number;
-	isOutdated: boolean;
+	lastUpdatedTimestamp: number;
 	isEndOfRouteForUser: boolean;
 	stopTimes: StopTime[];
 }
@@ -19,4 +20,8 @@ export interface StopTime {
 
 export interface ExpandedTripState {
 	id: string | null;
+}
+
+export interface TimeState {
+	now: number;
 }

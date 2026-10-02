@@ -33,7 +33,8 @@ export interface ApiTrip {
 	routeId: number;
 	oraArrivoEffettivaAFermataSelezionata: string;
 	oraArrivoProgrammataAFermataSelezionata: string;
-	stopNext: number | null;
+	stopNext: number;
+	matricolaBus: number | null;
 	lastSequenceDetection: number;
 	delay: number | null;
 	lastEventRecivedAt: string;

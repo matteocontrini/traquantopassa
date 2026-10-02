@@ -9,7 +9,7 @@
 	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
 	import DepartingTrainAnimation from './DepartingTrainAnimation.svelte';
 	import StationFavoriteButton from '$lib/components/StationFavoriteButton.svelte';
-	import type { ExpandedTripState } from '$lib/Trip';
+	import type { ExpandedTripState, TimeState } from '$lib/Trip';
 	import ArrivalsDeparturesSwitch from '$lib/components/ArrivalsDeparturesSwitch.svelte';
 
 	let { data } = $props();
@@ -19,29 +19,62 @@
 	let showMoreInProgress = $state(false);
 	let limit = $derived(showMore ? Infinity : 5);
 
-	const REFRESH_INTERVAL = 30 * 1000;
-	let timer: ReturnType<typeof setInterval>;
-
 	const trainState: ExpandedTripState = {
 		id: null,
 	};
 	const expandedTrain = $state(trainState);
 	setContext('expandedTrain', expandedTrain);
 
+	const REFRESH_INTERVAL = 30 * 1000;
+	const TIMER_UPDATE_INTERVAL = 5 * 1000;
+	let timer: ReturnType<typeof setInterval>;
+	const timeStateVal: TimeState = {
+		now: Date.now(),
+	};
+	const timeState = $state(timeStateVal);
+
+	function updateTime() {
+		timeState.now = Date.now();
+		const cacheAge = timeState.now - details.lastUpdatedAt.getTime();
+		if (cacheAge > REFRESH_INTERVAL) {
+			invalidateAll();
+		}
+	}
+
+	function timeAgo() {
+		// Round to nearest 5s
+		const seconds = Math.floor((timeState.now - details.lastUpdatedAt.getTime()) / 5000) * 5;
+		if (seconds <= 0) {
+			return 'proprio ora';
+		}
+		if (seconds < 60) {
+			return `${seconds} secondi fa`;
+		}
+
+		const minutes = Math.floor(seconds / 60);
+		return `${minutes} ${minutes === 1 ? 'minuto' : 'minuti'} fa`;
+	}
+
+	$effect(() => {
+		// Re-sync timer when data is updated
+		// prevents extra 5s delay before next update
+		onVisibilityChange();
+	});
+
 	function onVisibilityChange() {
 		clearInterval(timer);
 		if (document.visibilityState != 'hidden') {
-			invalidateAll();
-			timer = setInterval(invalidateAll, REFRESH_INTERVAL);
+			updateTime();
+			timer = setInterval(updateTime, TIMER_UPDATE_INTERVAL);
 		}
 	}
 
 	onMount(() => {
-		timer = setInterval(invalidateAll, REFRESH_INTERVAL);
+		onVisibilityChange();
 		document.addEventListener('visibilitychange', onVisibilityChange);
 		return () => {
-			clearInterval(timer);
 			document.removeEventListener('visibilitychange', onVisibilityChange);
+			clearInterval(timer);
 		};
 	});
 </script>
@@ -57,11 +90,7 @@
 		<StationFavoriteButton stationId={details.id} className="pl-1" />
 	</h1>
 	<div class="mt-1 text-center text-sm">
-		aggiornato alle
-		{new Date(details.lastUpdatedAt).toLocaleTimeString(['it-IT'], {
-			hour: '2-digit',
-			minute: '2-digit',
-		})}
+		aggiornato {timeAgo()}
 	</div>
 
 	{#if details.stopSlug}
