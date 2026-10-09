@@ -41,9 +41,8 @@ function mapTrains(apiTrains: api.ApiTrain[]): Train[] {
 
 		const carrier = fixCarrier(train.carrier);
 
-		// Trenitalia-16124-22:22
 		const baseId = `${carrier}-${train.number}-${train.time}`;
-		// Append the occurrence number for duplicates, e.g.
+		// Append an occurrence number to the base ID to prevent duplicate trains from having the same ID:
 		// Trenitalia-16124-22:22-0
 		// Trenitalia-16124-22:22-1
 		const occurrence = occurrences.get(baseId) ?? 0;
