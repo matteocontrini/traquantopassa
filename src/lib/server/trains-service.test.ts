@@ -1,5 +1,44 @@
-import { describe, it, expect } from 'vitest';
-import { capitalize } from './trains-service';
+import { describe, it, expect, vi } from 'vitest';
+import { capitalize, getTrains } from './trains-service';
+import * as api from './rfi-api';
+
+vi.mock('./rfi-api', () => ({ getTrains: vi.fn() }));
+
+describe('getTrains', () => {
+	it('counts occurrences per train and resets the counters for each response', async () => {
+		const cancelled: api.ApiTrain = {
+			carrier: 'TRENITALIA',
+			category: 'Categoria REG',
+			number: '16124',
+			destination: 'TRENTO',
+			time: '22:22',
+			platform: '',
+			delay: 'Cancellato',
+			isBlinking: false,
+			notes: 'SOPPRESSO -',
+			stopTimes: [],
+		};
+		const running = { ...cancelled, platform: '1', delay: '' };
+		const unrelated = { ...running, number: '16126' };
+		vi.mocked(api.getTrains)
+			.mockResolvedValueOnce([cancelled, unrelated, running])
+			.mockResolvedValueOnce([unrelated, cancelled, running]);
+
+		const first = await getTrains('duplicate-test-first');
+		const second = await getTrains('duplicate-test-second');
+
+		expect(first.value.map((train) => train.id)).toEqual([
+			'Trenitalia-16124-22:22-0',
+			'Trenitalia-16126-22:22-0',
+			'Trenitalia-16124-22:22-1',
+		]);
+		expect(second.value.map((train) => train.id)).toEqual([
+			'Trenitalia-16126-22:22-0',
+			'Trenitalia-16124-22:22-0',
+			'Trenitalia-16124-22:22-1',
+		]);
+	});
+});
 
 describe('capitalize', () => {
 	it('lowercases all-uppercase input', () => {

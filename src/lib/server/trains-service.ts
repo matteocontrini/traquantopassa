@@ -29,6 +29,8 @@ export async function getTrains(
 }
 
 function mapTrains(apiTrains: api.ApiTrain[]): Train[] {
+	const occurrences = new Map<string, number>();
+
 	return apiTrains.map((train) => {
 		let isDelayed = false;
 		let delay = train.delay;
@@ -38,6 +40,16 @@ function mapTrains(apiTrains: api.ApiTrain[]): Train[] {
 		}
 
 		const carrier = fixCarrier(train.carrier);
+
+		// Trenitalia-16124-22:22
+		const baseId = `${carrier}-${train.number}-${train.time}`;
+		// Append the occurrence number for duplicates, e.g.
+		// Trenitalia-16124-22:22-0
+		// Trenitalia-16124-22:22-1
+		const occurrence = occurrences.get(baseId) ?? 0;
+		occurrences.set(baseId, occurrence + 1);
+		const id = `${baseId}-${occurrence}`;
+
 		const category = fixCategory(train.category);
 		const icon = categoryToIcon(train.category);
 
@@ -53,7 +65,7 @@ function mapTrains(apiTrains: api.ApiTrain[]): Train[] {
 		train.stopTimes.forEach((stop) => (stop.name = capitalize(stop.name)));
 
 		return {
-			id: carrier + train.number + train.time,
+			id,
 			carrier: carrier,
 			category: category,
 			icon: icon,
