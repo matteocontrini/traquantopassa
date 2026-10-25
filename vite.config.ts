@@ -5,6 +5,9 @@ import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+	build: {
+		cssTarget: 'safari15',
+	},
 	plugins: [
 		tailwindcss(),
 		sveltekit({
