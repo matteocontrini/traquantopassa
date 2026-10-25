@@ -25,7 +25,9 @@
 	</a>
 
 	<a
-		href={stationSlug ? resolve('/treni/[station]', { station: stationSlug }) : resolve('/treni')}
+		href={stationSlug
+			? resolve('/treni/[station]/[[departures]]', { station: stationSlug })
+			: resolve('/treni')}
 		class="flex h-8 cursor-pointer items-center rounded-md px-3 no-underline"
 		class:bg-neutral-100={!isBus}
 		class:hover:bg-neutral-200={!isBus}

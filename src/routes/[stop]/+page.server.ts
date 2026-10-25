@@ -1,10 +1,10 @@
-import * as stopsService from '$lib/server/stops-service';
-import * as tripsService from '$lib/server/trips-service';
+import * as stopsService from '#lib/server/stops-service.js';
+import * as tripsService from '#lib/server/trips-service.js';
 import { error } from '@sveltejs/kit';
-import type StopGroupDetails from '$lib/StopGroupDetails';
-import { getStationForStop } from '$lib/server/stops-stations-mapping';
-import type { StopDirection } from '$lib/StopDirection';
-import * as logger from '$lib/logger';
+import type StopGroupDetails from '#lib/StopGroupDetails.js';
+import { getStationForStop } from '#lib/server/stops-stations-mapping.js';
+import type { StopDirection } from '#lib/StopDirection.js';
+import * as logger from '#lib/logger.js';
 
 export async function load({ params }) {
 	const slug = params.stop;

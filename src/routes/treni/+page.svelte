@@ -2,18 +2,18 @@
 	import { resolve } from '$app/paths';
 	import { slide, fade } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
-	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
-	import TabButton from '$lib/components/TabButton.svelte';
+	import ModesSwitch from '#lib/components/ModesSwitch.svelte';
+	import TabButton from '#lib/components/TabButton.svelte';
 	import StationBlock from './StationBlock.svelte';
 	import { getContext, onMount } from 'svelte';
-	import type { FavoriteStations } from '$lib/storage/favorites.svelte';
+	import type { FavoriteStations } from '#lib/storage/favorites.svelte.js';
 	import {
 		computeStationsDistances,
 		getCurrentPosition,
 		handleGeolocationError,
 		isGeolocationGranted,
-	} from '$lib/location-helpers';
-	import { getDefaultTab, setDefaultTab, type Tab } from '$lib/storage/stations-default-tab';
+	} from '#lib/location-helpers.js';
+	import { getDefaultTab, setDefaultTab, type Tab } from '#lib/storage/stations-default-tab.js';
 
 	let { data } = $props();
 

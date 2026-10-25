@@ -1,4 +1,4 @@
-import type { Train } from '$lib/Train';
+import type { Train } from '#lib/Train.js';
 
 export default interface StationDetails {
 	id: string;

@@ -1,6 +1,6 @@
-import type { Coordinates } from '$lib/Coordinates';
-import type { StopGroup } from '$lib/StopGroup';
-import type { Station } from '$lib/Station';
+import type { Coordinates } from '#lib/Coordinates.js';
+import type { StopGroup } from '#lib/StopGroup.js';
+import type { Station } from '#lib/Station.js';
 
 export function computeStopsDistances(
 	stops: StopGroup[],

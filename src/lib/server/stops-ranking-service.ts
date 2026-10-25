@@ -1,9 +1,9 @@
-import { env } from '$env/dynamic/private';
+import { GOATCOUNTER_API_KEY } from '$app/env/private';
 import NodeCache from 'node-cache';
-import stopsRankingFallback from '$lib/server/stops-ranking-fallback';
-import * as logger from '$lib/logger';
-import type { StopGroup } from '$lib/StopGroup';
-import { elapsed } from '$lib/server/time-helpers';
+import stopsRankingFallback from '#lib/server/stops-ranking-fallback.js';
+import * as logger from '#lib/logger.js';
+import type { StopGroup } from '#lib/StopGroup.js';
+import { elapsed } from '#lib/server/time-helpers.js';
 
 const rankingCacheKey = 'stop-rankings';
 
@@ -41,7 +41,7 @@ async function loadMostVisitedStops(stops: StopGroup[]): Promise<Record<string, 
 
 	const response = await fetch(url, {
 		headers: {
-			Authorization: 'Bearer ' + env.GOATCOUNTER_API_KEY,
+			Authorization: 'Bearer ' + GOATCOUNTER_API_KEY,
 		},
 		signal: AbortSignal.timeout(3 * 1000),
 	});

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import stopInstructionsImage from '$lib/assets/stop-instructions.png';
+	import stopInstructionsImage from '#lib/assets/stop-instructions.png';
 </script>
 
 <svelte:head>

@@ -1,4 +1,4 @@
-import type { StopDirection } from '$lib/StopDirection';
+import type { StopDirection } from '#lib/StopDirection.js';
 
 export default interface StopGroupDetails {
 	name: string;

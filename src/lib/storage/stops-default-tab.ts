@@ -1,4 +1,4 @@
-import { browser } from '$app/environment';
+import { browser } from '$app/env';
 
 const LOCAL_STORAGE_KEY = 'tqp_stops_default_tab';
 

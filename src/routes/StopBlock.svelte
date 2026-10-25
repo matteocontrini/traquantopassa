@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { mapRouteIdsToRoutes } from '$lib/routes-helper';
-	import type { StopGroup } from '$lib/StopGroup';
-	import type { Route } from '$lib/Route';
-	import StopFavoriteButton from '$lib/components/StopFavoriteButton.svelte';
+	import { mapRouteIdsToRoutes } from '#lib/routes-helper.js';
+	import type { StopGroup } from '#lib/StopGroup.js';
+	import type { Route } from '#lib/Route.js';
+	import StopFavoriteButton from '#lib/components/StopFavoriteButton.svelte';
 
 	interface Props {
 		stop: StopGroup;

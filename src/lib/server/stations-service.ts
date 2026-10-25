@@ -1,5 +1,5 @@
-import stationsList from '$lib/server/stations-list';
-import type { Station } from '$lib/Station';
+import stationsList from '#lib/server/stations-list.js';
+import type { Station } from '#lib/Station.js';
 import { getIdFromSlug, getStations } from './rfi-api';
 
 interface LazyStation extends Omit<Station, 'id'> {

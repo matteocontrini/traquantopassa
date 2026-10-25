@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getContext, onMount } from 'svelte';
-	import type { TimeState, Trip } from '$lib/Trip';
+	import type { TimeState, Trip } from '#lib/Trip.js';
 
 	interface Props {
 		trip: Trip;

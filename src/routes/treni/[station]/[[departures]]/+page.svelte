@@ -1,16 +1,16 @@
 <script lang="ts">
-	import { PUBLIC_BASE_URL } from '$env/static/public';
+	import { PUBLIC_BASE_URL } from '$app/env/public';
 	import Train from './Train.svelte';
-	import FooterNavigation from '$lib/components/FooterNavigation.svelte';
+	import FooterNavigation from '#lib/components/FooterNavigation.svelte';
 	import { onMount, setContext } from 'svelte';
-	import { invalidateAll } from '$app/navigation';
+	import { refreshAll } from '$app/navigation';
 	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
-	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
+	import ModesSwitch from '#lib/components/ModesSwitch.svelte';
 	import DepartingTrainAnimation from './DepartingTrainAnimation.svelte';
-	import StationFavoriteButton from '$lib/components/StationFavoriteButton.svelte';
-	import type { ExpandedTripState, TimeState } from '$lib/Trip';
-	import ArrivalsDeparturesSwitch from '$lib/components/ArrivalsDeparturesSwitch.svelte';
+	import StationFavoriteButton from '#lib/components/StationFavoriteButton.svelte';
+	import type { ExpandedTripState, TimeState } from '#lib/Trip.js';
+	import ArrivalsDeparturesSwitch from '#lib/components/ArrivalsDeparturesSwitch.svelte';
 
 	let { data } = $props();
 
@@ -37,7 +37,7 @@
 		timeState.now = Date.now();
 		const cacheAge = timeState.now - details.lastUpdatedAt.getTime();
 		if (cacheAge > REFRESH_INTERVAL) {
-			invalidateAll();
+			refreshAll();
 		}
 	}
 

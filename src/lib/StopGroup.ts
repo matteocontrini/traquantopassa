@@ -1,5 +1,5 @@
-import type { Stop } from '$lib/Stop';
-import type { Coordinates } from '$lib/Coordinates';
+import type { Stop } from '#lib/Stop.js';
+import type { Coordinates } from '#lib/Coordinates.js';
 
 export interface StopGroup {
 	name: string;

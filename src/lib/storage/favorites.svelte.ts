@@ -1,4 +1,4 @@
-import { browser } from '$app/environment';
+import { browser } from '$app/env';
 
 const STOPS_KEY = 'tqp_stops_favorites';
 const STATIONS_KEY = 'tqp_stations_favorites';

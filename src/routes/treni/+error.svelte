@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import FooterNavigation from '$lib/components/FooterNavigation.svelte';
+	import FooterNavigation from '#lib/components/FooterNavigation.svelte';
 </script>
 
 <div class="mt-12 text-center">

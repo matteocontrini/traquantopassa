@@ -1,10 +1,10 @@
-import * as api from '$lib/server/trentino-trasporti-api';
+import * as api from '#lib/server/trentino-trasporti-api.js';
 import NodeCache from 'node-cache';
-import type { StopGroup } from '$lib/StopGroup';
-import type { Stop } from '$lib/Stop';
-import type { Coordinates } from '$lib/Coordinates';
-import customSlugs from '$lib/server/custom-slugs';
-import customStopNames from '$lib/server/custom-stop-names';
+import type { StopGroup } from '#lib/StopGroup.js';
+import type { Stop } from '#lib/Stop.js';
+import type { Coordinates } from '#lib/Coordinates.js';
+import customSlugs from '#lib/server/custom-slugs.js';
+import customStopNames from '#lib/server/custom-stop-names.js';
 
 const cache = new NodeCache({
 	stdTTL: 24 * 60 * 60, // 24 hours

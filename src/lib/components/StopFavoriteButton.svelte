@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { FavoriteStops } from '$lib/storage/favorites.svelte';
+	import type { FavoriteStops } from '#lib/storage/favorites.svelte.js';
 	import { getContext } from 'svelte';
-	import starFilled from '$lib/assets/star-filled.svg';
-	import star from '$lib/assets/star.svg';
+	import starFilled from '#lib/assets/star-filled.svg';
+	import star from '#lib/assets/star.svg';
 
 	interface Props {
 		stopCode: string;

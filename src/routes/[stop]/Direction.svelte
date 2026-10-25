@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { StopDirection } from '$lib/StopDirection';
+	import type { StopDirection } from '#lib/StopDirection.js';
 	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
 	import Trip from './Trip.svelte';

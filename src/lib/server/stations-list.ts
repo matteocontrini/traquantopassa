@@ -1,4 +1,4 @@
-import type { Station } from '$lib/Station';
+import type { Station } from '#lib/Station.js';
 
 function station(
 	id: number,

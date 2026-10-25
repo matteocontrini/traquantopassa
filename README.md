@@ -20,7 +20,7 @@ API_PASSWORD=
 GOATCOUNTER_API_KEY=
 ```
 
-Make sure to add missing credentials (Goatcounter is optional).
+`API_BASE_URL`, `API_USERNAME`, and `API_PASSWORD` are mandatory. Goatcounter is optional.
 
 Install dependencies:
 

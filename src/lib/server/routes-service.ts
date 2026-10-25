@@ -1,8 +1,8 @@
 import NodeCache from 'node-cache';
-import type { Route } from '$lib/Route';
-import * as api from '$lib/server/trentino-trasporti-api';
-import type { ApiRoute } from '$lib/server/trentino-trasporti-api';
-import * as logger from '$lib/logger';
+import type { Route } from '#lib/Route.js';
+import * as api from '#lib/server/trentino-trasporti-api.js';
+import type { ApiRoute } from '#lib/server/trentino-trasporti-api.js';
+import * as logger from '#lib/logger.js';
 
 // TODO: should use stale data instead of simply expiring it
 const cache = new NodeCache({

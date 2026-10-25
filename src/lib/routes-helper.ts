@@ -1,4 +1,4 @@
-import type { Route } from '$lib/Route';
+import type { Route } from '#lib/Route.js';
 
 export function mapRouteIdsToRoutes(routeIds: Set<number>, routes: Route[]) {
 	const filteredRoutes = routes.filter((r) => routeIds.has(r.id));

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import type { Station } from '$lib/Station';
-	import StationFavoriteButton from '$lib/components/StationFavoriteButton.svelte';
+	import type { Station } from '#lib/Station.js';
+	import StationFavoriteButton from '#lib/components/StationFavoriteButton.svelte';
 
 	interface Props {
 		station: Station;
@@ -11,7 +11,7 @@
 </script>
 
 <a
-	href={resolve('/treni/[station]', { station: station.slug })}
+	href={resolve('/treni/[station]/[[departures]]', { station: station.slug })}
 	class="flex w-full flex-col justify-between rounded-lg bg-neutral-800 px-4 pt-3 pb-4 no-underline"
 >
 	<div class="flex items-start justify-between gap-2">

@@ -1,8 +1,8 @@
 import * as cheerio from 'cheerio';
-import * as logger from '$lib/logger';
-import { elapsed } from '$lib/server/time-helpers';
-import type { Coordinates } from '$lib/Coordinates';
-import type { StopTime } from '$lib/Trip';
+import * as logger from '#lib/logger.js';
+import { elapsed } from '#lib/server/time-helpers.js';
+import type { Coordinates } from '#lib/Coordinates.js';
+import type { StopTime } from '#lib/Trip.js';
 
 export interface ApiTrain {
 	carrier: string;

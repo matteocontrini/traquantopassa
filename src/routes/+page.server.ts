@@ -1,8 +1,8 @@
-import * as stopsService from '$lib/server/stops-service';
-import * as routesService from '$lib/server/routes-service';
-import * as stopsRankingService from '$lib/server/stops-ranking-service';
+import * as stopsService from '#lib/server/stops-service.js';
+import * as routesService from '#lib/server/routes-service.js';
+import * as stopsRankingService from '#lib/server/stops-ranking-service.js';
 import { error } from '@sveltejs/kit';
-import * as logger from '$lib/logger';
+import * as logger from '#lib/logger.js';
 
 export async function load() {
 	let stops, routes, rankings;

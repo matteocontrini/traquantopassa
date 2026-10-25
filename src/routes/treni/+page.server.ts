@@ -1,4 +1,4 @@
-import * as stationsService from '$lib/server/stations-service';
+import * as stationsService from '#lib/server/stations-service.js';
 
 export function load() {
 	const stations = stationsService.getStationList();

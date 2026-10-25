@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { PUBLIC_BASE_URL } from '$env/static/public';
-	import FooterNavigation from '$lib/components/FooterNavigation.svelte';
+	import { PUBLIC_BASE_URL } from '$app/env/public';
+	import FooterNavigation from '#lib/components/FooterNavigation.svelte';
 	import { onMount, setContext } from 'svelte';
-	import { invalidateAll } from '$app/navigation';
-	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
+	import { refreshAll } from '$app/navigation';
+	import ModesSwitch from '#lib/components/ModesSwitch.svelte';
 	import LiveTripAnimation from './LiveTripAnimation.svelte';
-	import StopFavoriteButton from '$lib/components/StopFavoriteButton.svelte';
+	import StopFavoriteButton from '#lib/components/StopFavoriteButton.svelte';
 	import { Flag } from '@lucide/svelte';
-	import type { ExpandedTripState, TimeState } from '$lib/Trip';
+	import type { ExpandedTripState, TimeState } from '#lib/Trip.js';
 	import Direction from './Direction.svelte';
 
 	let { data } = $props();
@@ -33,7 +33,7 @@
 		timeState.now = Date.now();
 		const cacheAge = timeState.now - details.lastUpdatedAt.getTime();
 		if (cacheAge > REFRESH_INTERVAL) {
-			invalidateAll();
+			refreshAll();
 		}
 	}
 

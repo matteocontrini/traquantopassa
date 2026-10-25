@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Trip, ExpandedTripState, TimeState } from '$lib/Trip';
+	import type { Trip, ExpandedTripState, TimeState } from '#lib/Trip.js';
 	import LiveTripAnimation from './LiveTripAnimation.svelte';
 	import PulsingMinutes from './PulsingMinutes.svelte';
 	import { Flag } from '@lucide/svelte';

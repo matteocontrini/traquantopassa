@@ -1,11 +1,11 @@
 <script lang="ts">
-	import '$lib/polyfills';
-	import '@fontsource-variable/inter';
+	import '#lib/polyfills.js';
+	import '@fontsource-variable/inter/index.css';
 	import '../app.css';
 	import { navigating } from '$app/state';
 	import { onMount, setContext, type Snippet } from 'svelte';
 	import type { Topbar } from 'topbar';
-	import { favoriteStopsStore } from '$lib/storage/favorites.svelte';
+	import { favoriteStopsStore } from '#lib/storage/favorites.svelte.js';
 
 	interface Props {
 		children?: Snippet;

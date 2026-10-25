@@ -11,7 +11,9 @@
 
 <div class="flex gap-2">
 	<a
-		href={stationSlug ? resolve('/treni/[station]', { station: stationSlug }) : resolve('/')}
+		href={stationSlug
+			? resolve('/treni/[station]/[[departures]]', { station: stationSlug })
+			: resolve('/')}
 		class="flex h-8 cursor-pointer items-center rounded-md px-3 no-underline"
 		class:bg-neutral-100={isDeparture}
 		class:hover:bg-neutral-200={isDeparture}

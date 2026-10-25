@@ -1,13 +1,13 @@
 import NodeCache from 'node-cache';
-import type { StopDirection } from '$lib/StopDirection';
-import * as api from '$lib/server/trentino-trasporti-api';
-import * as routesService from '$lib/server/routes-service';
-import type { Stop } from '$lib/Stop';
-import type { Route } from '$lib/Route';
-import type { Trip, StopTime } from '$lib/Trip';
-import * as logger from '$lib/logger';
-import { getStopName } from '$lib/server/stops-service';
-import CachedItem from '$lib/server/CachedItem';
+import type { StopDirection } from '#lib/StopDirection.js';
+import * as api from '#lib/server/trentino-trasporti-api.js';
+import * as routesService from '#lib/server/routes-service.js';
+import type { Stop } from '#lib/Stop.js';
+import type { Route } from '#lib/Route.js';
+import type { Trip, StopTime } from '#lib/Trip.js';
+import * as logger from '#lib/logger.js';
+import { getStopName } from '#lib/server/stops-service.js';
+import CachedItem from '#lib/server/CachedItem.js';
 
 const cache = new NodeCache();
 

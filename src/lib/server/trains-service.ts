@@ -1,7 +1,7 @@
 import NodeCache from 'node-cache';
 import * as api from './rfi-api';
-import type { Train } from '$lib/Train';
-import CachedItem from '$lib/server/CachedItem';
+import type { Train } from '#lib/Train.js';
+import CachedItem from '#lib/server/CachedItem.js';
 
 const cache = new NodeCache();
 

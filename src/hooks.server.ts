@@ -1,5 +1,5 @@
-import type { Handle } from '@sveltejs/kit';
-import * as logger from '$lib/logger';
+import type { Handle } from '@sveltejs/kit/hooks';
+import * as logger from '#lib/logger.js';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	const ip =

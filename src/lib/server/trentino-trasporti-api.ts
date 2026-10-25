@@ -1,15 +1,15 @@
-import { env } from '$env/dynamic/private';
-import * as logger from '$lib/logger';
-import { elapsed } from '$lib/server/time-helpers';
-import { building } from '$app/environment';
+import { API_BASE_URL, API_USERNAME, API_PASSWORD } from '$app/env/private';
+import * as logger from '#lib/logger.js';
+import { elapsed } from '#lib/server/time-helpers.js';
+import { building } from '$app/env';
 
-const BASE_URL = env.API_BASE_URL;
+const BASE_URL = API_BASE_URL;
 
 if (!building && !BASE_URL) {
 	throw new Error('Missing API_BASE_URL environment variable');
 }
 
-const BASIC_AUTH = Buffer.from(env.API_USERNAME + ':' + env.API_PASSWORD).toString('base64');
+const BASIC_AUTH = Buffer.from(API_USERNAME + ':' + API_PASSWORD).toString('base64');
 
 export interface ApiStop {
 	stopId: number;

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { Train } from '$lib/Train';
-	import type { ExpandedTripState } from '$lib/Trip';
+	import type { Train } from '#lib/Train.js';
+	import type { ExpandedTripState } from '#lib/Trip.js';
 	import { getContext } from 'svelte';
 	import DepartingTrainAnimation from './DepartingTrainAnimation.svelte';
 	import { slide } from 'svelte/transition';
@@ -38,7 +38,7 @@
 			class="block overflow-hidden text-lg leading-tight font-medium text-ellipsis whitespace-nowrap"
 		>
 			{#if train.icon}
-				{#await import(`$lib/assets/${train.icon}.svg`) then { default: src }}
+				{#await import(`#lib/assets/${train.icon}.svg`) then { default: src }}
 					<img
 						class="-mt-1 inline-block h-[22px] w-[22px]"
 						{src}

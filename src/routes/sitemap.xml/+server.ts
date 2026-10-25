@@ -1,5 +1,5 @@
-import * as stopsService from '$lib/server/stops-service';
-import * as stationsService from '$lib/server/stations-service';
+import * as stopsService from '#lib/server/stops-service.js';
+import * as stationsService from '#lib/server/stations-service.js';
 
 const BASE_URL = 'https://traquantopassa.in';
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Train } from '$lib/Train';
+	import type { Train } from '#lib/Train.js';
 
 	interface Props {
 		train: Train;

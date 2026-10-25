@@ -3,17 +3,17 @@
 	import { slide, fade } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 	import StopBlock from './StopBlock.svelte';
-	import ModesSwitch from '$lib/components/ModesSwitch.svelte';
-	import TabButton from '$lib/components/TabButton.svelte';
+	import ModesSwitch from '#lib/components/ModesSwitch.svelte';
+	import TabButton from '#lib/components/TabButton.svelte';
 	import { getContext, onMount } from 'svelte';
 	import {
 		computeStopsDistances,
 		getCurrentPosition,
 		handleGeolocationError,
 		isGeolocationGranted,
-	} from '$lib/location-helpers';
-	import type { FavoriteStops } from '$lib/storage/favorites.svelte';
-	import { getDefaultTab, setDefaultTab, type Tab } from '$lib/storage/stops-default-tab';
+	} from '#lib/location-helpers.js';
+	import type { FavoriteStops } from '#lib/storage/favorites.svelte.js';
+	import { getDefaultTab, setDefaultTab, type Tab } from '#lib/storage/stops-default-tab.js';
 
 	let { data } = $props();
 

@@ -1,9 +1,9 @@
-import * as stationsService from '$lib/server/stations-service';
-import * as trainsService from '$lib/server/trains-service';
+import * as stationsService from '#lib/server/stations-service.js';
+import * as trainsService from '#lib/server/trains-service.js';
 import { error } from '@sveltejs/kit';
-import type StationDetails from '$lib/StationDetails';
-import { getStopForStation } from '$lib/server/stops-stations-mapping';
-import * as logger from '$lib/logger';
+import type StationDetails from '#lib/StationDetails.js';
+import { getStopForStation } from '#lib/server/stops-stations-mapping.js';
+import * as logger from '#lib/logger.js';
 
 export async function load({ params }) {
 	const slug = params.station;
