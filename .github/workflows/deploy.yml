@@ -1,0 +1,28 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: [Build and test]
+    types: [completed]
+    branches: [main]
+
+jobs:
+  deploy:
+    name: Deploy to Bunny
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      (github.event.workflow_run.event == 'push' || github.event.workflow_run.event == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: read
+    concurrency: bunny-deploy
+    steps:
+      - name: Deploy to Bunny
+        if: vars.BUNNY_APP_ID != ''
+        uses: BunnyWay/actions/container-update-image@671d620bdaac002d2aa7f3dd0dda03dd99c5b749 # container-update-image_0.2.2
+        with:
+          app_id: ${{ vars.BUNNY_APP_ID }}
+          api_key: ${{ secrets.BUNNYNET_API_KEY }}
+          container: app
+          image_tag: ${{ github.event.workflow_run.head_sha }}

@@ -6,6 +6,9 @@ RUN npm ci
 
 COPY . .
 ARG PUBLIC_BASE_URL=https://traquantopassa.in
+
+RUN npm run lint && npm run check && npm test
+
 # Build validation needs placeholders; real API credentials are supplied at runtime.
 RUN API_BASE_URL=https://app-tpl.tndigit.it API_USERNAME=build API_PASSWORD=build npm run build \
     && npm prune --omit=dev --ignore-scripts
