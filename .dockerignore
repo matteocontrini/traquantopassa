@@ -1,0 +1,11 @@
+.env*
+.git
+.github
+.idea
+.vscode
+node_modules
+.svelte-kit
+build
+.output
+.vercel
+.DS_Store
