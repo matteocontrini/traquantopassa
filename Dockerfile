@@ -1,4 +1,4 @@
-FROM node:24-bookworm-slim AS build
+FROM node:26-bookworm-slim AS build
 WORKDIR /app
 
 COPY package.json package-lock.json .npmrc ./
@@ -13,7 +13,7 @@ RUN npm run lint && npm run check && npm test
 RUN API_BASE_URL=https://app-tpl.tndigit.it API_USERNAME=build API_PASSWORD=build npm run build \
     && npm prune --omit=dev --ignore-scripts
 
-FROM node:24-bookworm-slim
+FROM node:26-bookworm-slim
 WORKDIR /app
 ENV NODE_ENV=production HOST=0.0.0.0 PORT=3000
 
