@@ -10,14 +10,17 @@
 	"rangeStrategy": "bump",
 	"schedule": ["* * * * 3"],
 	"vulnerabilityAlerts": { "enabled": false },
+	// Lets the minimum release age check pass on lock file maintenance, when npm enforces the age itself
+	"minimumReleaseAgePackageManagerSync": true,
 	"lockFileMaintenance": {
-		"description": "Refresh transitive dependencies in package-lock.json within their allowed ranges, which picks up their security fixes. The minimum release age comes from .npmrc, not minimumReleaseAge",
+		"description": "Refresh transitive dependencies in package-lock.json within their allowed ranges, which picks up their security fixes. npm enforces the minimum release age of .npmrc, which must be at least minimumReleaseAge",
 		"enabled": true,
 		"schedule": ["* * * * 3"]
 	},
 	// Temporary: npm 12 refuses registry tarballs of packages with bundleDependencies (EALLOWREMOTE on
-	// @tailwindcss/oxide-wasm32-wasi), which breaks lockfile updates. Remove once https://github.com/npm/cli/issues/9800 is fixed
-	"constraints": { "npm": "^11" },
+	// @tailwindcss/oxide-wasm32-wasi), which breaks lockfile updates. Remove once https://github.com/npm/cli/issues/9800 is fixed.
+	// 11.10 is the first npm with min-release-age
+	"constraints": { "npm": "^11.10.0" },
 	"customManagers": [
 		{
 			"customType": "regex",
