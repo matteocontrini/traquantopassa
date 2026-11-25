@@ -13,9 +13,9 @@
 
 <main class="my-8">
 	<p>
-		Puoi cercare o accedere a qualsiasi fermata di Trento con il <strong
-			>codice della fermata</strong
-		>.
+		Puoi cercare o accedere a qualsiasi fermata di Trento con il <strong>
+			codice della fermata
+		</strong>.
 	</p>
 
 	<p>
