@@ -11,8 +11,7 @@ jobs:
     name: Deploy to Bunny
     if: >-
       github.event.workflow_run.conclusion == 'success' &&
-      (github.event.workflow_run.event == 'push' || github.event.workflow_run.event == 'workflow_dispatch') &&
-      vars.BUNNY_APP_ID != ''
+      (github.event.workflow_run.event == 'push' || github.event.workflow_run.event == 'workflow_dispatch')
     runs-on: ubuntu-latest
     environment: production
     permissions:
@@ -22,6 +21,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7.0.1
       - name: Deploy to Bunny
+        if: vars.BUNNY_APP_ID != ''
         timeout-minutes: 16
         env:
           BUNNY_APP_ID: ${{ vars.BUNNY_APP_ID }}
