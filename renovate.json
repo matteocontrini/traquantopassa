@@ -51,12 +51,6 @@
 			"groupName": "GitHub Actions"
 		},
 		{
-			"description": "BunnyWay/actions hosts several actions with prefixed tags, so only consider the tags of the one used here",
-			"matchManagers": ["github-actions"],
-			"matchPackageNames": ["BunnyWay/actions"],
-			"versioning": "regex:^container-update-image_(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$"
-		},
-		{
 			"description": "Majors that often have to wait for ecosystem support open a PR only after approval in the Dependency Dashboard; other majors open a PR per package",
 			"matchUpdateTypes": ["major"],
 			"matchPackageNames": [

@@ -11,7 +11,8 @@ jobs:
     name: Deploy to Bunny
     if: >-
       github.event.workflow_run.conclusion == 'success' &&
-      (github.event.workflow_run.event == 'push' || github.event.workflow_run.event == 'workflow_dispatch')
+      (github.event.workflow_run.event == 'push' || github.event.workflow_run.event == 'workflow_dispatch') &&
+      vars.BUNNY_APP_ID != ''
     runs-on: ubuntu-latest
     environment: production
     permissions:
@@ -21,18 +22,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7.0.1
       - name: Deploy to Bunny
-        if: vars.BUNNY_APP_ID != ''
-        uses: BunnyWay/actions/container-update-image@container-update-image_0.2.2
-        with:
-          app_id: ${{ vars.BUNNY_APP_ID }}
-          api_key: ${{ secrets.BUNNYNET_API_KEY }}
-          container: app
-          image_tag: ${{ github.event.workflow_run.head_sha }}
-      - name: Wait for deployment
-        if: vars.BUNNY_APP_ID != ''
         timeout-minutes: 16
         env:
           BUNNY_APP_ID: ${{ vars.BUNNY_APP_ID }}
           BUNNYNET_API_KEY: ${{ secrets.BUNNYNET_API_KEY }}
           IMAGE_TAG: ${{ github.event.workflow_run.head_sha }}
-        run: node .github/scripts/wait-for-deployment.js
+        run: node .github/scripts/deploy.js
